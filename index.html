@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isleworth Deen Centre | Mosque & Community Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5e3f;
+            --primary-light: #2a7d57;
+            --secondary: #d4af37;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-img img {
+            height: 69px;
+            width: auto;
+        }
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 1.5rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s;
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero {
+            flex: 2;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/image/IsleworthDeen .jpeg');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 4rem 2rem;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #c19b2c;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* News Section */
+        .news-sidebar {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .news-header h3 {
+            color: var(--primary);
+            margin-bottom: 0;
+            font-size: 1.5rem;
+        }
+
+        .view-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .view-all:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+
+        .news-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.3rem;
+        }
+
+        .news-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .news-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .news-title a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+
+        .news-excerpt {
+            font-size: 0.9rem;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .news-category {
+            display: inline-block;
+            background-color: var(--light-gray);
+            color: var(--primary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Prayer Times */
+        .prayer-times {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .prayer-card {
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .prayer-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .prayer-card.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .prayer-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .prayer-card.active .prayer-name {
+            color: var(--white);
+        }
+
+        .prayer-time {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .date-display {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        /* About Section */
+        .about {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .about-content h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-image {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Services Section */
+        .services {
+            margin-bottom: 3rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-info {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .contact-info h3 {
+            color: var(--white);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            margin-top: 0.2rem;
+            color: var(--secondary);
+        }
+
+        .map-container {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            min-height: 300px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-container {
+                flex-direction: column;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .prayer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav li {
+                margin: 0;
+            }
+
+            nav a {
+                display: block;
+                padding: 0.8rem 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .prayer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+
+            .prayer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-text h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-img">
+                    <img src="/image/IDC Logo launchgood.png" alt="">
+                </div>
+                <div class="logo-text">
+                    <h1>Isleworth Deen Centre</h1>
+                    <p>Masjid & Community Center</p>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#prayer">Prayer Times</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero and News Section -->
+    <div class=" hero-container" id="home">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Welcome to Isleworth Deen Centre</h2>
+            <p class="arabic-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+            <p>A place of worship, community, and spiritual growth in the heart of Isleworth, London. Join us for daily prayers, educational programs, and community events.</p>
+            <a href="#about" class="btn">Learn More</a>
+        </section>
+
+        <!-- News Sidebar -->
+        <aside class="news-sidebar">
+            <div class="news-header">
+                <h3>Latest News</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            
+            <div class="news-item">
+                <div class="news-date">June 15, 2023</div>
+                <div class="news-title"><a href="#">Ramadan 2024 Schedule Announced</a></div>
+                <div class="news-excerpt">Special prayer times, iftar arrangements, and Taraweeh schedule for the upcoming Ramadan month.</div>
+                <span class="news-category">Announcement</span>
+            </div>
+            
+            <div class="news-item">
+                <div class="news-date">June 10, 2023</div>
+                <div class="news-title"><a href="#">New Quran Classes for Children</a></div>
+                <div class="news-excerpt">Registration now open for summer Quran memorization program for ages 7-15. Limited spots available.</div>
+                <span class="news-category">Education</span>
+            </div>
+            
+            <div class="news-item">
+                <div class="news-date">June 5, 2023</div>
+                <div class="news-title"><a href="#">Community Iftar Event</a></div>
+                <div class="news-excerpt">Join us for our monthly community iftar on June 20th. All are welcome to share in this blessed gathering.</div>
+                <span class="news-category">Community</span>
+            </div>
+            
+            <div class="news-item">
+                <div class="news-date">May 28, 2023</div>
+                <div class="news-title"><a href="#">Mosque Renovation Updates</a></div>
+                <div class="news-excerpt">Phase 2 of our renovation project begins next month. Donations welcome to support improvements.</div>
+                <span class="news-category">Facilities</span>
+            </div>
+            
+            <div class="news-item">
+                <div class="news-date">May 20, 2023</div>
+                <div class="news-title"><a href="#">Eid al-Adha 2023 Arrangements</a></div>
+                <div class="news-excerpt">Eid prayer times and celebration details for Eid al-Adha. Multiple prayer sessions to accommodate everyone.</div>
+                <span class="news-category">Events</span>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Prayer Times Section -->
+        <section class="prayer-times" id="prayer">
+            <h2 class="section-title">Prayer Times</h2>
+            <div class="date-display" id="currentDate"></div>
+            
+            <div class="prayer-grid">
+                <div class="prayer-card" id="fajr">
+                    <div class="prayer-name">Fajr</div>
+                    <div class="prayer-time">04:45 AM</div>
+                </div>
+                <div class="prayer-card" id="sunrise">
+                    <div class="prayer-name">Sunrise</div>
+                    <div class="prayer-time">06:12 AM</div>
+                </div>
+                <div class="prayer-card" id="dhuhr">
+                    <div class="prayer-name">Dhuhr</div>
+                    <div class="prayer-time">01:05 PM</div>
+                </div>
+                <div class="prayer-card" id="asr">
+                    <div class="prayer-name">Asr</div>
+                    <div class="prayer-time">05:20 PM</div>
+                </div>
+                <div class="prayer-card active" id="maghrib">
+                    <div class="prayer-name">Maghrib</div>
+                    <div class="prayer-time">08:15 PM</div>
+                </div>
+                <div class="prayer-card" id="isha">
+                    <div class="prayer-name">Isha</div>
+                    <div class="prayer-time">09:45 PM</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" id="about">
+            <div class="about-content">
+                <h3>About Our Centre</h3>
+                <p>The Isleworth Deen Centre is a mosque and community center located at 114 Twickenham Road, Isleworth, London. Established to serve the Muslim community in West London, we provide a place for worship, education, and community gatherings.</p>
+                <p>Our mission is to promote Islamic values, foster community spirit, and provide a welcoming environment for people of all backgrounds to learn about Islam and engage in interfaith dialogue.</p>
+                <p>We offer daily prayers, Friday Jumu'ah congregation, Quran classes for children and adults, Islamic lectures, and various community support services.</p>
+                <a href="#contact" class="btn">Visit Us</a>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mosque interior">
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services" id="services">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-pray"></i>
+                    </div>
+                    <h3>Daily Prayers</h3>
+                    <p>All five daily prayers are held at the mosque with congregation. Separate prayer areas for men and women.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-book-quran"></i>
+                    </div>
+                    <h3>Quran Classes</h3>
+                    <p>Quran reading and memorization classes for children and adults with qualified teachers.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Friday Prayer</h3>
+                    <p>Jumu'ah prayer with Khutbah in English and Arabic. Multiple sessions to accommodate everyone.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Community Support</h3>
+                    <p>Marriage services, counseling, funeral services, and community outreach programs.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h4>Address</h4>
+                        <p>114 Twickenham Rd, Isleworth TW7 7DJ, London, UK</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+44 (0)20 8321 1234</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>info@isleworthdeencentre.org</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h4>Opening Hours</h4>
+                        <p>Open daily from Fajr to Isha prayer</p>
+                        <p>Office Hours: 10:00 AM - 4:00 PM (Mon-Fri)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2485.205261543564!2d-0.34221542344139225!3d51.47327141423359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760c5100e8ac47%3A0x5a72c2c5c9c31df6!2s114%20Twickenham%20Rd%2C%20Isleworth%20TW7%207DJ%2C%20UK!5e0!3m2!1sen!2sus!4v1689784329570!5m2!1sen!2sus" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Isleworth Deen Centre</h4>
+                    <p>A place of worship, education, and community service in West London. Serving the Muslim community since 2005.</p>
+                    <p class="arabic-text" style="margin-top: 10px;">وَأَقِيمُوا الصَّلَاةَ وَآتُوا الزَّكَاةَ وَارْكَعُوا مَعَ الرَّاكِعِينَ</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#prayer">Prayer Times</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div style="display: flex; gap: 15px; margin-top: 1rem;">
+                        <a href="#" style="color: var(--white); font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="color: var(--white); font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: var(--white); font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: var(--white); font-size: 1.5rem;"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p style="margin-top: 1.5rem;">Subscribe to our newsletter for updates</p>
+                    <input type="email" placeholder="Your email" style="padding: 0.5rem; width: 100%; margin-top: 0.5rem; border-radius: 4px; border: none;">
+                    <button class="btn" style="margin-top: 0.5rem; width: 100%;">Subscribe</button>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Isleworth Deen Centre. All rights reserved. | Charity Registration No: 1123456</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('show') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Set current date
+        const currentDateElement = document.getElementById('currentDate');
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        currentDateElement.textContent = now.toLocaleDateString('en-GB', options);
+
+        // Highlight current prayer time
+        function highlightCurrentPrayer() {
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const prayerTimes = [
+                { id: 'fajr', time: '04:45 AM', value: 4*60+45 },
+                { id: 'sunrise', time: '06:12 AM', value: 6*60+12 },
+                { id: 'dhuhr', time: '01:05 PM', value: 13*60+5 },
+                { id: 'asr', time: '05:20 PM', value: 17*60+20 },
+                { id: 'maghrib', time: '08:15 PM', value: 20*60+15 },
+                { id: 'isha', time: '09:45 PM', value: 21*60+45 }
+            ];
+
+            // Remove active class from all prayer cards
+            document.querySelectorAll('.prayer-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Determine current prayer
+            let currentPrayer = prayerTimes[prayerTimes.length - 1]; // Default to Isha
+            
+            for (let i = prayerTimes.length - 1; i >= 0; i--) {
+                if (currentTime >= prayerTimes[i].value) {
+                    currentPrayer = prayerTimes[i];
+                    break;
+                }
+            }
+
+            // Add active class to current prayer
+            document.getElementById(currentPrayer.id).classList.add('active');
+        }
+
+        // Initialize prayer time highlighting
+        highlightCurrentPrayer();
+    </script>
+</body>
+</html>
