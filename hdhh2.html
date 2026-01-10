@@ -20,9 +20,6 @@
             --main-color: #1a5e3f;
             --main-color-shade: #0e3a8a;
             --white-shade: #f0f0f0;
-            --success: #28a745;
-            --warning: #ffc107;
-            --info: #17a2b8;
         }
 
         * {
@@ -51,7 +48,7 @@
 
         .container {
             width: 90%;
-            max-width: 1500px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
         }
@@ -68,17 +65,6 @@
             font-weight: bold;
             text-align: right;
             font-family: 'Open Sans', sans-serif;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .location-display {
-            font-size: 0.9rem;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
 
         .kingdom-name {
@@ -203,17 +189,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--secondary);
-            color: var(--secondary);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--secondary);
-            color: var(--dark);
-        }
-
         /* News Section */
         .news-sidebar {
             flex: 1;
@@ -301,225 +276,79 @@
             margin-top: 0.5rem;
         }
 
-        /* Professional Prayer Times Section */
-        .prayer-times-section {
+        /* Prayer Times */
+        .prayer-times {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             margin-bottom: 3rem;
         }
 
-        .prayer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .prayer-title {
-            text-align: left;
+        .section-title {
+            text-align: center;
             color: var(--primary);
             font-size: 2.2rem;
+            margin-bottom: 2rem;
             position: relative;
-            margin-bottom: 0;
         }
 
-        .prayer-title:after {
+        .section-title:after {
             content: '';
             position: absolute;
             width: 80px;
             height: 3px;
             background-color: var(--secondary);
             bottom: -10px;
-            left: 0;
-        }
-
-        .prayer-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .location-selector {
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            border: 1px solid var(--light-gray);
-            font-family: 'Open Sans', sans-serif;
-            background-color: white;
-        }
-
-        .calculation-method {
-            font-size: 0.85rem;
-            color: var(--gray);
-            background-color: var(--light-gray);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-        }
-
-        .current-prayer-banner {
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 1.2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(26, 94, 63, 0.2);
-        }
-
-        .current-prayer-info h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
-
-        .next-prayer-info {
-            text-align: right;
-        }
-
-        .countdown-timer {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .prayer-grid-container {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .prayer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            display: flex;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .prayer-card {
             background-color: var(--light-gray);
             border-radius: 8px;
-            padding: 1.5rem 1rem;
+            padding: 1.5rem;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            border: 2px solid transparent;
+            transition: transform 0.3s;
         }
 
         .prayer-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         .prayer-card.active {
             background-color: var(--primary);
             color: var(--white);
-            border-color: var(--secondary);
-            box-shadow: 0 6px 12px rgba(26, 94, 63, 0.3);
-        }
-
-        .prayer-card.passed {
-            opacity: 0.8;
-            background-color: #e9ecef;
-        }
-
-        .prayer-card.next {
-            background-color: rgba(26, 94, 63, 0.1);
-            border: 2px dashed var(--primary);
-        }
-
-        .prayer-icon {
-            font-size: 1.8rem;
-            margin-bottom: 0.8rem;
-            color: var(--primary);
-        }
-
-        .prayer-card.active .prayer-icon {
-            color: var(--secondary);
         }
 
         .prayer-name {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
             color: var(--primary);
         }
 
-        .prayer-card.active .prayer-name,
-        .prayer-card.next .prayer-name {
+        .prayer-card.active .prayer-name {
             color: var(--white);
-        }
-
-        .prayer-card.next .prayer-name {
-            color: var(--primary);
         }
 
         .prayer-time {
             font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 0.3rem;
         }
 
-        .prayer-iqamah {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-top: 0.3rem;
-        }
-
-        .prayer-card.active .prayer-iqamah {
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .prayer-jamat {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: var(--dark);
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-
-        .prayer-card.active .prayer-jamat {
-            background-color: var(--secondary);
-            color: var(--dark);
-        }
-
-        .date-hijri-display {
+        .date-display {
             text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--light-gray);
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .gregorian-date, .hijri-date {
+            margin-top: 1rem;
             font-weight: 600;
             color: var(--gray);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .hijri-date {
-            color: var(--primary);
-        }
-
-        .prayer-notes {
-            background-color: rgba(212, 175, 55, 0.1);
-            border-left: 4px solid var(--secondary);
-            padding: 1rem 1.5rem;
-            margin-top: 1.5rem;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .prayer-notes p {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
         }
 
         /* About Section */
@@ -676,7 +505,7 @@
             }
             
             .prayer-grid {
-                grid-template-columns: repeat(3, 1fr);
+                flex-template-columns: repeat(3, 1fr);
             }
 
             .kingdom-name {
@@ -743,7 +572,7 @@
             }
 
             .prayer-grid {
-                grid-template-columns: repeat(2, 1fr);
+                flex: repeat(2, 1fr);
             }
 
             .kingdom-name {
@@ -754,26 +583,6 @@
             .kingdom-name h2 {
                 font-size: 24px;
             }
-
-            .prayer-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .prayer-controls {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .current-prayer-banner {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
-
-            .next-prayer-info {
-                text-align: center;
-            }
         }
 
         @media screen and (max-width: 576px) {
@@ -782,7 +591,7 @@
             }
 
             .prayer-grid {
-                grid-template-columns: 1fr;
+                flex-template-columns: 1fr;
             }
 
             .kingdom-name h2 {
@@ -792,13 +601,6 @@
             .clock-container {
                 padding: 8px 15px;
                 font-size: 0.9rem;
-                flex-direction: column;
-                align-items: flex-end;
-                gap: 5px;
-            }
-
-            .location-display {
-                font-size: 0.8rem;
             }
 
             .nav-bar {
@@ -811,13 +613,7 @@
     <!-- Header Section -->
     <header class='header-container'>
         <div class='clock-container'>
-            <div class='location-display'>
-                <i class="fas fa-map-marker-alt"></i>
-                <span id="currentLocation">Isleworth, London</span>
-            </div>
-            <div>
-                <span id="currentTime">12:00 PM</span>
-            </div>
+            <span id="currentTime">12:00 PM</span>
         </div>
 
         <div class='kingdom-name'>
@@ -853,13 +649,13 @@
     </header>
 
     <!-- Hero and News Section -->
-    <div class="hero-container" id="home">
+    <div class=" hero-container" id="home">
         <!-- Hero Section -->
         <section class="hero">
             <h2>Welcome to Isleworth Deen Centre</h2>
             <p class="arabic-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
             <p>A place of worship, community, and spiritual growth in the heart of Isleworth, London. Join us for daily prayers, educational programs, and community events.</p>
-            <a href="#prayer" class="btn">View Prayer Times</a>
+            <a href="#about" class="btn">Learn More</a>
         </section>
 
         <!-- News Sidebar -->
@@ -908,97 +704,38 @@
 
     <!-- Main Content -->
     <main class="container">
-        <!-- Professional Prayer Times Section -->
-        <section class="prayer-times-section" id="prayer">
-            <div class="prayer-header">
-                <h2 class="prayer-title">Prayer Times</h2>
-                <div class="prayer-controls">
-                    <select class="location-selector" id="locationSelector">
-                        <option value="isleworth" selected>Isleworth, London</option>
-                        <option value="london">Central London</option>
-                        <option value="birmingham">Birmingham</option>
-                        <option value="manchester">Manchester</option>
-                    </select>
-                    <div class="calculation-method">
-                        <i class="fas fa-calculator"></i> ISNA Calculation Method
-                    </div>
+        <!-- Prayer Times Section -->
+        <section class="prayer-times" id="prayer">
+            <h2 class="section-title">Prayer Times</h2>
+            <div class="date-display" id="currentDate"></div>
+            
+            <div class="prayer-grid">
+                <div class="prayer-card" id="fajr">
+                    <div class="prayer-name">Fajr</div>
+                    <div class="prayer-time">04:45 AM</div>
+                </div>
+                <div class="prayer-card" id="sunrise">
+                    <div class="prayer-name">Sunrise</div>
+                    <div class="prayer-time">06:12 AM</div>
+                </div>
+                <div class="prayer-card" id="dhuhr">
+                    <div class="prayer-name">Dhuhr</div>
+                    <div class="prayer-time">01:05 PM</div>
+                </div>
+                <div class="prayer-card" id="asr">
+                    <div class="prayer-name">Asr</div>
+                    <div class="prayer-time">05:20 PM</div>
+                </div>
+                <div class="prayer-card active" id="maghrib">
+                    <div class="prayer-name">Maghrib</div>
+                    <div class="prayer-time">08:15 PM</div>
+                </div>
+                <div class="prayer-card" id="isha">
+                    <div class="prayer-name">Isha</div>
+                    <div class="prayer-time">09:45 PM</div>
                 </div>
             </div>
-
-            <!-- Current Prayer Banner -->
-            <div class="current-prayer-banner" id="currentPrayerBanner">
-                <div class="current-prayer-info">
-                    <h3>Current Prayer: <span id="currentPrayerName">Maghrib</span></h3>
-                    <p>Time: <span id="currentPrayerTime">08:15 PM</span> | Jama'ah: <span id="currentJamaahTime">08:30 PM</span></p>
-                </div>
-                <div class="next-prayer-info">
-                    <p>Next: <span id="nextPrayerName">Isha</span> in</p>
-                    <div class="countdown-timer" id="countdownTimer">01:45:22</div>
-                </div>
-            </div>
-
-            <!-- Prayer Grid -->
-            <div class="prayer-grid-container">
-                <div class="prayer-grid">
-                    <div class="prayer-card passed" id="fajrCard">
-                        <div class="prayer-icon"><i class="fas fa-sun"></i></div>
-                        <div class="prayer-name">Fajr</div>
-                        <div class="prayer-time" id="fajrTime">04:45</div>
-                        <div class="prayer-iqamah">Jama'ah: 05:15</div>
-                        <div class="prayer-jamat">Sunrise: 06:12</div>
-                    </div>
-                    <div class="prayer-card passed" id="sunriseCard">
-                        <div class="prayer-icon"><i class="fas fa-sunrise"></i></div>
-                        <div class="prayer-name">Sunrise</div>
-                        <div class="prayer-time" id="sunriseTime">06:12</div>
-                    </div>
-                    <div class="prayer-card passed" id="dhuhrCard">
-                        <div class="prayer-icon"><i class="fas fa-sun"></i></div>
-                        <div class="prayer-name">Dhuhr</div>
-                        <div class="prayer-time" id="dhuhrTime">13:05</div>
-                        <div class="prayer-iqamah">Jama'ah: 13:30</div>
-                        <div class="prayer-jamat">Congregation</div>
-                    </div>
-                    <div class="prayer-card passed" id="asrCard">
-                        <div class="prayer-icon"><i class="fas fa-cloud-sun"></i></div>
-                        <div class="prayer-name">Asr</div>
-                        <div class="prayer-time" id="asrTime">17:20</div>
-                        <div class="prayer-iqamah">Jama'ah: 17:45</div>
-                    </div>
-                    <div class="prayer-card active" id="maghribCard">
-                        <div class="prayer-icon"><i class="fas fa-sunset"></i></div>
-                        <div class="prayer-name">Maghrib</div>
-                        <div class="prayer-time" id="maghribTime">20:15</div>
-                        <div class="prayer-iqamah">Jama'ah: 20:20</div>
-                        <div class="prayer-jamat">Current Prayer</div>
-                    </div>
-                    <div class="prayer-card next" id="ishaCard">
-                        <div class="prayer-icon"><i class="fas fa-moon"></i></div>
-                        <div class="prayer-name">Isha</div>
-                        <div class="prayer-time" id="ishaTime">21:45</div>
-                        <div class="prayer-iqamah">Jama'ah: 22:00</div>
-                        <div class="prayer-jamat">Next Prayer</div>
-                    </div>
-                </div>
-
-                <!-- Date Display -->
-                <div class="date-hijri-display">
-                    <div class="gregorian-date">
-                        <i class="far fa-calendar"></i>
-                        <span id="gregorianDate">Tuesday, 15 June 2023</span>
-                    </div>
-                    <div class="hijri-date">
-                        <i class="fas fa-moon"></i>
-                        <span id="hijriDate">26 Dhul-Qa'dah 1444 AH</span>
-                    </div>
-                </div>
-
-                <!-- Prayer Notes -->
-                <div class="prayer-notes">
-                    <p><strong>Note:</strong> Prayer times are calculated based on your current location. Jama'ah times may vary slightly depending on congregation size and seasonal adjustments.</p>
-                    <p><i class="fas fa-info-circle"></i> <strong>Friday Prayer (Jumu'ah):</strong> 1:15 PM (First Jama'ah), 1:45 PM (Second Jama'ah)</p>
-                </div>
-            </div>
+        </section>
 
         <!-- About Section -->
         <section class="about" id="about">
@@ -1144,69 +881,12 @@
     </footer>
 
     <script>
-        // Prayer Times Data (simplified for example)
-        const prayerTimesData = {
-            isleworth: {
-                fajr: "04:45",
-                sunrise: "06:12",
-                dhuhr: "13:05",
-                asr: "17:20",
-                maghrib: "20:15",
-                isha: "21:45",
-                fajrJamaah: "05:15",
-                dhuhrJamaah: "13:30",
-                asrJamaah: "17:45",
-                maghribJamaah: "20:20",
-                ishaJamaah: "22:00"
-            },
-            london: {
-                fajr: "04:40",
-                sunrise: "06:10",
-                dhuhr: "13:00",
-                asr: "17:15",
-                maghrib: "20:10",
-                isha: "21:40",
-                fajrJamaah: "05:10",
-                dhuhrJamaah: "13:25",
-                asrJamaah: "17:40",
-                maghribJamaah: "20:15",
-                ishaJamaah: "21:55"
-            },
-            birmingham: {
-                fajr: "04:35",
-                sunrise: "06:05",
-                dhuhr: "13:10",
-                asr: "17:25",
-                maghrib: "20:20",
-                isha: "21:50",
-                fajrJamaah: "05:05",
-                dhuhrJamaah: "13:35",
-                asrJamaah: "17:50",
-                maghribJamaah: "20:25",
-                ishaJamaah: "22:05"
-            },
-            manchester: {
-                fajr: "04:30",
-                sunrise: "06:00",
-                dhuhr: "13:15",
-                asr: "17:30",
-                maghrib: "20:25",
-                isha: "21:55",
-                fajrJamaah: "05:00",
-                dhuhrJamaah: "13:40",
-                asrJamaah: "17:55",
-                maghribJamaah: "20:30",
-                ishaJamaah: "22:10"
-            }
-        };
-
         // Update time
         function updateTime() {
             const now = new Date();
             const options = { 
                 hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit',
+                minute: '2-digit', 
                 hour12: true 
             };
             document.getElementById('currentTime').textContent = 
@@ -1215,87 +895,33 @@
 
         // Initialize time
         updateTime();
-        setInterval(updateTime, 1000); // Update every second
+        setInterval(updateTime, 60000); // Update every minute
 
         // Set current date
-        function updateDates() {
-            const now = new Date();
-            
-            // Gregorian date
-            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('gregorianDate').textContent = 
-                now.toLocaleDateString('en-GB', gregorianOptions);
-            
-            // Hijri date (simulated for example)
-            const hijriDate = calculateHijriDate(now);
-            document.getElementById('hijriDate').textContent = hijriDate;
-        }
-
-        // Simulated Hijri date calculation
-        function calculateHijriDate(gregorianDate) {
-            // This is a simplified calculation for demonstration
-            // In a real implementation, use a proper Hijri calendar library
-            const hijriMonths = ['Muharram', 'Safar', 'Rabi\' al-Awwal', 'Rabi\' al-Thani', 
-                                 'Jumada al-Awwal', 'Jumada al-Thani', 'Rajab', 'Sha\'ban', 
-                                 'Ramadan', 'Shawwal', 'Dhul-Qa\'dah', 'Dhul-Hijjah'];
-            
-            // Approximate calculation (not accurate for real use)
-            const hijriYear = 1444;
-            const hijriMonth = hijriMonths[10]; // Dhul-Qa'dah
-            const hijriDay = 26;
-            
-            return `${hijriDay} ${hijriMonth} ${hijriYear} AH`;
-        }
-
-        // Update prayer times based on location
-        function updatePrayerTimes(location) {
-            const times = prayerTimesData[location];
-            
-            // Update times
-            document.getElementById('fajrTime').textContent = times.fajr;
-            document.getElementById('sunriseTime').textContent = times.sunrise;
-            document.getElementById('dhuhrTime').textContent = times.dhuhr;
-            document.getElementById('asrTime').textContent = times.asr;
-            document.getElementById('maghribTime').textContent = times.maghrib;
-            document.getElementById('ishaTime').textContent = times.isha;
-            
-            // Update Jama'ah times
-            document.querySelector('#fajrCard .prayer-iqamah').textContent = `Jama'ah: ${times.fajrJamaah}`;
-            document.querySelector('#dhuhrCard .prayer-iqamah').textContent = `Jama'ah: ${times.dhuhrJamaah}`;
-            document.querySelector('#asrCard .prayer-iqamah').textContent = `Jama'ah: ${times.asrJamaah}`;
-            document.querySelector('#maghribCard .prayer-iqamah').textContent = `Jama'ah: ${times.maghribJamaah}`;
-            document.querySelector('#ishaCard .prayer-iqamah').textContent = `Jama'ah: ${times.ishaJamaah}`;
-            
-            // Update current prayer banner
-            highlightCurrentPrayer();
-        }
+        const currentDateElement = document.getElementById('currentDate');
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        currentDateElement.textContent = now.toLocaleDateString('en-GB', options);
 
         // Highlight current prayer time
         function highlightCurrentPrayer() {
-            const now = new Date();
             const currentTime = now.getHours() * 60 + now.getMinutes();
-            
-            // Get prayer times for current location
-            const location = document.getElementById('locationSelector').value;
-            const times = prayerTimesData[location];
-            
             const prayerTimes = [
-                { id: 'fajrCard', name: 'Fajr', time: times.fajr, value: parseTime(times.fajr) },
-                { id: 'sunriseCard', name: 'Sunrise', time: times.sunrise, value: parseTime(times.sunrise) },
-                { id: 'dhuhrCard', name: 'Dhuhr', time: times.dhuhr, value: parseTime(times.dhuhr) },
-                { id: 'asrCard', name: 'Asr', time: times.asr, value: parseTime(times.asr) },
-                { id: 'maghribCard', name: 'Maghrib', time: times.maghrib, value: parseTime(times.maghrib) },
-                { id: 'ishaCard', name: 'Isha', time: times.isha, value: parseTime(times.isha) }
+                { id: 'fajr', time: '04:45 AM', value: 4*60+45 },
+                { id: 'sunrise', time: '06:12 AM', value: 6*60+12 },
+                { id: 'dhuhr', time: '01:05 PM', value: 13*60+5 },
+                { id: 'asr', time: '05:20 PM', value: 17*60+20 },
+                { id: 'maghrib', time: '08:15 PM', value: 20*60+15 },
+                { id: 'isha', time: '09:45 PM', value: 21*60+45 }
             ];
-            
-            // Remove all classes
+
+            // Remove active class from all prayer cards
             document.querySelectorAll('.prayer-card').forEach(card => {
-                card.classList.remove('active', 'passed', 'next');
+                card.classList.remove('active');
             });
-            
-            // Determine current and next prayers
-            let currentPrayer = null;
-            let nextPrayer = prayerTimes[0]; // Default to Fajr
+
+            // Determine current prayer
+            let currentPrayer = prayerTimes[prayerTimes.length - 1]; // Default to Isha
             
             for (let i = prayerTimes.length - 1; i >= 0; i--) {
                 if (currentTime >= prayerTimes[i].value) {
@@ -1303,111 +929,13 @@
                     break;
                 }
             }
-            
-            // Find next prayer
-            for (let i = 0; i < prayerTimes.length; i++) {
-                if (currentTime < prayerTimes[i].value) {
-                    nextPrayer = prayerTimes[i];
-                    break;
-                }
-            }
-            
-            // If past Isha, next prayer is Fajr of next day
-            if (currentTime >= prayerTimes[prayerTimes.length - 1].value) {
-                nextPrayer = prayerTimes[0];
-            }
-            
-            // Mark passed prayers
-            prayerTimes.forEach(prayer => {
-                if (prayer.value < currentTime) {
-                    document.getElementById(prayer.id).classList.add('passed');
-                }
-            });
-            
-            // Mark current prayer
-            if (currentPrayer) {
-                document.getElementById(currentPrayer.id).classList.add('active');
-                document.getElementById('currentPrayerName').textContent = currentPrayer.name;
-                document.getElementById('currentPrayerTime').textContent = currentPrayer.time;
-                
-                // Set Jama'ah time for current prayer
-                const jamaahTimes = {
-                    'Fajr': times.fajrJamaah,
-                    'Dhuhr': times.dhuhrJamaah,
-                    'Asr': times.asrJamaah,
-                    'Maghrib': times.maghribJamaah,
-                    'Isha': times.ishaJamaah
-                };
-                document.getElementById('currentJamaahTime').textContent = 
-                    jamaahTimes[currentPrayer.name] || currentPrayer.time;
-            }
-            
-            // Mark next prayer
-            if (nextPrayer) {
-                document.getElementById(nextPrayer.id).classList.add('next');
-                document.getElementById('nextPrayerName').textContent = nextPrayer.name;
-                
-                // Calculate countdown to next prayer
-                updateCountdown(nextPrayer, currentTime);
-            }
-        }
-        
-        // Parse time string to minutes
-        function parseTime(timeStr) {
-            const [time, modifier] = timeStr.split(' ');
-            let [hours, minutes] = time.split(':').map(Number);
-            
-            if (modifier === 'PM' && hours < 12) hours += 12;
-            if (modifier === 'AM' && hours === 12) hours = 0;
-            
-            return hours * 60 + minutes;
-        }
-        
-        // Update countdown timer
-        function updateCountdown(nextPrayer, currentTimeInMinutes) {
-            const nextPrayerTime = nextPrayer.value;
-            let timeDiff = nextPrayerTime - currentTimeInMinutes;
-            
-            // If next prayer is tomorrow (Fajr)
-            if (timeDiff < 0) {
-                timeDiff += 24 * 60; // Add 24 hours
-            }
-            
-            const hours = Math.floor(timeDiff / 60);
-            const minutes = timeDiff % 60;
-            const seconds = 0; // We're not tracking seconds in this simplified version
-            
-            document.getElementById('countdownTimer').textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // Update countdown every second
-        function updateCountdownEverySecond() {
-            highlightCurrentPrayer();
+
+            // Add active class to current prayer
+            document.getElementById(currentPrayer.id).classList.add('active');
         }
 
-        // Location selector event
-        document.getElementById('locationSelector').addEventListener('change', function() {
-            const location = this.value;
-            document.getElementById('currentLocation').textContent = 
-                this.options[this.selectedIndex].text;
-            updatePrayerTimes(location);
-        });
-
-        // Download timetable
-        document.getElementById('downloadTimetable').addEventListener('click', function() {
-            alert('Download feature would generate a PDF timetable in a real implementation.');
-        });
-
-        // Print timetable
-        document.getElementById('printTimetable').addEventListener('click', function() {
-            window.print();
-        });
-
-        // Monthly view
-        document.getElementById('monthlyView').addEventListener('click', function() {
-            alert('Monthly prayer timetable view would open in a real implementation.');
-        });
+        // Initialize prayer time highlighting
+        highlightCurrentPrayer();
 
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1434,17 +962,6 @@
                 alert(`Searching for: "${searchTerm}"\n\nThis feature would connect to a search backend in a live implementation.`);
             }
         });
-
-        // Initialize everything
-        function initializePage() {
-            updateTime();
-            updateDates();
-            updatePrayerTimes('isleworth');
-            setInterval(updateCountdownEverySecond, 1000);
-        }
-
-        // Start when page loads
-        window.addEventListener('DOMContentLoaded', initializePage);
     </script>
 </body>
 </html>

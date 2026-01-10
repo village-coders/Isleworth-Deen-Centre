@@ -1,0 +1,4423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isleworth Deen - Claims Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #00509e;
+            --accent-color: #4CAF50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .login-box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+            font-weight: 300;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Dashboard */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: white;
+        }
+        
+        .menu-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .user-info {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-info p {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .logout-btn {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logout-btn:hover {
+            color: white;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+            transition: margin-left 0.3s ease;
+            width: 100%;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            flex: 1;
+        }
+        
+        .date-display {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+        }
+        
+        .stat-content h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-content p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            width: 100%;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .card-header h2 {
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 13px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .btn-success {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #3d8b40;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e68900;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        th {
+            text-align: left;
+            padding: 15px;
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-new {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .status-approved {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-verified {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-rejected {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .status-paid {
+            background-color: #e3f2fd;
+            color: #1976d32;
+        }
+        
+        .status-active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-inactive {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .status-suspended {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .user-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-header h2 {
+            color: var(--primary-color);
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: var(--danger-color);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .form-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        .error-message {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 5px;
+            padding: 10px;
+            background-color: #ffebee;
+            border-radius: var(--border-radius);
+            border-left: 4px solid #f44336;
+        }
+        
+        /* File input styling */
+        .form-control[type="file"] {
+            padding: 8px 0;
+            height: auto;
+        }
+        
+        .form-control[type="file"]::-webkit-file-upload-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .form-control[type="file"]::-webkit-file-upload-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Status selector styling */
+        .status-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .status-option {
+            padding: 10px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: var(--border-radius);
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .status-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .status-option.selected {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .status-option.pending {
+            border-color: #ff9800;
+            color: #ff9800;
+        }
+        
+        .status-option.pending.selected {
+            background-color: #ff9800;
+            color: white;
+        }
+        
+        .status-option.approved {
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .status-option.approved.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .status-option.rejected {
+            border-color: #f44336;
+            color: #f44336;
+        }
+        
+        .status-option.rejected.selected {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .status-option.paid {
+            border-color: #2196F3;
+            color: #2196F3;
+        }
+        
+        .status-option.paid.selected {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 500;
+            z-index: 3000;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast.success {
+            background-color: var(--accent-color);
+        }
+        
+        .toast.error {
+            background-color: var(--danger-color);
+        }
+        
+        .toast.info {
+            background-color: var(--primary-color);
+        }
+        
+        .toast.warning {
+            background-color: var(--warning-color);
+        }
+        
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 18px;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+        }
+        
+        /* Dropdown styling */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .dropdown-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+            animation: dropdownFade 0.2s ease;
+        }
+        
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dropdown-item {
+            color: var(--dark-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .dropdown-item.active {
+            background-color: #e9ecef;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 250px;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-top: 60px;
+            }
+            
+            .date-display {
+                align-self: flex-start;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+
+            .card{
+                overflow: auto !important;
+                width: 100% !important;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .form-col {
+                min-width: 100%;
+            }
+            
+            .main-content {
+                padding: 20px;
+                width: 100%;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .card-header h2 {
+                margin-bottom: 10px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+            
+            .status-option {
+                min-width: calc(50% - 10px);
+            }
+            
+            .table-container {
+                border: none;
+            }
+            
+            .dropdown {
+                width: 100%;
+            }
+            
+            .dropdown-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .dropdown-content {
+                width: 100%;
+                position: static;
+                box-shadow: none;
+                border: 1px solid var(--border-color);
+                border-radius: var(--border-radius);
+                margin-top: 5px;
+            }
+            
+            /* Mobile table styling */
+            table {
+                min-width: 600px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .action-buttons .btn-small {
+                width: 100%;
+                justify-content: center;
+                margin-right: 0;
+            }
+            
+            .status-badge {
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .login-box {
+                padding: 30px 20px;
+            }
+            
+            .btn-small {
+                display: block;
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .status-option {
+                min-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .card{
+                overflow: auto !important;
+                width: 400px;
+            }
+            
+            .stat-cards {
+                width: 400px;
+            }
+
+            .stat-card {
+                flex-direction: column;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .stat-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            table {
+                min-width: 500px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .filter-controls .dropdown,
+            .filter-controls .btn-primary {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            table {
+                min-width: 400px;
+            }
+            
+            th, td {
+                padding: 8px 6px;
+                font-size: 12px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+        }
+        
+        /* Image preview in claim details */
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Filter controls */
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-controls select {
+            min-width: 150px;
+        }
+        
+        /* Action buttons container */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        /* Claim details styling */
+        .claim-detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .claim-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .claim-detail-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .claim-detail-value {
+            color: #555;
+        }
+        
+        /* User status badge */
+        .user-status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-suspended {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        /* New claim form specific styles */
+        .claim-reference {
+            text-align: right;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 16px;
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .expense-table-container {
+            margin: 30px 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: auto;
+        }
+        
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+        
+        .expense-table th {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .expense-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .expense-table tfoot tr {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .expense-table tfoot td {
+            padding: 12px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .checkbox-cell {
+            text-align: center;
+        }
+        
+        .checkbox-cell input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color);
+        }
+        
+        .amount-input {
+            text-align: right;
+        }
+        
+        .amount-input input {
+            text-align: right;
+            font-family: monospace;
+        }
+        
+        .reason-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reason-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <h1>Isleworth Deen Claims</h1>
+                <p>Management Dashboard</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username or ID Number</label>
+                    <input type="text" id="username" class="form-control" placeholder="Enter your username or ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-group" id="loginError" style="display: none;">
+                    <div class="error-message" id="loginErrorMessage"></div>
+                </div>
+                
+                <button type="submit" class="btn" id="loginButton">
+                    <span id="loginButtonText">Log In</span>
+                    <span id="loginButtonSpinner" class="loading-spinner hidden"></span>
+                </button>
+            </form>
+            
+            <div class="demo-credentials" style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: var(--border-radius); font-size: 14px;">
+                <p><strong>Note:</strong> Server sleeps on free tier.</p>
+                <p>If login spins, please wait 60 seconds and try again.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="workerDashboard" class="dashboard-container hidden">
+        <button class="mobile-menu-toggle" id="workerMobileMenuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="sidebar" id="workerSidebar">
+            <div class="sidebar-header">
+                <h2>Isleworth Deen Claims</h2>
+                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Worker Dashboard</p>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-item active" data-section="manageClaim">
+                    <i class="fas fa-tasks"></i>
+                    <span>Manage Claim Sheet</span>
+                </div>
+                <div class="menu-item" data-section="newClaim">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>New Claim</span>
+                </div>
+                <div class="menu-item" data-section="myClaims">
+                    <i class="fas fa-file-alt"></i>
+                    <span>My Claims</span>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <p id="workerUserName">Loading...</p>
+                <p id="workerUserId">Worker ID: Loading...</p>
+                <a href="#" class="logout-btn" id="workerLogout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <h1 id="workerPageTitle">Manage Claim Sheet</h1>
+                <div class="date-display" id="currentDate"></div>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e3f2fd; color: #1976d2;">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="workerTotalClaims">0</h3>
+                        <p>Total Claims</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #fff3e0; color: #ef6c00;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="workerPendingClaims">0</h3>
+                        <p>Pending Claims</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e8f5e9; color: #2e7d32;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="workerApprovedClaims">0</h3>
+                        <p>Approved Claims</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #ffebee; color: #c62828;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="workerRejectedClaims">0</h3>
+                        <p>Rejected Claims</p>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #ffebee; color: #c62828;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="workerPaidClaims">0</h3>
+                        <p>Paid Claims</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="manageClaimSection" class="section active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>My Claims</h2>
+                        <div class="filter-controls">
+                            <!-- Filter dropdown for worker claims -->
+                            <div class="dropdown" id="workerClaimsDropdown">
+                                <button class="dropdown-btn" id="workerDropdownBtn">
+                                    <i class="fas fa-filter"></i>
+                                    <span id="workerDropdownText">All My Claims</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="workerDropdownContent">
+                                    <div class="dropdown-item active" data-filter="all">
+                                        <i class="fas fa-list"></i>
+                                        All My Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="new">
+                                        <i class="fas fa-clock"></i>
+                                        Submitted Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="pending">
+                                        <i class="fas fa-clock"></i>
+                                        Pending Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="approved">
+                                        <i class="fas fa-check-circle"></i>
+                                        Approved Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="rejected">
+                                        <i class="fas fa-times-circle"></i>
+                                        Rejected Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="paid">
+                                        <i class="fas fa-pound-sign"></i>
+                                        Paid Claims
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-primary" id="refreshClaimsBtn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <button class="btn-primary" id="newClaimBtnWorker">
+                                <i class="fas fa-plus"></i> New Claim
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div id="workerClaimsLoading" class="empty-state">
+                            <div class="loading-spinner" style="width: 40px; height: 40px; margin: 0 auto 20px;"></div>
+                            <p>Loading claims...</p>
+                        </div>
+                        <table id="workerClaimsTable" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th>Claim ID</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="workerClaimsTableBody">
+                                <!-- Claims will be populated here -->
+                            </tbody>
+                        </table>
+                        <div id="workerClaimsEmpty" class="empty-state" style="display: none;">
+                            <i class="fas fa-inbox"></i>
+                            <p>No claims found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="newClaimSection" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Submit New Claim</h2>
+                        <button class="btn-secondary" id="cancelNewClaimBtn">Cancel</button>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="claim-reference">
+                            Claim Reference No: <span id="claimReferenceNo">MDOS-003078579709</span>
+                        </div>
+                        
+                        <form id="newClaimForm">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="claimantName">Claimant Name *</label>
+                                        <input type="text" id="claimantName" class="form-control" value="Test" readonly disabled required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="claimType">Claim Type *</label>
+                                        <select id="claimType" class="form-control" required>
+                                            <option value="">...Select Type...</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="companyName">Company Name</label>
+                                        <input type="text" id="companyName" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="contactPerson">Contact Person</label>
+                                        <input type="text" id="contactPerson" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="contactEmail">Contact E-Mail</label>
+                                        <input type="email" id="contactEmail" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="claimDate">Date *</label>
+                                        <input type="date" id="claimDate" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Expense Table -->
+                            <div class="expense-table-container">
+                                <table class="expense-table">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th>Currency:</th>
+                                            <th>C.Card:</th>
+                                            <th>Cash:</th>
+                                            <th>Bank Transferred:</th>
+                                            <th>Vat:</th>
+                                            <th>Total:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select id="expenseType" class="form-control" style="min-width: 100px;" required>
+                                                    <option value="None">None</option>
+                                                    <option value="Expense">Expense</option>
+                                                    <option value="Service">Service</option>
+                                                    <option value="Material">Material</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select id="expenseDescription" class="form-control" style="min-width: 150px;" required>
+                                                    <option value="">...Select Option...</option>
+                                                    <option value="Travel">Travel</option>
+                                                    <option value="Accommodation">Accommodation</option>
+                                                    <option value="Meals">Meals</option>
+                                                    <option value="Equipment">Equipment</option>
+                                                    <option value="Software">Software</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select id="currency" class="form-control" style="min-width: 100px;" required>
+                                                    <option value="None">None</option>
+                                                    <option value="GBP">GBP</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="EUR">EUR</option>
+                                                </select>
+                                            </td>
+                                            <td class="checkbox-cell">
+                                                <input type="checkbox" id="creditCard" checked>
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="cashAmount" class="form-control" value="0.00" step="0.01" min="0">
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="bankTransferAmount" class="form-control" value="0.00" step="0.01" min="0">
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="vatAmount" class="form-control" value="0.00" step="0.01" min="0">
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="workerTotalAmount" class="form-control" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4">Sub Total:</td>
+                                            <td id="workerSubTotalCash">00.00</td>
+                                            <td id="workerSubTotalBank">00.00</td>
+                                            <td id="workerSubTotalVat">00.00</td>
+                                            <td id="workerSubTotalTotal">00.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <!-- Reason Section -->
+                            <div class="reason-section">
+                                <label for="reason">Reason:</label>
+                                <select id="reason" class="form-control" required>
+                                    <option value="">...Select Option...</option>
+                                    <option value="Overseas Travel">Overseas Travel</option>
+                                    <option value="Training">Training</option>
+                                    <option value="Other Authorised">Other Authorised</option>
+                                    <option value="Event">Event</option>
+                                    <option value="Seminar/Conference">Seminar/Conference</option>
+                                    <option value="Office Expense">Office Expense</option>
+                                    <option value="Meeting">Meeting</option>
+                                    <option value="Telephone Expense">Telephone Expense</option>
+                                    <option value="External Invoices">External Invoices</option>
+                                    <option value="Telephone Claim">Telephone Claim</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Additional Notes -->
+                            <div class="form-group">
+                                <label for="claimNotes">Additional Notes (Optional)</label>
+                                <textarea id="claimNotes" class="form-control" rows="2" placeholder="Any additional information..."></textarea>
+                            </div>
+                            
+                            <!-- Receipt Upload -->
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="claimImage">Upload Receipt/Image</label>
+                                        <input type="file" id="claimImage" class="form-control" accept="image/*,.pdf">
+                                        <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt (optional)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="claimFormError" class="form-group" style="display: none;">
+                                <div class="error-message" id="claimFormErrorMessage"></div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="resetClaimForm">Reset</button>
+                                <button type="submit" class="btn-primary" id="submitClaimBtn">
+                                    <span id="submitClaimBtnText">Submit Claim</span>
+                                    <span id="submitClaimBtnSpinner" class="loading-spinner hidden"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="myClaimsSection" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>All My Claims</h2>
+                        <div class="filter-controls">
+                            <!-- Filter dropdown for my claims -->
+                            <div class="dropdown" id="myClaimsDropdown">
+                                <button class="dropdown-btn" id="myClaimsDropdownBtn">
+                                    <i class="fas fa-filter"></i>
+                                    <span id="myClaimsDropdownText">All My Claims</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="myClaimsDropdownContent">
+                                    <div class="dropdown-item active" data-filter="all">
+                                        <i class="fas fa-list"></i>
+                                        All My Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="pending">
+                                        <i class="fas fa-clock"></i>
+                                        Pending Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="approved">
+                                        <i class="fas fa-check-circle"></i>
+                                        Approved Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="rejected">
+                                        <i class="fas fa-times-circle"></i>
+                                        Rejected Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="paid">
+                                        <i class="fas fa-pound-sign"></i>
+                                        Paid Claims
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-primary" id="refreshMyClaimsBtn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div id="myClaimsLoading" class="empty-state">
+                            <div class="loading-spinner" style="width: 40px; height: 40px; margin: 0 auto 20px;"></div>
+                            <p>Loading claims...</p>
+                        </div>
+                        <table id="myClaimsTable" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th>Claim ID</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myClaimsTableBody">
+                                <!-- Claims will be populated here -->
+                            </tbody>
+                        </table>
+                        <div id="myClaimsEmpty" class="empty-state" style="display: none;">
+                            <i class="fas fa-inbox"></i>
+                            <p>No claims found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="adminDashboard" class="dashboard-container hidden">
+        <button class="mobile-menu-toggle" id="adminMobileMenuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <h2>Isleworth Deen Claims</h2>
+                <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Admin Dashboard</p>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-item active" data-section="adminManageClaim">
+                    <i class="fas fa-tasks"></i>
+                    <span>Manage Claims</span>
+                </div>
+                <div class="menu-item" data-section="adminNewClaim">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>New Claim</span>
+                </div>
+                <div class="menu-item" data-section="adminUserManagement">
+                    <i class="fas fa-users"></i>
+                    <span>User Management</span>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <p id="adminUserName">Admin User</p>
+                <p>Administrator</p>
+                <a href="#" class="logout-btn" id="adminLogout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <h1 id="adminPageTitle">Manage Claims</h1>
+                <div class="date-display" id="adminCurrentDate"></div>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e3f2fd; color: #1976d2;">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="adminTotalClaims">0</h3>
+                        <p>Total Claims</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #fff3e0; color: #ef6c00;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="adminPendingClaims">0</h3>
+                        <p>Pending Claims</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e8f5e9; color: #2e7d32;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="adminApprovedClaims">0</h3>
+                        <p>Approved Claims</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #ffebee; color: #c62828;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="adminRejectedClaims">0</h3>
+                        <p>Rejected Claims</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #00336630; color: #003366;">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="adminPaidClaims">0</h3>
+                        <p>Paid Claims</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="adminManageClaimSection" class="section active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>All Claims</h2>
+                        <div class="filter-controls">
+                            <!-- Dropdown for claim types -->
+                            <div class="dropdown" id="claimsDropdown">
+                                <button class="dropdown-btn" id="dropdownBtn">
+                                    <i class="fas fa-filter"></i>
+                                    <span id="dropdownText">Submitted Claims</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="dropdownContent">
+                                    <div class="dropdown-item active" data-filter="submitted">
+                                        <i class="fas fa-paper-plane"></i>
+                                        Submitted Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="approved">
+                                        <i class="fas fa-check-circle"></i>
+                                        Approved Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="paid">
+                                        <i class="fas fa-pound-sign"></i>
+                                        Paid Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="all">
+                                        <i class="fas fa-list"></i>
+                                        All Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="pending">
+                                        <i class="fas fa-clock"></i>
+                                        Pending Claims
+                                    </div>
+                                    <div class="dropdown-item" data-filter="rejected">
+                                        <i class="fas fa-times-circle"></i>
+                                        Rejected Claims
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-primary" id="refreshAdminClaimsBtn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div id="adminClaimsLoading" class="empty-state">
+                            <div class="loading-spinner" style="width: 40px; height: 40px; margin: 0 auto 20px;"></div>
+                            <p>Loading claims...</p>
+                        </div>
+                        <table id="adminClaimsTable" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th>Claim ID</th>
+                                    <th>User</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminClaimsTableBody">
+                                <!-- Claims will be populated here -->
+                            </tbody>
+                        </table>
+                        <div id="adminClaimsEmpty" class="empty-state" style="display: none;">
+                            <i class="fas fa-inbox"></i>
+                            <p>No claims found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="adminNewClaimSection" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Submit New Claim (Admin)</h2>
+                        <button class="btn-secondary" id="cancelAdminNewClaimBtn">Cancel</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="claim-reference">
+                            Claim Reference No: <span id="adminClaimReferenceNo">MDOS-003078579709</span>
+                        </div>
+                        
+                        <form id="adminNewClaimForm">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="adminClaimantName">Claimant Name *</label>
+                                        <input type="text" id="adminClaimantName" class="form-control" value="Admin" disabled required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="adminClaimType">Claim Type *</label>
+                                        <select id="adminClaimType" class="form-control" required>
+                                            <option value="">Select Type</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="adminCompanyName">Company Name</label>
+                                        <input type="text" id="adminCompanyName" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="adminContactPerson">Contact Person</label>
+                                        <input type="text" id="adminContactPerson" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="adminContactEmail">Contact E-Mail</label>
+                                        <input type="email" id="adminContactEmail" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="adminClaimDate">Date *</label>
+                                        <input type="date" id="adminClaimDate" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Simplified Expense Section for Admin -->
+                            <!-- Expense Table -->
+                            <div class="expense-table-container">
+                                <table class="expense-table">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th>Currency:</th>
+                                            <th>C.Card:</th>
+                                            <th>Cash:</th>
+                                            <th>Bank Transferred:</th>
+                                            <th>Vat:</th>
+                                            <th>Total:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                           
+                                            <td>
+                                                <select id="adminCurrency" class="form-control" style="min-width: 100px;" required>
+                                                    <option value="None">None</option>
+                                                    <option value="GBP">GBP</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="EUR">EUR</option>
+                                                </select>
+                                            </td>
+                                            <td class="checkbox-cell">
+                                                <input type="checkbox" id="adminCreditCard" checked>
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="adminCashAmount" class="form-control" value="0.00" step="0.01" min="0">
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="adminBankTransferAmount" class="form-control" value="0.00" step="0.01" min="0">
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="adminVatAmount" class="form-control" value="0.00" step="0.01" min="0">
+                                            </td>
+                                            <td class="amount-input">
+                                                <input type="number" id="adminTotalAmount" class="form-control" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4">Sub Total:</td>
+                                            <td id="adminSubTotalCash">00.00</td>
+                                            <td id="adminSubTotalBank">00.00</td>
+                                            <td id="adminSubTotalVat">00.00</td>
+                                            <td id="adminSubTotalTotal">00.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <!-- Reason Section -->
+                            <div class="reason-section">
+                                <label for="adminReason">Reason:</label>
+                                <select id="adminReason" class="form-control" required>
+                                    <option value="">...Select Option...</option>
+                                    <option value="Overseas Travel">Overseas Travel</option>
+                                    <option value="Training">Training</option>
+                                    <option value="Other Authorised">Other Authorised</option>
+                                    <option value="Event">Event</option>
+                                    <option value="Seminar/Conference">Seminar/Conference</option>
+                                    <option value="Office Expense">Office Expense</option>
+                                    <option value="Meeting">Meeting</option>
+                                    <option value="Telephone Expense">Telephone Expense</option>
+                                    <option value="External Invoices">External Invoices</option>
+                                    <option value="Telephone Claim">Telephone Claim</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Additional Notes -->
+                            <div class="form-group">
+                                <label for="adminClaimNotes">Additional Notes (Optional)</label>
+                                <textarea id="adminClaimNotes" class="form-control" rows="2" placeholder="Any additional information..."></textarea>
+                            </div>
+                            
+                            <!-- Receipt Upload -->
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label for="adminClaimImage">Upload Receipt/Image</label>
+                                        <input type="file" id="adminClaimImage" class="form-control" accept="image/*,.pdf">
+                                        <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt (optional)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="adminClaimFormError" class="form-group" style="display: none;">
+                                <div class="error-message" id="adminClaimFormErrorMessage"></div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="resetAdminClaimForm">Reset</button>
+                                <button type="submit" class="btn-primary" id="submitAdminClaimBtn">
+                                    <span id="submitAdminClaimBtnText">Submit Claim</span>
+                                    <span id="submitAdminClaimBtnSpinner" class="loading-spinner hidden"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="adminUserManagementSection" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>User Management</h2>
+                        <div class="filter-controls">
+                            <select id="userStatusFilter" class="form-control">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                            <button class="btn-primary" id="createUserBtn">
+                                <i class="fas fa-plus"></i> Create New User
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="userSearch">Search Users</label>
+                            <input type="text" id="userSearch" class="form-control" placeholder="Search by name, email, or ID...">
+                        </div>
+                        
+                        <div class="table-container">
+                            <div id="usersLoading" class="empty-state">
+                                <div class="loading-spinner" style="width: 40px; height: 40px; margin: 0 auto 20px;"></div>
+                                <p>Loading users...</p>
+                            </div>
+                            <table id="usersTable" style="display: none;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- Users will be populated here -->
+                                </tbody>
+                            </table>
+                            <div id="usersEmpty" class="empty-state" style="display: none;">
+                                <i class="fas fa-users"></i>
+                                <p>No users found</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="viewClaimModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalClaimTitle">Claim Details</h2>
+                <button class="close-btn" id="closeViewModal">&times;</button>
+            </div>
+            
+            <div id="claimDetails">
+                <!-- Claim details will be populated here -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="updateStatusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalStatusTitle">Update Claim Status</h2>
+                <button class="close-btn" id="closeStatusModal">&times;</button>
+            </div>
+            
+            <div id="statusUpdateDetails">
+                <div class="form-group">
+                    <label>Select Status</label>
+                    <div class="status-selector">
+                        <div class="status-option pending" data-status="pending">Pending</div>
+                        <div class="status-option approved" data-status="approved">Approved</div>
+                        <div class="status-option rejected" data-status="rejected">Rejected</div>
+                        <div class="status-option paid" data-status="paid">Paid</div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="statusNotesGroup" style="display: none;">
+                    <label for="statusNotes">Status Notes (Optional)</label>
+                    <textarea id="statusNotes" class="form-control" rows="3" placeholder="Add notes about the status change..."></textarea>
+                </div>
+                
+                <div id="statusUpdateError" class="form-group" style="display: none;">
+                    <div class="error-message" id="statusUpdateErrorMessage"></div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelStatusUpdate">Cancel</button>
+                    <button type="button" class="btn-primary" id="saveStatusUpdate">
+                        <span id="saveStatusUpdateBtnText">Update Status</span>
+                        <span id="saveStatusUpdateBtnSpinner" class="loading-spinner hidden"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="viewUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalUserTitle">User Details</h2>
+                <button class="close-btn" id="closeViewUserModal">&times;</button>
+            </div>
+            
+            <div id="viewUserDetails">
+                <!-- User details will be populated here -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="createUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New User</h2>
+                <button class="close-btn" id="closeCreateUserModal">&times;</button>
+            </div>
+            
+            <div id="createUserDetails">
+                <form id="createUserForm">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="createUserName">Full Name *</label>
+                                <input type="text" id="createUserName" class="form-control" placeholder="Enter full name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="createUserEmail">Email Address *</label>
+                                <input type="email" id="createUserEmail" class="form-control" placeholder="Enter email address" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="createUserPassword">Password *</label>
+                                <input type="password" id="createUserPassword" class="form-control" placeholder="Enter password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="createUserRole">Role *</label>
+                                <select id="createUserRole" class="form-control" required>
+                                    <option value="">Select Role</option>
+                                    <option value="worker">Worker</option>
+                                    <option value="admin">Administrator</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="createUserStatus">Status *</label>
+                                <select id="createUserStatus" class="form-control" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="suspended">Suspended</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="createUserDepartment">Department</label>
+                                <input type="text" id="createUserDepartment" class="form-control" placeholder="Enter department (optional)">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="createUserFormError" class="form-group" style="display: none;">
+                        <div class="error-message" id="createUserFormErrorMessage"></div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelCreateUser">Cancel</button>
+                        <button type="submit" class="btn-primary" id="submitCreateUserBtn">
+                            <span id="submitCreateUserBtnText">Create User</span>
+                            <span id="submitCreateUserBtnSpinner" class="loading-spinner hidden"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'https://hfa-internal-record-system.onrender.com/api';
+        // const API_BASE_URL = 'http://localhost:500/api';
+        
+        // Current user data
+        let currentUser = null;
+        let authToken = null;
+        
+        // Current claim being edited
+        let currentClaimId = null;
+        
+        // Current claims filter for worker
+        let workerCurrentFilter = 'all';
+        let myClaimsCurrentFilter = 'all';
+        
+        // Current claims filter for admin
+        let adminCurrentFilter = 'submitted';
+        
+        // DOM elements
+        const loginPage = document.getElementById('loginPage');
+        const workerDashboard = document.getElementById('workerDashboard');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const loginButtonText = document.getElementById('loginButtonText');
+        const loginButtonSpinner = document.getElementById('loginButtonSpinner');
+        const loginError = document.getElementById('loginError');
+        const loginErrorMessage = document.getElementById('loginErrorMessage');
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            updateDateDisplay();
+            
+            // Set default date in claim forms to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('claimDate').value = today;            
+            document.getElementById('adminClaimDate').value = today;
+
+            // Set claimant name based on current user if available
+            if (currentUser) {
+                document.getElementById('claimantName').value = currentUser.name || currentUser.email || 'Test';
+                document.getElementById('adminClaimantName').value = currentUser.name || currentUser.email || 'Admin';
+            }
+            
+            // Generate initial reference numbers
+            document.getElementById('claimReferenceNo').textContent = generateReferenceNo();
+            document.getElementById('adminClaimReferenceNo').textContent = generateReferenceNo();
+            
+            // Initialize totals calculation
+            calculateTotals();
+            calculateAdminTotals();
+            
+            // Check for saved token
+            const savedToken = localStorage.getItem('hfa_auth_token');
+            const savedUser = localStorage.getItem('hfa_user');
+            
+            if (savedToken && savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    authToken = savedToken;
+                    
+                    if (currentUser.role === 'worker') {
+                        showWorkerDashboard();
+                    } else if (currentUser.role === 'admin') {
+                        showAdminDashboard();
+                    }
+                } catch (e) {
+                    localStorage.removeItem('hfa_auth_token');
+                    localStorage.removeItem('hfa_user');
+                }
+            }
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Update date every minute
+            setInterval(updateDateDisplay, 60000);
+        });
+        
+        function updateDateDisplay() {
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('en-GB', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            const time = now.toLocaleTimeString('en-GB', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            document.getElementById('currentDate').textContent = `${formattedDate} | ${time}`;
+            document.getElementById('adminCurrentDate').textContent = `${formattedDate} | ${time}`;
+        }
+        
+        function setupEventListeners() {
+            // Login form submission
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await handleLogin();
+            });
+            
+            // Mobile menu toggle
+            document.getElementById('workerMobileMenuToggle')?.addEventListener('click', function() {
+                document.getElementById('workerSidebar').classList.toggle('mobile-open');
+            });
+            
+            document.getElementById('adminMobileMenuToggle')?.addEventListener('click', function() {
+                document.getElementById('adminSidebar').classList.toggle('mobile-open');
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                const workerSidebar = document.getElementById('workerSidebar');
+                const adminSidebar = document.getElementById('adminSidebar');
+                const workerToggle = document.getElementById('workerMobileMenuToggle');
+                const adminToggle = document.getElementById('adminMobileMenuToggle');
+                
+                if (workerSidebar?.classList.contains('mobile-open') && 
+                    !workerSidebar.contains(e.target) && 
+                    e.target !== workerToggle) {
+                    workerSidebar.classList.remove('mobile-open');
+                }
+                
+                if (adminSidebar?.classList.contains('mobile-open') && 
+                    !adminSidebar.contains(e.target) && 
+                    e.target !== adminToggle) {
+                    adminSidebar.classList.remove('mobile-open');
+                }
+            });
+            
+            // Worker dashboard events
+            document.getElementById('workerLogout').addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+            
+            document.getElementById('newClaimBtnWorker').addEventListener('click', function() {
+                switchWorkerSection('newClaimSection', 'New Claim');
+            });
+            
+            document.getElementById('cancelNewClaimBtn').addEventListener('click', function() {
+                switchWorkerSection('manageClaimSection', 'Manage Claim Sheet');
+            });
+            
+            document.getElementById('refreshClaimsBtn').addEventListener('click', function() {
+                loadWorkerClaims();
+            });
+            
+            document.getElementById('refreshMyClaimsBtn').addEventListener('click', function() {
+                loadWorkerClaims();
+            });
+            
+            // Worker menu navigation
+            setupMenuNavigation('#workerDashboard', switchWorkerSection);
+            
+            // Worker new claim form
+            document.getElementById('newClaimForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await submitNewClaim('worker');
+            });
+            
+            document.getElementById('resetClaimForm').addEventListener('click', function() {
+                resetNewClaimForm();
+            });
+            
+            // Amount calculation listeners for worker form
+            document.getElementById('cashAmount').addEventListener('input', function() {
+                calculateTotals();
+            });
+            document.getElementById('bankTransferAmount').addEventListener('input', function() {
+                calculateTotals();
+            });
+            document.getElementById('vatAmount').addEventListener('input', function() {
+                calculateTotals();
+            });
+            
+            // Amount calculation listeners for admin form
+            document.getElementById('adminCashAmount').addEventListener('input', function() {
+                calculateAdminTotals();
+            });
+            document.getElementById('adminBankTransferAmount').addEventListener('input', function() {
+                calculateAdminTotals();
+            });
+            document.getElementById('adminVatAmount').addEventListener('input', function() {
+                calculateAdminTotals();
+            });
+            
+            // Admin dashboard events
+            document.getElementById('adminLogout').addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+            
+            document.getElementById('cancelAdminNewClaimBtn').addEventListener('click', function() {
+                switchAdminSection('adminManageClaimSection', 'Manage Claims');
+            });
+            
+            document.getElementById('refreshAdminClaimsBtn').addEventListener('click', function() {
+                loadAdminClaims();
+            });
+            
+            document.getElementById('resetAdminClaimForm').addEventListener('click', function() {
+                resetAdminClaimForm();
+            });
+            
+            // Admin menu navigation
+            setupMenuNavigation('#adminDashboard', switchAdminSection);
+            
+            // Admin new claim form
+            document.getElementById('adminNewClaimForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await submitNewClaim('admin');
+            });
+            
+            // User management
+            document.getElementById('createUserBtn').addEventListener('click', function() {
+                showModal('createUserModal');
+                document.getElementById('createUserForm').reset();
+            });
+            
+            document.getElementById('closeCreateUserModal').addEventListener('click', function() {
+                hideModal('createUserModal');
+            });
+            
+            document.getElementById('cancelCreateUser').addEventListener('click', function() {
+                hideModal('createUserModal');
+            });
+            
+            document.getElementById('createUserForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await createUser();
+            });
+            
+            // Claims dropdown functionality - Worker
+            setupWorkerClaimsDropdown();
+            
+            // Claims dropdown functionality - My Claims
+            setupMyClaimsDropdown();
+            
+            // Claims dropdown functionality - Admin
+            setupAdminClaimsDropdown();
+            
+            // Filter status for users
+            document.getElementById('userStatusFilter').addEventListener('change', function() {
+                loadUsers();
+            });
+            
+            // User search
+            document.getElementById('userSearch').addEventListener('input', debounce(function() {
+                filterUsers(this.value);
+            }, 300));
+            
+            // Close modals
+            setupModalCloseEvents();
+            
+            // Status selector events
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectStatusOption(this);
+                });
+            });
+            
+            // Save status update
+            document.getElementById('saveStatusUpdate').addEventListener('click', async function() {
+                await updateClaimStatus();
+            });
+            
+            // Table button clicks
+            document.addEventListener('click', async function(e) {
+                await handleTableButtonClick(e);
+            });
+        }
+        
+        function setupWorkerClaimsDropdown() {
+            const dropdownBtn = document.getElementById('workerDropdownBtn');
+            const dropdownContent = document.getElementById('workerDropdownContent');
+            const dropdownItems = document.querySelectorAll('#workerDropdownContent .dropdown-item');
+            const dropdownText = document.getElementById('workerDropdownText');
+            
+            if (!dropdownBtn || !dropdownContent) return;
+            
+            // Toggle dropdown
+            dropdownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownContent.classList.toggle('show');
+            });
+            
+            // Handle dropdown item selection
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    dropdownItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to selected item
+                    this.classList.add('active');
+                    
+                    // Update dropdown text
+                    const filterText = this.textContent.trim();
+                    dropdownText.textContent = filterText;
+                    
+                    // Set current filter
+                    workerCurrentFilter = this.getAttribute('data-filter');
+                    
+                    // Close dropdown
+                    dropdownContent.classList.remove('show');
+                    
+                    // Load claims with new filter
+                    loadWorkerClaims();
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                dropdownContent.classList.remove('show');
+            });
+            
+            // Prevent dropdown from closing when clicking inside
+            dropdownContent.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        function setupMyClaimsDropdown() {
+            const dropdownBtn = document.getElementById('myClaimsDropdownBtn');
+            const dropdownContent = document.getElementById('myClaimsDropdownContent');
+            const dropdownItems = document.querySelectorAll('#myClaimsDropdownContent .dropdown-item');
+            const dropdownText = document.getElementById('myClaimsDropdownText');
+            
+            if (!dropdownBtn || !dropdownContent) return;
+            
+            // Toggle dropdown
+            dropdownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownContent.classList.toggle('show');
+            });
+            
+            // Handle dropdown item selection
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    dropdownItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to selected item
+                    this.classList.add('active');
+                    
+                    // Update dropdown text
+                    const filterText = this.textContent.trim();
+                    dropdownText.textContent = filterText;
+                    
+                    // Set current filter
+                    myClaimsCurrentFilter = this.getAttribute('data-filter');
+                    
+                    // Close dropdown
+                    dropdownContent.classList.remove('show');
+                    
+                    // Load claims with new filter
+                    loadWorkerClaims();
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                dropdownContent.classList.remove('show');
+            });
+            
+            // Prevent dropdown from closing when clicking inside
+            dropdownContent.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        function setupAdminClaimsDropdown() {
+            const dropdownBtn = document.getElementById('dropdownBtn');
+            const dropdownContent = document.getElementById('dropdownContent');
+            const dropdownItems = document.querySelectorAll('#dropdownContent .dropdown-item');
+            const dropdownText = document.getElementById('dropdownText');
+            
+            if (!dropdownBtn || !dropdownContent) return;
+            
+            // Toggle dropdown
+            dropdownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownContent.classList.toggle('show');
+            });
+            
+            // Handle dropdown item selection
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    dropdownItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to selected item
+                    this.classList.add('active');
+                    
+                    // Update dropdown text
+                    const filterText = this.textContent.trim();
+                    dropdownText.textContent = filterText;
+                    
+                    // Set current filter
+                    adminCurrentFilter = this.getAttribute('data-filter');
+                    
+                    // Close dropdown
+                    dropdownContent.classList.remove('show');
+                    
+                    // Load claims with new filter
+                    loadAdminClaims();
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                dropdownContent.classList.remove('show');
+            });
+            
+            // Prevent dropdown from closing when clicking inside
+            dropdownContent.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        function setupMenuNavigation(dashboardId, switchSectionFunction) {
+            const menuItems = document.querySelectorAll(`${dashboardId} .menu-item`);
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all items
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    const section = this.getAttribute('data-section');
+                    switchSectionFunction(section + 'Section', this.querySelector('span').textContent);
+                    
+                    // Close mobile menu on selection
+                    if (window.innerWidth <= 992) {
+                        const sidebar = dashboardId === '#workerDashboard' ? 
+                            document.getElementById('workerSidebar') : 
+                            document.getElementById('adminSidebar');
+                        sidebar?.classList.remove('mobile-open');
+                    }
+                });
+            });
+        }
+        
+        function setupModalCloseEvents() {
+            // Close modals when clicking outside
+            window.addEventListener('click', function(e) {
+                const modals = ['viewClaimModal', 'createUserModal', 'viewUserModal', 'updateStatusModal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (e.target === modal) {
+                        hideModal(modalId);
+                        if (modalId === 'updateStatusModal') {
+                            resetStatusModal();
+                        }
+                    }
+                });
+            });
+            
+            // Close buttons
+            document.getElementById('closeViewModal')?.addEventListener('click', function() {
+                hideModal('viewClaimModal');
+            });
+            
+            document.getElementById('closeViewUserModal')?.addEventListener('click', function() {
+                hideModal('viewUserModal');
+            });
+            
+            document.getElementById('closeStatusModal')?.addEventListener('click', function() {
+                hideModal('updateStatusModal');
+                resetStatusModal();
+            });
+            
+            document.getElementById('cancelStatusUpdate')?.addEventListener('click', function() {
+                hideModal('updateStatusModal');
+                resetStatusModal();
+            });
+        }
+        
+        // Function to show worker dashboard
+        function showWorkerDashboard() {
+            loginPage.classList.add('hidden');
+            workerDashboard.classList.remove('hidden');
+            
+            // Update user info
+            document.getElementById('workerUserName').textContent = currentUser.name.charAt(0).toUpperCase() + currentUser.name.slice(1) || currentUser.email;
+            document.getElementById('workerUserId').textContent = `Worker ID: ${currentUser.id || 'N/A'}`;
+            
+            // Update claimant name
+            document.getElementById('claimantName').value = currentUser.name || currentUser.email || 'Test';
+            
+            // Load claims
+            loadWorkerClaims();
+        }
+        
+        // Function to show admin dashboard
+        function showAdminDashboard() {
+            loginPage.classList.add('hidden');
+            adminDashboard.classList.remove('hidden');
+            
+            // Update user info
+            document.getElementById('adminUserName').textContent = currentUser.name.charAt(0).toUpperCase() + currentUser.name.slice(1) || currentUser.email;
+            
+            // Update claimant name
+            document.getElementById('adminClaimantName').value = currentUser.name || currentUser.email || 'Admin';
+            
+            // Load claims and users
+            loadAdminClaims();
+            loadUsers();
+        }
+        
+        // Function to switch worker sections
+        function switchWorkerSection(sectionId, pageTitle) {
+            switchSection('worker', sectionId, pageTitle);
+            
+            // Load data if needed
+            if (sectionId === 'myClaimsSection') {
+                loadWorkerClaims();
+            }
+        }
+        
+        // Function to switch admin sections
+        function switchAdminSection(sectionId, pageTitle) {
+            switchSection('admin', sectionId, pageTitle);
+        }
+        
+        function switchSection(role, sectionId, pageTitle) {
+            const sections = document.querySelectorAll(`#${role}Dashboard .section`);
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const sectionElement = document.getElementById(sectionId);
+            if (sectionElement) {
+                sectionElement.classList.add('active');
+            }
+            
+            const pageTitleElement = document.getElementById(`${role}PageTitle`);
+            if (pageTitleElement) {
+                pageTitleElement.textContent = pageTitle;
+            }
+        }
+        
+        // Function to load worker claims
+        async function loadWorkerClaims() {
+            if (!currentUser || !authToken) return;
+            
+            const loadingElement = document.getElementById('workerClaimsLoading');
+            const emptyElement = document.getElementById('workerClaimsEmpty');
+            const tableElement = document.getElementById('workerClaimsTable');
+            const tableBody = document.getElementById('workerClaimsTableBody');
+            const myClaimsLoadingElement = document.getElementById('myClaimsLoading');
+            const myClaimsEmptyElement = document.getElementById('myClaimsEmpty');
+            const myClaimsTableElement = document.getElementById('myClaimsTable');
+            const myClaimsTableBody = document.getElementById('myClaimsTableBody');
+            
+            // Show loading state
+            showLoadingState([loadingElement, myClaimsLoadingElement], [emptyElement, myClaimsEmptyElement], [tableElement, myClaimsTableElement]);
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.status === 401) {
+                    logout();
+                    throw new Error('Session expired. Please login again.');
+                }
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Clear tables
+                    tableBody.innerHTML = '';
+                    myClaimsTableBody.innerHTML = '';
+                    
+                    if (data.data && data.data.length > 0) {
+                        // Filter to only show current user's claims for worker
+                        const userClaims = data.data.filter(claim => 
+                            claim.user_id && claim.user_id.id === currentUser._id
+                        );
+
+                        // Update stats with user's claims only
+                        updateWorkerStats(userClaims);
+                        
+                        if (userClaims.length > 0) {
+                            // Filter claims based on current filter for manage claim section
+                            let filteredWorkerClaims = userClaims;
+                            if (workerCurrentFilter !== 'all') {
+                                filteredWorkerClaims = userClaims.filter(claim => 
+                                    claim.status === workerCurrentFilter
+                                );
+                            }
+                            
+                            // Filter claims based on current filter for my claims section
+                            let filteredMyClaims = userClaims;
+                            if (myClaimsCurrentFilter !== 'all') {
+                                filteredMyClaims = userClaims.filter(claim => 
+                                    claim.status === myClaimsCurrentFilter
+                                );
+                            }
+                            
+                            // Populate manage claim table
+                            if (filteredWorkerClaims.length > 0) {
+                                filteredWorkerClaims.forEach(claim => {
+                                    const row = createClaimRow(claim, false);
+                                    tableBody.appendChild(row.cloneNode(true));
+                                });
+                                showTableState([loadingElement], [emptyElement], [tableElement], true);
+                            } else {
+                                showTableState([loadingElement], [emptyElement], [tableElement], false);
+                            }
+                            
+                            // Populate my claims table
+                            if (filteredMyClaims.length > 0) {
+                                filteredMyClaims.forEach(claim => {
+                                    const row = createClaimRow(claim, false);
+                                    myClaimsTableBody.appendChild(row);
+                                });
+                                showTableState([myClaimsLoadingElement], [myClaimsEmptyElement], [myClaimsTableElement], true);
+                            } else {
+                                showTableState([myClaimsLoadingElement], [myClaimsEmptyElement], [myClaimsTableElement], false);
+                            }
+                            
+                        } else {
+                            // Show empty state for both tables
+                            showTableState([loadingElement, myClaimsLoadingElement], [emptyElement, myClaimsEmptyElement], [tableElement, myClaimsTableElement], false);
+                            resetWorkerStats();
+                        }
+                    } else {
+                        // Show empty state
+                        showTableState([loadingElement, myClaimsLoadingElement], [emptyElement, myClaimsEmptyElement], [tableElement, myClaimsTableElement], false);
+                        resetWorkerStats();
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to load claims');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+                showTableState([loadingElement, myClaimsLoadingElement], [emptyElement, myClaimsEmptyElement], [tableElement, myClaimsTableElement], false);
+                resetWorkerStats();
+            }
+        }
+        
+        // Function to load admin claims with filter
+        async function loadAdminClaims() {
+            if (!currentUser || !authToken) return;
+            
+            const loadingElement = document.getElementById('adminClaimsLoading');
+            const emptyElement = document.getElementById('adminClaimsEmpty');
+            const tableElement = document.getElementById('adminClaimsTable');
+            const tableBody = document.getElementById('adminClaimsTableBody');
+            
+            // Show loading state
+            showLoadingState([loadingElement], [emptyElement], [tableElement]);
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.status === 401) {
+                    logout();
+                    throw new Error('Session expired. Please login again.');
+                }
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Clear table
+                    tableBody.innerHTML = '';
+                    
+                    if (data.data && data.data.length > 0) {
+                        // Filter claims based on current filter
+                        let filteredClaims = data.data;
+                        
+                        switch(adminCurrentFilter) {
+                            case 'submitted':
+                                // Submitted claims are typically new or pending
+                                filteredClaims = data.data.filter(claim => 
+                                    claim.status === 'new' || claim.status === 'submitted'
+                                );
+                                break;
+                            case 'approved':
+                                filteredClaims = data.data.filter(claim => claim.status === 'approved');
+                                break;
+                            case 'paid':
+                                filteredClaims = data.data.filter(claim => claim.status === 'paid');
+                                break;
+                            case 'pending':
+                                filteredClaims = data.data.filter(claim => claim.status === 'pending');
+                                break;
+                            case 'rejected':
+                                filteredClaims = data.data.filter(claim => claim.status === 'rejected');
+                                break;
+                            case 'all':
+                            default:
+                                // Show all claims
+                                filteredClaims = data.data;
+                                break;
+                        }
+                        
+                        // Update stats with all claims (not filtered)
+                        updateAdminStats(data.data);
+                        
+                        if (filteredClaims.length > 0) {
+                            // Populate table
+                            filteredClaims.forEach(claim => {
+                                const row = createClaimRow(claim, true);
+                                tableBody.appendChild(row);
+                            });
+                            
+                            // Show table
+                            showTableState([loadingElement], [emptyElement], [tableElement], true);
+                        } else {
+                            // Show empty state
+                            showTableState([loadingElement], [emptyElement], [tableElement], false);
+                        }
+                    } else {
+                        // Show empty state
+                        showTableState([loadingElement], [emptyElement], [tableElement], false);
+                        resetAdminStats();
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to load claims');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+                showTableState([loadingElement], [emptyElement], [tableElement], false);
+                resetAdminStats();
+            }
+        }
+        
+        // Function to create a claim row
+        function createClaimRow(claim, isAdmin = false) {
+            const row = document.createElement('tr');
+            
+            // Status badge
+            let statusBadge = getStatusBadge(claim.status);
+            
+            // Format date
+            const dateObj = new Date(claim.createdAt || claim.date);
+            const formattedDate = dateObj.toLocaleDateString('en-GB');
+            
+            // Get user info for admin view
+            let userInfo = '';
+            if (isAdmin && (claim.claimant_name || claim.employee_id || claim.user_name)) {
+                const userName = claim.claimant_name || (claim.user_name ? claim.user_name || claim?.user?.email : 'Unknown');
+                const userId = claim.employee_id || (claim.user ? claim.user.employee_id : 'N/A');
+                userInfo = `${userName} <span class="user-badge">${userId}</span>`;
+            }
+            
+            row.innerHTML = `
+                <td>${claim.claim_id || claim._id || 'N/A'}</td>
+                ${isAdmin ? `<td>${userInfo}</td>` : ''}
+                <td>${formattedDate}</td>
+                <td>${claim.description || 'No description'}</td>
+                <td>${claim.category || 'Uncategorized'}</td>
+                <td>£${parseFloat(claim.amount || 0).toFixed(2)}</td>
+                <td>${statusBadge}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-primary btn-small view-claim-btn" data-id="${claim._id || claim.id}" data-admin="${isAdmin}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        ${!isAdmin && (claim.status === 'pending' || claim.status === 'new') ? `
+                            <button class="btn-danger btn-small delete-claim-btn" data-id="${claim._id || claim.id}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        ` : ''}
+                        ${isAdmin ? `
+                            <button class="btn-info btn-small update-status-btn" data-id="${claim._id || claim.id}">
+                                <i class="fas fa-edit"></i> Status
+                            </button>
+                            <button class="btn-danger btn-small delete-claim-btn-admin" data-id="${claim._id || claim.id}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        ` : ''}
+                    </div>
+                </td>
+            `;
+            
+            return row;
+        }
+        
+        // Function to get status badge HTML
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'new':
+                case 'pending':
+                case 'submitted':
+                    return '<span class="status-badge status-pending">Pending</span>';
+                case 'approved':
+                    return '<span class="status-badge status-approved">Approved</span>';
+                case 'rejected':
+                    return '<span class="status-badge status-rejected">Rejected</span>';
+                case 'paid':
+                    return '<span class="status-badge status-paid">Paid</span>';
+                default:
+                    return `<span class="status-badge">${status || 'Unknown'}</span>`;
+            }
+        }
+        
+        // Function to get user status badge HTML
+        function getUserStatusBadge(status) {
+            switch(status) {
+                case 'active':
+                    return '<span class="user-status-badge status-active">Active</span>';
+                case 'inactive':
+                    return '<span class="user-status-badge status-inactive">Inactive</span>';
+                case 'suspended':
+                    return '<span class="user-status-badge status-suspended">Suspended</span>';
+                default:
+                    return `<span class="user-status-badge">${status || 'Unknown'}</span>`;
+            }
+        }
+        
+        async function handleTableButtonClick(e) {
+            // View claim button
+            if (e.target.closest('.view-claim-btn')) {
+                const button = e.target.closest('.view-claim-btn');
+                const claimId = button.getAttribute('data-id');
+                const isAdmin = button.getAttribute('data-admin') === 'true';
+                await viewClaimDetails(claimId, isAdmin);
+            }
+            
+            // Delete claim button (worker only)
+            if (e.target.closest('.delete-claim-btn')) {
+                const button = e.target.closest('.delete-claim-btn');
+                const claimId = button.getAttribute('data-id');
+                await deleteClaim(claimId);
+            }
+            
+            // Delete claim button (admin)
+            if (e.target.closest('.delete-claim-btn-admin')) {
+                const button = e.target.closest('.delete-claim-btn-admin');
+                const claimId = button.getAttribute('data-id');
+                await deleteClaimAdmin(claimId);
+            }
+            
+            // Update status button (admin)
+            if (e.target.closest('.update-status-btn')) {
+                const button = e.target.closest('.update-status-btn');
+                const claimId = button.getAttribute('data-id');
+                await openStatusUpdateModal(claimId);
+            }
+            
+            // View user button
+            if (e.target.closest('.view-user-btn')) {
+                const button = e.target.closest('.view-user-btn');
+                const userId = button.getAttribute('data-id');
+                await viewUserDetails(userId);
+            }
+            
+            // Delete user button
+            if (e.target.closest('.delete-user-btn')) {
+                const button = e.target.closest('.delete-user-btn');
+                const userId = button.getAttribute('data-id');
+                const userName = button.getAttribute('data-name');
+                await deleteUser(userId, userName);
+            }
+            
+            // Activate user button
+            if (e.target.closest('.activate-user-btn')) {
+                const button = e.target.closest('.activate-user-btn');
+                const userId = button.getAttribute('data-id');
+                const userName = button.getAttribute('data-name');
+                await activateUser(userId, userName);
+            }
+            
+            // Deactivate user button
+            if (e.target.closest('.deactivate-user-btn')) {
+                const button = e.target.closest('.deactivate-user-btn');
+                const userId = button.getAttribute('data-id');
+                const userName = button.getAttribute('data-name');
+                await deactivateUser(userId, userName);
+            }
+            
+            // Suspend user button
+            if (e.target.closest('.suspend-user-btn')) {
+                const button = e.target.closest('.suspend-user-btn');
+                const userId = button.getAttribute('data-id');
+                const userName = button.getAttribute('data-name');
+                await suspendUser(userId, userName);
+            }
+        }
+        
+        // Function to handle login
+        async function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            loginButton.disabled = true;
+            loginButtonText.textContent = 'Logging in...';
+            loginButtonSpinner.classList.remove('hidden');
+            loginError.style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: username,
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Save token and user data
+                    authToken = data.data.token;
+                    currentUser = data.data.user;
+                    
+                    localStorage.setItem('hfa_auth_token', authToken);
+                    localStorage.setItem('hfa_user', JSON.stringify(currentUser));
+                    
+                    if (currentUser.role === 'worker') {
+                        showWorkerDashboard();
+                    } else if (currentUser.role === 'admin') {
+                        showAdminDashboard();
+                    }
+                    
+                    showToast('Login successful!', 'success');
+                } else {
+                    throw new Error(data.message || 'Login failed');
+                }
+            } catch (error) {
+                loginError.style.display = 'block';
+                loginErrorMessage.textContent = error.message;
+                showToast(error.message, 'error');
+            } finally {
+                // Reset loading state
+                loginButton.disabled = false;
+                loginButtonText.textContent = 'Log In';
+                loginButtonSpinner.classList.add('hidden');
+            }
+        }
+        
+        // Function to calculate totals for worker expense table
+        function calculateTotals() {
+            const cash = parseFloat(document.getElementById('cashAmount').value) || 0;
+            const bankTransfer = parseFloat(document.getElementById('bankTransferAmount').value) || 0;
+            const vat = parseFloat(document.getElementById('vatAmount').value) || 0;
+            const total = cash + bankTransfer + vat;
+            
+            // Update total field
+            document.getElementById('workerTotalAmount').value = total.toFixed(2);
+            
+            // Update subtotal row
+            document.getElementById('workerSubTotalCash').textContent = cash.toFixed(2);
+            document.getElementById('workerSubTotalBank').textContent = bankTransfer.toFixed(2);
+            document.getElementById('workerSubTotalVat').textContent = vat.toFixed(2);
+            document.getElementById('workerSubTotalTotal').textContent = total.toFixed(2);
+        }
+        
+        // Function to calculate totals for admin expense table
+        function calculateAdminTotals() {
+            const cash = parseFloat(document.getElementById('adminCashAmount').value) || 0;
+            const bankTransfer = parseFloat(document.getElementById('adminBankTransferAmount').value) || 0;
+            const vat = parseFloat(document.getElementById('adminVatAmount').value) || 0;
+            const total = cash + bankTransfer + vat;
+            
+            // Update total field
+            document.getElementById('adminTotalAmount').value = total.toFixed(2);
+            
+            // Update subtotal row
+            document.getElementById('adminSubTotalCash').textContent = cash.toFixed(2);
+            document.getElementById('adminSubTotalBank').textContent = bankTransfer.toFixed(2);
+            document.getElementById('adminSubTotalVat').textContent = vat.toFixed(2);
+            document.getElementById('adminSubTotalTotal').textContent = total.toFixed(2);
+        }
+        
+        // Function to reset the new claim form
+        function resetNewClaimForm() {
+            document.getElementById('claimantName').value = currentUser ? (currentUser.name || currentUser.email || 'Test') : 'Test';
+            document.getElementById('claimType').value = '';
+            document.getElementById('companyName').value = '';
+            document.getElementById('contactPerson').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('claimDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('expenseType').value = 'None';
+            document.getElementById('expenseDescription').value = '';
+            document.getElementById('currency').value = 'None';
+            document.getElementById('creditCard').checked = true;
+            document.getElementById('cashAmount').value = '0.00';
+            document.getElementById('bankTransferAmount').value = '0.00';
+            document.getElementById('vatAmount').value = '0.00';
+            document.getElementById('workerTotalAmount').value = '0.00';
+            document.getElementById('reason').value = '';
+            document.getElementById('claimNotes').value = '';
+            document.getElementById('claimImage').value = '';
+            
+            // Reset subtotal row
+            document.getElementById('workerSubTotalCash').textContent = '00.00';
+            document.getElementById('workerSubTotalBank').textContent = '00.00';
+            document.getElementById('workerSubTotalVat').textContent = '00.00';
+            document.getElementById('workerSubTotalTotal').textContent = '00.00';
+            
+            // Update reference number
+            document.getElementById('claimReferenceNo').textContent = generateReferenceNo();
+        }
+        
+        // Function to reset the admin claim form
+        function resetAdminClaimForm() {
+            document.getElementById('adminClaimantName').value = currentUser ? (currentUser.name || currentUser.email || 'Admin') : 'Admin';
+            document.getElementById('adminClaimType').value = '';
+            document.getElementById('adminCompanyName').value = '';
+            document.getElementById('adminContactPerson').value = '';
+            document.getElementById('adminContactEmail').value = '';
+            document.getElementById('adminClaimDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('adminExpenseType').value = 'None';
+            document.getElementById('adminExpenseDescription').value = '';
+            document.getElementById('adminCurrency').value = 'None';
+            document.getElementById('adminCreditCard').checked = true;
+            document.getElementById('adminCashAmount').value = '0.00';
+            document.getElementById('adminBankTransferAmount').value = '0.00';
+            document.getElementById('adminVatAmount').value = '0.00';
+            document.getElementById('adminTotalAmount').value = '0.00';
+            document.getElementById('adminReason').value = '';
+            document.getElementById('adminClaimNotes').value = '';
+            document.getElementById('adminClaimImage').value = '';
+
+            // Reset subtotal row
+            document.getElementById('adminSubTotalCash').textContent = '00.00';
+            document.getElementById('adminSubTotalBank').textContent = '00.00';
+            document.getElementById('adminSubTotalVat').textContent = '00.00';
+            document.getElementById('adminSubTotalTotal').textContent = '00.00';
+            
+            // Update reference number
+            document.getElementById('adminClaimReferenceNo').textContent = generateReferenceNo();
+            
+            showToast('Form has been reset.', 'info');
+        }
+        
+        // Function to submit a new claim
+        async function submitNewClaim(role) {
+            if (!currentUser || !authToken) {
+                showToast('Please login first', 'error');
+                return;
+            }
+            
+            let claimDate, claimType, description, amount, notes, image, reason;
+            let submitBtn, submitBtnText, submitBtnSpinner, formError, formErrorMessage;
+            let claimantName, companyName, contactPerson, contactEmail;
+            let expenseType, expenseDesc, currency, creditCard;
+            let cashAmount, bankTransferAmount, vatAmount, totalAmount;
+            
+            if (role === 'worker') {
+                claimantName = document.getElementById('claimantName').value;
+                claimDate = document.getElementById('claimDate').value;
+                claimType = document.getElementById('claimType').value;
+                companyName = document.getElementById('companyName').value;
+                contactPerson = document.getElementById('contactPerson').value;
+                contactEmail = document.getElementById('contactEmail').value;
+                expenseType = document.getElementById('expenseType').value;
+                expenseDesc = document.getElementById('expenseDescription').value;
+                
+                currency = document.getElementById('currency').value;
+                creditCard = document.getElementById('creditCard').checked;
+                cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+                bankTransferAmount = parseFloat(document.getElementById('bankTransferAmount').value) || 0;
+                vatAmount = parseFloat(document.getElementById('vatAmount').value) || 0;
+                totalAmount = parseFloat(document.getElementById('workerTotalAmount').value) || 0;
+                reason = document.getElementById('reason').value;
+                notes = document.getElementById('claimNotes').value;
+                image = document.getElementById('claimImage').files[0];
+                
+                amount = totalAmount;
+                
+                submitBtn = document.getElementById('submitClaimBtn');
+                submitBtnText = document.getElementById('submitClaimBtnText');
+                submitBtnSpinner = document.getElementById('submitClaimBtnSpinner');
+                formError = document.getElementById('claimFormError');
+                formErrorMessage = document.getElementById('claimFormErrorMessage');
+            } else {
+                claimantName = document.getElementById('adminClaimantName').value;
+                claimDate = document.getElementById('adminClaimDate').value;
+                claimType = document.getElementById('adminClaimType').value;
+                companyName = document.getElementById('adminCompanyName').value;
+                contactPerson = document.getElementById('adminContactPerson').value;
+                contactEmail = document.getElementById('adminContactEmail').value;
+                expenseDesc = document.getElementById('adminExpenseDescription').value;
+                reason = document.getElementById('adminReason').value;
+                notes = document.getElementById('adminClaimNotes').value;
+                image = document.getElementById('adminClaimImage').files[0];
+                creditCard = document.getElementById('adminCreditCard').checked;
+                
+                // Set default values for other fields
+                expenseType = document.getElementById("adminExpenseType").value || 'None';
+                description = expenseDesc;
+
+                currency = document.getElementById('adminCurrency').value;
+                
+                cashAmount = parseFloat(document.getElementById('adminCashAmount').value) || 0;
+                bankTransferAmount = parseFloat(document.getElementById('adminBankTransferAmount').value) || 0;
+                vatAmount = parseFloat(document.getElementById('adminVatAmount').value) || 0;
+                totalAmount = parseFloat(document.getElementById('adminTotalAmount').value) || 0;
+                
+                amount = totalAmount;
+                
+                submitBtn = document.getElementById('submitAdminClaimBtn');
+                submitBtnText = document.getElementById('submitAdminClaimBtnText');
+                submitBtnSpinner = document.getElementById('submitAdminClaimBtnSpinner');
+                formError = document.getElementById('adminClaimFormError');
+                formErrorMessage = document.getElementById('adminClaimFormErrorMessage');
+            }
+            
+            // Validate required fields
+            if (!claimantName || !claimDate || !claimType || !reason) {
+                formError.style.display = 'block';
+                formErrorMessage.textContent = 'Please fill in all required fields (ClaimantName, Date, Claim Type, and Reason)';
+                return;
+            }
+            
+            if (totalAmount <= 0) {
+                formError.style.display = 'block';
+                formErrorMessage.textContent = 'Please enter a valid amount greater than 0';
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtnText.textContent = 'Submitting...';
+            submitBtnSpinner.classList.remove('hidden');
+            formError.style.display = 'none';
+            
+            try {
+                // Create FormData for file upload
+                const formData = new FormData();
+                formData.append('date', claimDate);
+                formData.append('claim_id', generateReferenceNo());
+                formData.append('category', claimType);
+                formData.append('expense_description', expenseDesc);
+                formData.append('amount', amount);
+                formData.append('receipt', creditCard);
+                
+                // Add new fields
+                formData.append('claimant_name', claimantName);
+                formData.append('company_name', companyName || '');
+                formData.append('contact_person', contactPerson || '');
+                formData.append('contact_email', contactEmail || '');
+                formData.append('expense_type', expenseType);
+                formData.append('currency', currency);
+                formData.append('cash_amount', cashAmount);
+                formData.append('bank_transfer_amount', bankTransferAmount);
+                formData.append('vat_amount', vatAmount);
+                formData.append('reason', reason);
+                
+                if (notes) formData.append('notes', notes);
+                if (image) formData.append('image', image);
+                
+                const response = await fetch(`${API_BASE_URL}/claims`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showToast('Claim submitted successfully!', 'success');
+                    
+                    // Reset form
+                    if (role === 'worker') {
+                        resetNewClaimForm();
+                        switchWorkerSection('manageClaimSection', 'Manage Claim Sheet');
+                    } else {
+                        resetAdminClaimForm();
+                        switchAdminSection('adminManageClaimSection', 'Manage Claims');
+                    }
+                    
+                    // Refresh claims
+                    if (role === 'worker') {
+                        loadWorkerClaims();
+                    } else {
+                        loadAdminClaims();
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to submit claim');
+                }
+            } catch (error) {
+                formError.style.display = 'block';
+                formErrorMessage.textContent = error.message;
+                showToast(error.message, 'error');
+            } finally {
+                // Reset loading state
+                submitBtn.disabled = false;
+                submitBtnText.textContent = 'Submit Claim';
+                submitBtnSpinner.classList.add('hidden');
+            }
+        }
+        
+        // Function to load users
+        async function loadUsers() {
+            const statusFilter = document.getElementById('userStatusFilter').value;
+            
+            const loadingElement = document.getElementById('usersLoading');
+            const emptyElement = document.getElementById('usersEmpty');
+            const tableElement = document.getElementById('usersTable');
+            const tableBody = document.getElementById('usersTableBody');
+            
+            // Show loading state
+            loadingElement.style.display = 'block';
+            emptyElement.style.display = 'none';
+            tableElement.style.display = 'none';
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/users`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await res.json();
+                
+                if (res.ok) {
+                    tableBody.innerHTML = '';
+                    if (data.data && data.data.length > 0) {
+                        // Filter users by status
+                        let filteredUsers = data.data;
+                        if (statusFilter !== 'all') {
+                            filteredUsers = data.data.filter(user => user.status === statusFilter);
+                        }
+                        
+                        if (filteredUsers.length > 0) {
+                            filteredUsers.forEach(user => {
+                                const row = document.createElement('tr');
+                                
+                                // Create action buttons based on user status
+                                let actionButtons = '';
+                                if (user.status === 'active') {
+                                    actionButtons = `
+                                        <button class="btn-warning btn-small deactivate-user-btn" data-id="${user._id}" data-name="${user.name || 'User'}">
+                                            <i class="fas fa-ban"></i> Deactivate
+                                        </button>
+                                        <button class="btn-danger btn-small suspend-user-btn" data-id="${user._id}" data-name="${user.name || 'User'}">
+                                            <i class="fas fa-lock"></i> Suspend
+                                        </button>
+                                    `;
+                                } else if (user.status === 'inactive') {
+                                    actionButtons = `
+                                        <button class="btn-success btn-small activate-user-btn" data-id="${user._id}" data-name="${user.name || 'User'}">
+                                            <i class="fas fa-check-circle"></i> Activate
+                                        </button>
+                                        <button class="btn-danger btn-small suspend-user-btn" data-id="${user._id}" data-name="${user.name || 'User'}">
+                                            <i class="fas fa-lock"></i> Suspend
+                                        </button>
+                                    `;
+                                } else if (user.status === 'suspended') {
+                                    actionButtons = `
+                                        <button class="btn-success btn-small activate-user-btn" data-id="${user._id}" data-name="${user.name || 'User'}">
+                                            <i class="fas fa-check-circle"></i> Activate
+                                        </button>
+                                        <button class="btn-warning btn-small deactivate-user-btn" data-id="${user._id}" data-name="${user.name || 'User'}">
+                                            <i class="fas fa-ban"></i> Deactivate
+                                        </button>
+                                    `;
+                                }
+                                
+                                row.innerHTML = `
+                                    <td>${user.employee_id || user._id || 'N/A'}</td>
+                                    <td>${user.name || 'N/A'}</td>
+                                    <td>${user.email || 'N/A'}</td>
+                                    <td>${user.role || 'N/A'}</td>
+                                    <td>${getUserStatusBadge(user.status || 'active')}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-primary btn-small view-user-btn" data-id="${user._id}">
+                                                <i class="fas fa-eye"></i> View
+                                            </button>
+                                            ${actionButtons}
+                                            <button class="btn-danger btn-small delete-user-btn" data-id="${user._id}" data-name="${user.name || 'User'}">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                            
+                            // Show table
+                            loadingElement.style.display = 'none';
+                            tableElement.style.display = 'table';
+                            emptyElement.style.display = 'none';
+                        } else {
+                            // Show empty state for filtered results
+                            loadingElement.style.display = 'none';
+                            emptyElement.style.display = 'block';
+                            tableElement.style.display = 'none';
+                        }
+                    } else {
+                        // Show empty state
+                        loadingElement.style.display = 'none';
+                        emptyElement.style.display = 'block';
+                        tableElement.style.display = 'none';
+                    }
+                } else {
+                    showToast(data.message || 'Failed to load users', 'error');
+                    loadingElement.style.display = 'none';
+                    emptyElement.style.display = 'block';
+                    tableElement.style.display = 'none';
+                }
+            } catch (error) {
+                showToast('Failed to load users. Please try again.', 'error');
+                loadingElement.style.display = 'none';
+                emptyElement.style.display = 'block';
+                tableElement.style.display = 'none';
+            }
+        }
+        
+        // Function to activate a user
+        async function activateUser(userId, userName) {
+            if (!confirm(`Are you sure you want to activate the user "${userName}"?`)) {
+                return;
+            }
+            
+            if (!currentUser || !authToken) return;
+            
+            // Find and disable the activate button
+            const activateBtn = document.querySelector(`.activate-user-btn[data-id="${userId}"]`);
+            const originalText = activateBtn ? activateBtn.innerHTML : '';
+            
+            if (activateBtn) {
+                activateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Activating...';
+                activateBtn.disabled = true;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${userId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: 'active'
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    showToast(`User "${userName}" activated successfully`, 'success');
+                    loadUsers();
+                } else {
+                    showToast(data.message || 'Failed to activate user', 'error');
+                    // Restore button state on error
+                    if (activateBtn) {
+                        activateBtn.innerHTML = originalText;
+                        activateBtn.disabled = false;
+                    }
+                }
+            } catch (error) {
+                showToast('Failed to activate user. Please try again.', 'error');
+                console.error('Activate user error:', error);
+                // Restore button state on error
+                if (activateBtn) {
+                    activateBtn.innerHTML = originalText;
+                    activateBtn.disabled = false;
+                }
+            }
+        }
+        
+        // Function to deactivate a user
+        async function deactivateUser(userId, userName) {
+            if (!confirm(`Are you sure you want to deactivate the user "${userName}"?`)) {
+                return;
+            }
+            
+            if (!currentUser || !authToken) return;
+            
+            // Find and disable the deactivate button
+            const deactivateBtn = document.querySelector(`.deactivate-user-btn[data-id="${userId}"]`);
+            const originalText = deactivateBtn ? deactivateBtn.innerHTML : '';
+            
+            if (deactivateBtn) {
+                deactivateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deactivating...';
+                deactivateBtn.disabled = true;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${userId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: 'inactive'
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    showToast(`User "${userName}" deactivated successfully`, 'success');
+                    loadUsers();
+                } else {
+                    showToast(data.message || 'Failed to deactivate user', 'error');
+                    // Restore button state on error
+                    if (deactivateBtn) {
+                        deactivateBtn.innerHTML = originalText;
+                        deactivateBtn.disabled = false;
+                    }
+                }
+            } catch (error) {
+                showToast('Failed to deactivate user. Please try again.', 'error');
+                console.error('Deactivate user error:', error);
+                // Restore button state on error
+                if (deactivateBtn) {
+                    deactivateBtn.innerHTML = originalText;
+                    deactivateBtn.disabled = false;
+                }
+            }
+        }
+        
+        // Function to suspend a user
+        async function suspendUser(userId, userName) {
+            if (!confirm(`Are you sure you want to suspend the user "${userName}"?`)) {
+                return;
+            }
+            
+            if (!currentUser || !authToken) return;
+            
+            // Find and disable the suspend button
+            const suspendBtn = document.querySelector(`.suspend-user-btn[data-id="${userId}"]`);
+            const originalText = suspendBtn ? suspendBtn.innerHTML : '';
+            
+            if (suspendBtn) {
+                suspendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Suspending...';
+                suspendBtn.disabled = true;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${userId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: 'suspended'
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    showToast(`User "${userName}" suspended successfully`, 'success');
+                    loadUsers();
+                } else {
+                    showToast(data.message || 'Failed to suspend user', 'error');
+                    // Restore button state on error
+                    if (suspendBtn) {
+                        suspendBtn.innerHTML = originalText;
+                        suspendBtn.disabled = false;
+                    }
+                }
+            } catch (error) {
+                showToast('Failed to suspend user. Please try again.', 'error');
+                console.error('Suspend user error:', error);
+                // Restore button state on error
+                if (suspendBtn) {
+                    suspendBtn.innerHTML = originalText;
+                    suspendBtn.disabled = false;
+                }
+            }
+        }
+        
+        // Function to delete a user
+        async function deleteUser(userId, userName) {
+            // Prevent deleting the current user
+            if (currentUser && currentUser._id === userId) {
+                showToast('You cannot delete your own account!', 'error');
+                return;
+            }
+            
+            if (!confirm(`Are you sure you want to delete the user "${userName}"? This action cannot be undone.`)) {
+                return;
+            }
+            
+            if (!currentUser || !authToken) return;
+            
+            // Find and disable the delete button
+            const deleteBtn = document.querySelector(`.delete-user-btn[data-id="${userId}"]`);
+            const originalText = deleteBtn ? deleteBtn.innerHTML : '';
+            
+            if (deleteBtn) {
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                deleteBtn.disabled = true;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${userId}/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    showToast(`User "${userName}" deleted successfully`, 'success');
+                    loadUsers();
+                } else {
+                    showToast(data.message || 'Failed to delete user', 'error');
+                    // Restore button state on error
+                    if (deleteBtn) {
+                        deleteBtn.innerHTML = originalText;
+                        deleteBtn.disabled = false;
+                    }
+                }
+            } catch (error) {
+                showToast('Failed to delete user. Please try again.', 'error');
+                console.error('Delete user error:', error);
+                // Restore button state on error
+                if (deleteBtn) {
+                    deleteBtn.innerHTML = originalText;
+                    deleteBtn.disabled = false;
+                }
+            }
+        }
+
+        // Function to view user details
+        async function viewUserDetails(userId) {
+            if (!currentUser || !authToken) return;
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    const user = data.data;
+                    let userDetailsHtml = `
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Employee ID</div>
+                            <div class="claim-detail-value">${user.employee_id || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Name</div>
+                            <div class="claim-detail-value">${user.name || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Email</div>
+                            <div class="claim-detail-value">${user.email || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Role</div>
+                            <div class="claim-detail-value">${user.role || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Status</div>
+                            <div class="claim-detail-value">${getUserStatusBadge(user.status || 'active')}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Department</div>
+                            <div class="claim-detail-value">${user.department || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Created At</div>
+                            <div class="claim-detail-value">${new Date(user.createdAt).toLocaleDateString('en-GB')}</div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('viewUserDetails').innerHTML = userDetailsHtml;
+                    document.getElementById('modalUserTitle').textContent = `User Details: ${user.name || 'N/A'}`;
+                    showModal('viewUserModal');
+                } else {
+                    showToast(data.message || 'Failed to load user details', 'error');
+                }
+            } catch (error) {
+                showToast('Failed to load user details. Please try again.', 'error');
+            }
+        }
+        
+        // Function to view claim details
+        async function viewClaimDetails(claimId, isAdmin = false) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims/${claimId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const claim = data.data;
+                    
+                    if (claim) {
+                        displayClaimModal(claim, isAdmin);
+                    } else {
+                        showToast('Claim not found', 'error');
+                    }
+                } else {
+                    throw new Error('Failed to load claim details');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+        
+        // Function to display claim modal
+        function displayClaimModal(claim, isAdmin = false) {
+            // Format date
+            const dateObj = new Date(claim.createdAt || claim.date);
+            const formattedDate = dateObj.toLocaleDateString('en-GB');
+            
+            // Status display
+            let statusBadge = getStatusBadge(claim.status);
+            
+            // Create details HTML
+            let detailsHTML = `
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Claim ID</div>
+                    <div class="claim-detail-value">${claim.claim_id || claim.id}</div>
+                </div>
+                ${claim.claimant_name ? `
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Submitted By</div>
+                    <div class="claim-detail-value">${claim.claimant_name || claim.user.email}</div>
+                </div>` : ''}
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Date Submitted</div>
+                    <div class="claim-detail-value">${formattedDate}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Status</div>
+                    <div class="claim-detail-value">${statusBadge}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Category</div>
+                    <div class="claim-detail-value">${claim.category || 'Uncategorized'}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Amount</div>
+                    <div class="claim-detail-value">£${parseFloat(claim.amount || 0).toFixed(2)}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Receipt Available</div>
+                    <div class="claim-detail-value">${claim.receipt ? 'Yes' : 'No'}</div>
+                </div>
+            `;
+            
+            // Add additional fields if they exist
+            if (claim.claimant_name) {
+                detailsHTML += `
+                    <div class="claim-detail-item">
+                        <div class="claim-detail-label">Claimant Name</div>
+                        <div class="claim-detail-value">${claim.claimant_name}</div>
+                    </div>
+                `;
+            }
+            
+            if (claim.reason) {
+                detailsHTML += `
+                    <div class="claim-detail-item">
+                        <div class="claim-detail-label">Reason</div>
+                        <div class="claim-detail-value">${claim.reason}</div>
+                    </div>
+                `;
+            }
+            
+            // Add image if available
+            if (claim.receipt_url) {
+                const fileExtension = claim.receipt_url.split('.').pop().toLowerCase();
+                const isPDF = fileExtension === 'pdf';
+                
+                detailsHTML += `
+                    <div class="claim-detail-item">
+                        <div class="claim-detail-label">Uploaded Document</div>
+                        <div class="claim-detail-value">
+                `;
+                
+                if (isPDF) {
+                    detailsHTML += `
+                        <p><i class="fas fa-file-pdf" style="color: #e74c3c; margin-right: 8px;"></i> 
+                        <a href="${claim.receipt_url}" target="_blank" style="color: var(--primary-color); text-decoration: none;">
+                            View PDF Receipt
+                        </a></p>
+                    `;
+                } else {
+                    detailsHTML += `
+                        <img src="${claim.receipt_url}" alt="Receipt" class="image-preview">
+                        <br>
+                        <a href="${claim.receipt_url}" target="_blank" style="color: var(--primary-color); text-decoration: none; font-size: 14px; margin-top: 10px; display: inline-block;">
+                            <i class="fas fa-external-link-alt" style="margin-right: 5px;"></i> Open full image
+                        </a>
+                    `;
+                }
+                
+                detailsHTML += `</div></div>`;
+            }
+            
+            detailsHTML += `
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Expense Description</div>
+                    <div class="claim-detail-value" style="background-color: #f8f9fa; padding: 15px; border-radius: var(--border-radius);">
+                        ${claim.expense_description || 'No description'}
+                    </div>
+                </div>
+            `;
+            
+            // Add notes if available
+            if (claim.notes) {
+                detailsHTML += `
+                    <div class="claim-detail-item">
+                        <div class="claim-detail-label">Notes</div>
+                        <div class="claim-detail-value" style="background-color: #f8f9fa; padding: 15px; border-radius: var(--border-radius);">
+                            ${claim.notes}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Set modal content
+            document.getElementById('claimDetails').innerHTML = detailsHTML;
+            document.getElementById('modalClaimTitle').textContent = `Claim Details: ${claim.claim_id || claim.id}`;
+            
+            // Show modal
+            showModal('viewClaimModal');
+        }
+        
+        // Function to delete a claim (worker)
+        async function deleteClaim(claimId) {
+            if (!confirm('Are you sure you want to delete this claim?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims/${claimId}/delete`, {
+                    method: 'DELETE',
+                    headers: { 
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = response.json()
+                
+                if (response.ok) {
+                    showToast('Claim deleted successfully!', 'success');
+                    loadWorkerClaims();
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+        
+        // Function to delete a claim (admin - can delete any claim)
+        async function deleteClaimAdmin(claimId) {
+            if (!confirm('Are you sure you want to delete this claim? This action cannot be undone.')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims/${claimId}`, {
+                    method: 'DELETE',
+                    headers: { 
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json()
+                
+                if (response.ok) {
+                    showToast('Claim deleted successfully!', 'success');
+                    loadAdminClaims();
+                    // Also refresh worker dashboard if it's open
+                    if (!workerDashboard.classList.contains('hidden')) {
+                        loadWorkerClaims();
+                    }
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+        
+        // Function to create a new user
+        async function createUser() {
+            if (!currentUser || !authToken) {
+                showToast('Please login first', 'error');
+                return;
+            }
+            
+            const userName = document.getElementById('createUserName').value;
+            const userEmail = document.getElementById('createUserEmail').value;
+            const userPassword = document.getElementById('createUserPassword').value;
+            const userRole = document.getElementById('createUserRole').value;
+            const userStatus = document.getElementById('createUserStatus').value;
+            const userDepartment = document.getElementById('createUserDepartment').value;
+            const submitBtn = document.getElementById('submitCreateUserBtn');
+            const submitBtnText = document.getElementById('submitCreateUserBtnText');
+            const submitBtnSpinner = document.getElementById('submitCreateUserBtnSpinner');
+            const formError = document.getElementById('createUserFormError');
+            const formErrorMessage = document.getElementById('createUserFormErrorMessage');
+            
+            // Validate
+            if (!userName || !userEmail || !userPassword || !userRole || !userStatus) {
+                formError.style.display = 'block';
+                formErrorMessage.textContent = 'Please fill in all required fields';
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtnText.textContent = 'Creating...';
+            submitBtnSpinner.classList.remove('hidden');
+            formError.style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization' : `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        name: userName,
+                        email: userEmail,
+                        password: userPassword,
+                        role: userRole,
+                        status: userStatus,
+                        department: userDepartment || undefined
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showToast('User created successfully!', 'success');
+                    
+                    // Close modal and reset form
+                    hideModal('createUserModal');
+                    document.getElementById('createUserForm').reset();
+                    
+                    // Refresh users list
+                    loadUsers();
+                } else {
+                    throw new Error(data.message || 'Failed to create user');
+                }
+            } catch (error) {
+                formError.style.display = 'block';
+                formErrorMessage.textContent = error.message;
+                showToast(error.message, 'error');
+            } finally {
+                // Reset loading state
+                submitBtn.disabled = false;
+                submitBtnText.textContent = 'Create User';
+                submitBtnSpinner.classList.add('hidden');
+            }
+        }
+        
+        // Function to open status update modal
+        async function openStatusUpdateModal(claimId) {
+            currentClaimId = claimId;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims/${claimId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const claim = data.data;
+                    
+                    if (claim) {
+                        document.getElementById('modalStatusTitle').textContent = `Update Status for Claim: ${claim.claim_id || claim.id}`;
+                        
+                        // Set current status as selected
+                        const statusOptions = document.querySelectorAll('.status-option');
+                        statusOptions.forEach(option => {
+                            option.classList.remove('selected');
+                            if (option.getAttribute('data-status') === claim.status) {
+                                option.classList.add('selected');
+                            }
+                        });
+                        
+                        // Show/hide notes field based on current status
+                        const notesGroup = document.getElementById('statusNotesGroup');
+                        if (claim.status !== 'pending') {
+                            notesGroup.style.display = 'block';
+                        } else {
+                            notesGroup.style.display = 'none';
+                        }
+                        
+                        // Show modal
+                        showModal('updateStatusModal');
+                    } else {
+                        showToast('Claim not found', 'error');
+                    }
+                } else {
+                    throw new Error('Failed to load claim details');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+        
+        // Function to update claim status (new method with status selection)
+        async function updateClaimStatus() {
+            if (!currentClaimId) return;
+            
+            const selectedStatusOption = document.querySelector('.status-option.selected');
+            if (!selectedStatusOption) {
+                document.getElementById('statusUpdateError').style.display = 'block';
+                document.getElementById('statusUpdateErrorMessage').textContent = 'Please select a status';
+                return;
+            }
+            
+            const newStatus = selectedStatusOption.getAttribute('data-status');
+            const statusNotes = document.getElementById('statusNotes').value;
+            
+            // Show loading state
+            const saveBtn = document.getElementById('saveStatusUpdate');
+            const saveBtnText = document.getElementById('saveStatusUpdateBtnText');
+            const saveBtnSpinner = document.getElementById('saveStatusUpdateBtnSpinner');
+            const errorElement = document.getElementById('statusUpdateError');
+            
+            saveBtn.disabled = true;
+            saveBtnText.textContent = 'Updating...';
+            saveBtnSpinner.classList.remove('hidden');
+            errorElement.style.display = 'none';
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/claims/${currentClaimId}/status/`, {
+                    method: "PUT",
+                    headers: { 
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus,
+                        notes: statusNotes || undefined
+                    })
+                });
+
+                const data = await res.json();
+
+                if(data.success){
+                    showToast(data.message, 'success');
+                    hideModal('updateStatusModal');
+                    resetStatusModal();
+                    
+                    // Refresh claims
+                    loadAdminClaims();
+                    if (!workerDashboard.classList.contains('hidden')) {
+                        loadWorkerClaims();
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to update status');
+                }
+                
+            } catch (error) {
+                errorElement.style.display = 'block';
+                document.getElementById('statusUpdateErrorMessage').textContent = error.message;
+                showToast(error.message, 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtnText.textContent = 'Update Status';
+                saveBtnSpinner.classList.add('hidden');
+            }
+        }
+        
+        // Helper Functions
+        
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+        
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        function resetStatusModal() {
+            currentClaimId = null;
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById('statusNotes').value = '';
+            document.getElementById('statusNotesGroup').style.display = 'none';
+            document.getElementById('statusUpdateError').style.display = 'none';
+        }
+        
+        function selectStatusOption(optionElement) {
+            // Remove selected class from all options
+            document.querySelectorAll('.status-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            optionElement.classList.add('selected');
+            
+            // Show notes field for non-pending statuses
+            const status = optionElement.getAttribute('data-status');
+            const notesGroup = document.getElementById('statusNotesGroup');
+            if (status !== 'pending') {
+                notesGroup.style.display = 'block';
+            } else {
+                notesGroup.style.display = 'none';
+            }
+        }
+        
+        function generateReferenceNo() {
+            const prefix = 'ISL';
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            return `${prefix}-${randomNum}`;
+        }
+        
+        function showLoadingState(loadingElements, emptyElements, tableElements) {
+            loadingElements.forEach(el => {
+                if (el) el.style.display = 'block';
+            });
+            emptyElements.forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+            tableElements.forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+        }
+        
+        function showTableState(loadingElements, emptyElements, tableElements, hasData) {
+            loadingElements.forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+            if (hasData) {
+                emptyElements.forEach(el => {
+                    if (el) el.style.display = 'none';
+                });
+                tableElements.forEach(el => {
+                    if (el) el.style.display = 'table';
+                });
+            } else {
+                emptyElements.forEach(el => {
+                    if (el) el.style.display = 'block';
+                });
+                tableElements.forEach(el => {
+                    if (el) el.style.display = 'none';
+                });
+            }
+        }
+        
+        function updateWorkerStats(claims) {
+            const total = claims.length;
+            const pending = claims.filter(c => c.status === 'pending' || c.status === 'new' || c.status === 'submitted').length;
+            const approved = claims.filter(c => c.status === 'approved').length;
+            const rejected = claims.filter(c => c.status === 'rejected').length;
+            const paid = claims.filter(c => c.status === 'paid').length;
+
+            
+            document.getElementById('workerTotalClaims').textContent = total;
+            document.getElementById('workerPendingClaims').textContent = pending;
+            document.getElementById('workerApprovedClaims').textContent = approved;
+            document.getElementById('workerRejectedClaims').textContent = rejected;
+            document.getElementById('workerPaidClaims').textContent = paid;
+        }
+        
+        function resetWorkerStats() {
+            document.getElementById('workerTotalClaims').textContent = '0';
+            document.getElementById('workerPendingClaims').textContent = '0';
+            document.getElementById('workerApprovedClaims').textContent = '0';
+            document.getElementById('workerRejectedClaims').textContent = '0';
+        }
+        
+        function updateAdminStats(claims) {
+            const total = claims.length;
+            const pending = claims.filter(c => c.status === 'pending' || c.status === 'new' || c.status === 'submitted').length;
+            const approved = claims.filter(c => c.status === 'approved').length;
+            const rejected = claims.filter(c => c.status === 'rejected').length;
+            const paid = claims.filter(c => c.status === 'paid').length;
+            
+            document.getElementById('adminTotalClaims').textContent = total;
+            document.getElementById('adminPendingClaims').textContent = pending;
+            document.getElementById('adminApprovedClaims').textContent = approved;
+            document.getElementById('adminRejectedClaims').textContent = rejected;
+            document.getElementById('adminPaidClaims').textContent = paid;
+        }
+        
+        function resetAdminStats() {
+            document.getElementById('adminTotalClaims').textContent = '0';
+            document.getElementById('adminPendingClaims').textContent = '0';
+            document.getElementById('adminApprovedClaims').textContent = '0';
+            document.getElementById('adminRejectedClaims').textContent = '0';
+        }
+        
+        function filterUsers(searchTerm) {
+            const searchValue = searchTerm.toLowerCase();
+            const tableBody = document.getElementById('usersTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+            
+            let hasVisibleRows = false;
+            
+            for (let row of rows) {
+                const cells = row.getElementsByTagName('td');
+                let rowText = '';
+                
+                // Concatenate text from all cells except the actions cell
+                for (let i = 0; i < cells.length - 1; i++) {
+                    rowText += cells[i].textContent.toLowerCase() + ' ';
+                }
+                
+                if (rowText.includes(searchValue)) {
+                    row.style.display = '';
+                    hasVisibleRows = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+            
+            // Show/hide empty state message
+            const emptyState = document.getElementById('usersEmpty');
+            if (searchTerm && !hasVisibleRows) {
+                emptyState.innerHTML = '<i class="fas fa-search"></i><p>No users match your search</p>';
+                emptyState.style.display = 'block';
+            } else if (!searchTerm && rows.length === 0) {
+                emptyState.innerHTML = '<i class="fas fa-users"></i><p>No users found</p>';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        function showToast(message, type = "success") {
+            // Remove existing toasts
+            const existingToasts = document.querySelectorAll('.toast');
+            existingToasts.forEach(toast => toast.remove());
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            // Add to document
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        function logout() {
+            localStorage.removeItem('hfa_auth_token');
+            localStorage.removeItem('hfa_user');
+            currentUser = null;
+            authToken = null;
+            
+            workerDashboard.classList.add('hidden');
+            adminDashboard.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+            loginForm.reset();
+            
+            showToast('You have been logged out.', 'info');
+        }
+    </script>
+</body>
+</html>

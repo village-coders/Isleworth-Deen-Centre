@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Isleworth Deen Centre</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5e3f;
+            --primary-light: #2a7d57;
+            --secondary: #d4af37;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --white: #ffffff;
+            --danger: #dc3545;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7fa;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Login Page Styles */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .login-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .login-header p {
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 94, 63, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #c19b2c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid transparent;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: var(--success);
+            color: #155724;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            border-color: var(--danger);
+            color: #721c24;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+
+        /* Admin Dashboard Styles */
+        .admin-page {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h2 {
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 1.5rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info span {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .logout-btn {
+            color: var(--danger);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Table Styles */
+        .table-container {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--light-gray);
+            transition: background-color 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        td {
+            padding: 1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-published {
+            background-color: #d4edda;
+            color: var(--success);
+        }
+
+        .status-draft {
+            background-color: #fff3cd;
+            color: var(--warning);
+        }
+
+        /* Form Page Styles */
+        .form-page {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .form-header h2 {
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .char-count {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-align: right;
+            margin-top: 0.3rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-page {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem 0;
+            }
+            
+            .sidebar-header {
+                padding: 0 1rem 1rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .form-row .form-group {
+                margin-bottom: 1.5rem;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page (Default View) -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Admin Login</h1>
+                <p>Isleworth Deen Centre News Management</p>
+            </div>
+            
+            <div id="loginAlert" class="alert" style="display: none;"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden by default) -->
+    <div id="adminPage" class="admin-page" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+                <p>Isleworth Deen Centre</p>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" data-page="news"><i class="fas fa-newspaper"></i> News Management</a></li>
+                <li><a href="#" data-page="addNews"><i class="fas fa-plus-circle"></i> Add New News</a></li>
+                <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <span id="loggedInUser">Admin</span>
+                    <a href="#" class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+
+            <!-- Alert Container -->
+            <div id="adminAlert" class="alert" style="display: none;"></div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page-content">
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Total News Articles</h3>
+                        <div class="number" id="totalNews">0</div>
+                    </div>
+                    <div class="card">
+                        <h3>Published Articles</h3>
+                        <div class="number" id="publishedNews">0</div>
+                    </div>
+                    <div class="card">
+                        <h3>Draft Articles</h3>
+                        <div class="number" id="draftNews">0</div>
+                    </div>
+                    <div class="card">
+                        <h3>This Month</h3>
+                        <div class="number" id="monthlyNews">0</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Recent News</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentNewsTable">
+                            <!-- Recent news will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- News Management Page -->
+            <div id="newsPage" class="page-content" style="display: none;">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allNewsTable">
+                            <!-- All news will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add/Edit News Page -->
+            <div id="addNewsPage" class="page-content" style="display: none;">
+                <div class="form-page">
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h2 id="formTitle">Add New News Article</h2>
+                        </div>
+                        
+                        <form id="newsForm">
+                            <!-- <input type="hidden" id="newsId" value=""> -->
+                            
+                            <div class="form-group">
+                                <label for="newsTitle">News Title *</label>
+                                <input type="text" id="newsTitle" name="newsTitle" required>
+                                <div class="char-count" id="titleCount">0/100 characters</div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="newsDate">Publication Date *</label>
+                                    <input type="date" id="newsDate" name="newsDate" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="newsCategory">Category *</label>
+                                    <select id="newsCategory" name="newsCategory" required>
+                                        <option value="">Select Category</option>
+                                        <option value="Announcement">Announcement</option>
+                                        <option value="Education">Education</option>
+                                        <option value="Community">Community</option>
+                                        <option value="Events">Events</option>
+                                        <option value="Facilities">Facilities</option>
+                                        <option value="Fundraising">Fundraising</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newsExcerpt">News Excerpt *</label>
+                                <textarea id="newsExcerpt" name="newsExcerpt" rows="3" required></textarea>
+                                <div class="char-count" id="excerptCount">0/200 characters</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newsContent">Full Content (Optional)</label>
+                                <textarea id="newsContent" name="newsContent" rows="6"></textarea>
+                                <div class="char-count" id="contentCount">0/1000 characters</div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="newsStatus">Status *</label>
+                                    <select id="newsStatus" name="newsStatus" required>
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="newsFeatured">Featured Article</label>
+                                    <select id="newsFeatured" name="newsFeatured">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" id="submitBtn">Save News Article</button>
+                                <button type="button" class="btn" id="cancelBtn" style="margin-left: 10px;">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page-content" style="display: none;">
+                <div class="form-page">
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h2>Admin Settings</h2>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Change Password</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="password" id="currentPassword" placeholder="Current Password">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="newPassword" placeholder="New Password">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="confirmPassword" placeholder="Confirm New Password">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="changePasswordBtn">Change Password</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Export News Data</label>
+                            <p>Export all news articles as a JSON file for backup.</p>
+                            <button type="button" class="btn btn-success" id="exportBtn">Export News Data</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Import News Data</label>
+                            <p>Import news articles from a JSON file.</p>
+                            <input type="file" id="importFile" accept=".json">
+                            <button type="button" class="btn btn-primary" id="importBtn" style="margin-top: 10px;">Import News Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const API_BASE_URL = "https://isleworth-website-backend.onrender.com/api"; // Placeholder API URL
+        // Default admin credentials (in a real app, this would be handled server-side)
+        const ADMIN_CREDENTIALS = {
+            username: "admin",
+            password: "deencentre123"
+        };
+
+        // News data storage (in a real app, this would be in a database)
+        let newsData = JSON.parse(localStorage.getItem('isleworthDeenNews')) || [
+            {
+                id: 1,
+                title: "Ramadan 2024 Schedule Announced",
+                date: "2023-06-15",
+                excerpt: "Special prayer times, iftar arrangements, and Taraweeh schedule for the upcoming Ramadan month.",
+                content: "Full details about Ramadan 2024 including prayer times, iftar arrangements, Taraweeh prayers, and community events will be available soon. Please check back for updates.",
+                category: "Announcement",
+                status: "published",
+                featured: 1
+            },
+            {
+                id: 2,
+                title: "New Quran Classes for Children",
+                date: "2023-06-10",
+                excerpt: "Registration now open for summer Quran memorization program for ages 7-15. Limited spots available.",
+                content: "We are excited to announce new Quran classes for children aged 7-15. The summer program focuses on Quran memorization, tajweed, and understanding. Classes will be held every weekday from 10 AM to 12 PM. Please register early as spots are limited.",
+                category: "Education",
+                status: "published",
+                featured: 1
+            },
+            {
+                id: 3,
+                title: "Community Iftar Event",
+                date: "2023-06-05",
+                excerpt: "Join us for our monthly community iftar on June 20th. All are welcome to share in this blessed gathering.",
+                content: "Our monthly community iftar will be held on June 20th at 7:30 PM. This is a wonderful opportunity to break fast together and strengthen community bonds. All community members are welcome. Please RSVP by June 18th.",
+                category: "Community",
+                status: "published",
+                featured: 0
+            },
+            {
+                id: 4,
+                title: "Mosque Renovation Updates",
+                date: "2023-05-28",
+                excerpt: "Phase 2 of our renovation project begins next month. Donations welcome to support improvements.",
+                content: "Phase 2 of our mosque renovation project will begin next month. This phase includes updates to the women's prayer area and improvements to the community hall. We appreciate all donations to support these important improvements to our facility.",
+                category: "Facilities",
+                status: "published",
+                featured: 0
+            },
+            {
+                id: 5,
+                title: "Eid al-Adha 2023 Arrangements",
+                date: "2023-05-20",
+                excerpt: "Eid prayer times and celebration details for Eid al-Adha. Multiple prayer sessions to accommodate everyone.",
+                content: "Eid al-Adha prayers will be held at 7:00 AM, 8:30 AM, and 10:00 AM to accommodate all community members. Please arrive early to secure parking. Eid celebrations will follow with food and activities for children.",
+                category: "Events",
+                status: "published",
+                featured: 1
+            }
+        ];
+
+        // Current user session
+        let currentUser = null;
+        let currentNewsId = null;
+
+        // DOM Elements
+        const loginPage = document.getElementById('loginPage');
+        const adminPage = document.getElementById('adminPage');
+        const loginForm = document.getElementById('loginForm');
+        const loginAlert = document.getElementById('loginAlert');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminAlert = document.getElementById('adminAlert');
+        const pageTitle = document.getElementById('pageTitle');
+        const loggedInUser = document.getElementById('loggedInUser');
+
+        // Page elements
+        const dashboardPage = document.getElementById('dashboardPage');
+        const newsPage = document.getElementById('newsPage');
+        const addNewsPage = document.getElementById('addNewsPage');
+        const settingsPage = document.getElementById('settingsPage');
+
+        // Dashboard elements
+        const totalNews = document.getElementById('totalNews');
+        const publishedNews = document.getElementById('publishedNews');
+        const draftNews = document.getElementById('draftNews');
+        const monthlyNews = document.getElementById('monthlyNews');
+        const recentNewsTable = document.getElementById('recentNewsTable');
+        const allNewsTable = document.getElementById('allNewsTable');
+
+        // News form elements
+        const newsForm = document.getElementById('newsForm');
+        // const newsId = document.getElementById('newsId');
+        const newsTitle = document.getElementById('newsTitle');
+        const newsDate = document.getElementById('newsDate');
+        const newsCategory = document.getElementById('newsCategory');
+        const newsExcerpt = document.getElementById('newsExcerpt');
+        const newsContent = document.getElementById('newsContent');
+        const newsStatus = document.getElementById('newsStatus');
+        const newsFeatured = document.getElementById('newsFeatured');
+        const formTitle = document.getElementById('formTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const titleCount = document.getElementById('titleCount');
+        const excerptCount = document.getElementById('excerptCount');
+        const contentCount = document.getElementById('contentCount');
+
+        // Settings elements
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const importFile = document.getElementById('importFile');
+
+        // Initialize with today's date
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            if (newsDate) newsDate.value = today;
+            
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('deenCentreAdmin');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showAdminPage();
+            }
+        });
+
+        // Login Form Submission
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+
+            try {
+                // In a real app, you would send a request to the server here
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+
+                if (!response.ok) {
+                    showAlert(loginAlert, data.message, 'error');
+                    return;
+                }
+
+                currentUser = data.user;
+                showAdminPage();
+                showAlert(loginAlert, 'Login successful!', 'success');
+                // Handle server response (e.g., token, user info)
+
+            } catch (error) {
+                console.log(error);                
+            }
+            
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            currentUser = null;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    throw new Error('Logout failed');
+                }
+                localStorage.removeItem('deenCentreAdmin');
+                showAlert(loginAlert, 'Logout successful!', 'success');
+                showLoginPage();
+            } catch (error) {
+                console.log(error);
+                showAlert(adminAlert, 'Logout failed', 'error');                
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active menu item
+                document.querySelectorAll('.sidebar-menu a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Show selected page
+                const page = this.getAttribute('data-page');
+                showPage(page);
+            });
+        });
+
+        // Cancel button in news form
+        cancelBtn.addEventListener('click', function() {
+            showPage('news');
+            resetNewsForm();
+        });
+
+        // Character counters
+        if (newsTitle) {
+            newsTitle.addEventListener('input', function() {
+                titleCount.textContent = `${this.value.length}/100 characters`;
+            });
+        }
+        
+        if (newsExcerpt) {
+            newsExcerpt.addEventListener('input', function() {
+                excerptCount.textContent = `${this.value.length}/200 characters`;
+            });
+        }
+        
+        if (newsContent) {
+            newsContent.addEventListener('input', function() {
+                contentCount.textContent = `${this.value.length}/1000 characters`;
+            });
+        }
+
+        // News form submission
+        newsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = newsId.value;
+            const title = newsTitle.value;
+            const date = newsDate.value;
+            const category = newsCategory.value;
+            const excerpt = newsExcerpt.value;
+            const content = newsContent.value;
+            const status = newsStatus.value;
+            const featured = parseInt(newsFeatured.value);
+            
+            if (!title || !date || !category || !excerpt || !status) {
+                showAlert(adminAlert, 'Please fill in all required fields', 'error');
+                return;
+            }
+            
+            if (id) {
+                // Update existing news
+                const index = newsData.findIndex(item => item.id === parseInt(id));
+                if (index !== -1) {
+                    newsData[index] = {
+                        id: parseInt(id),
+                        title,
+                        date,
+                        excerpt,
+                        content,
+                        category,
+                        status,
+                        featured
+                    };
+                }
+                showAlert(adminAlert, 'News article updated successfully', 'success');
+            } else {
+                // Add new news
+                const newId = newsData.length > 0 ? Math.max(...newsData.map(item => item.id)) + 1 : 1;
+                newsData.push({
+                    id: newId,
+                    title,
+                    date,
+                    excerpt,
+                    content,
+                    category,
+                    status,
+                    featured
+                });
+                showAlert(adminAlert, 'News article added successfully', 'success');
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('isleworthDeenNews', JSON.stringify(newsData));
+            
+            // Reset form and go back to news list
+            resetNewsForm();
+            showPage('news');
+            updateDashboard();
+        });
+
+        // Change password
+        changePasswordBtn.addEventListener('click', function() {
+            const currentPass = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            if (!currentPass || !newPass || !confirmPass) {
+                showAlert(adminAlert, 'Please fill in all password fields', 'error');
+                return;
+            }
+            
+            if (currentPass !== ADMIN_CREDENTIALS.password) {
+                showAlert(adminAlert, 'Current password is incorrect', 'error');
+                return;
+            }
+            
+            if (newPass !== confirmPass) {
+                showAlert(adminAlert, 'New passwords do not match', 'error');
+                return;
+            }
+            
+            // In a real app, this would be sent to a server
+            // For demo purposes, we'll just show a message
+            showAlert(adminAlert, 'Password changed successfully (demo only - not saved)', 'success');
+            
+            // Clear password fields
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        });
+
+        // Export news data
+        exportBtn.addEventListener('click', function() {
+            const dataStr = JSON.stringify(newsData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `isleworth-deen-news-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showAlert(adminAlert, 'News data exported successfully', 'success');
+        });
+
+        // Import news data
+        importBtn.addEventListener('click', function() {
+            if (!importFile.files.length) {
+                showAlert(adminAlert, 'Please select a file to import', 'error');
+                return;
+            }
+            
+            const file = importFile.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Validate the imported data
+                    if (!Array.isArray(importedData)) {
+                        throw new Error('Invalid data format');
+                    }
+                    
+                    // Merge with existing data (avoid duplicates by ID)
+                    importedData.forEach(item => {
+                        const existingIndex = newsData.findIndex(news => news.id === item.id);
+                        if (existingIndex === -1) {
+                            newsData.push(item);
+                        } else {
+                            newsData[existingIndex] = item;
+                        }
+                    });
+                    
+                    // Save to localStorage
+                    localStorage.setItem('isleworthDeenNews', JSON.stringify(newsData));
+                    
+                    // Update UI
+                    updateDashboard();
+                    showAlert(adminAlert, 'News data imported successfully', 'success');
+                    
+                    // Reset file input
+                    importFile.value = '';
+                } catch (error) {
+                    showAlert(adminAlert, 'Error importing file: ' + error.message, 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+        });
+
+        // Functions
+        function showLoginPage() {
+            loginPage.style.display = 'flex';
+            adminPage.style.display = 'none';
+            loginForm.reset();
+        }
+
+        function showAdminPage() {
+            loginPage.style.display = 'none';
+            adminPage.style.display = 'flex';
+            loggedInUser.textContent = currentUser.username;
+            updateDashboard();
+            showPage('dashboard');
+        }
+
+        function showPage(page) {
+            // Hide all pages
+            dashboardPage.style.display = 'none';
+            newsPage.style.display = 'none';
+            addNewsPage.style.display = 'none';
+            settingsPage.style.display = 'none';
+            
+            // Show selected page and update title
+            switch(page) {
+                case 'dashboard':
+                    dashboardPage.style.display = 'block';
+                    pageTitle.textContent = 'Dashboard';
+                    updateDashboard();
+                    break;
+                case 'news':
+                    newsPage.style.display = 'block';
+                    pageTitle.textContent = 'News Management';
+                    loadNewsTable();
+                    break;
+                case 'addNews':
+                    addNewsPage.style.display = 'block';
+                    pageTitle.textContent = 'Add New News';
+                    break;
+                case 'settings':
+                    settingsPage.style.display = 'block';
+                    pageTitle.textContent = 'Settings';
+                    break;
+            }
+        }
+
+        function updateDashboard() {
+            // Update statistics
+            totalNews.textContent = newsData.length;
+            publishedNews.textContent = newsData.filter(item => item.status === 'published').length;
+            draftNews.textContent = newsData.filter(item => item.status === 'draft').length;
+            
+            // Count news from current month
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            monthlyNews.textContent = newsData.filter(item => {
+                const itemDate = new Date(item.date);
+                return itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
+            }).length;
+            
+            // Load recent news (last 5)
+            recentNewsTable.innerHTML = '';
+            const recentNews = [...newsData]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+            
+            recentNews.forEach(news => {
+                const row = document.createElement('tr');
+                const formattedDate = new Date(news.date).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                row.innerHTML = `
+                    <td>${news.title}</td>
+                    <td>${formattedDate}</td>
+                    <td><span class="status status-${news.status}">${news.status === 'published' ? 'Published' : 'Draft'}</span></td>
+                    <td class="actions">
+                        <button class="btn btn-primary btn-small" onclick="editNews(${news.id})">Edit</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteNews(${news.id})">Delete</button>
+                    </td>
+                `;
+                
+                recentNewsTable.appendChild(row);
+            });
+        }
+
+        function loadNewsTable() {
+            allNewsTable.innerHTML = '';
+            
+            // Sort by date (newest first)
+            const sortedNews = [...newsData].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedNews.forEach(news => {
+                const row = document.createElement('tr');
+                const formattedDate = new Date(news.date).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                row.innerHTML = `
+                    <td>${news.title}</td>
+                    <td>${formattedDate}</td>
+                    <td>${news.category}</td>
+                    <td><span class="status status-${news.status}">${news.status === 'published' ? 'Published' : 'Draft'}</span></td>
+                    <td class="actions">
+                        <button class="btn btn-primary btn-small" onclick="editNews(${news.id})">Edit</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteNews(${news.id})">Delete</button>
+                    </td>
+                `;
+                
+                allNewsTable.appendChild(row);
+            });
+        }
+
+        function editNews(id) {
+            const news = newsData.find(item => item.id === id);
+            if (!news) return;
+            
+            // Fill form with news data
+            newsId.value = news.id;
+            newsTitle.value = news.title;
+            newsDate.value = news.date;
+            newsCategory.value = news.category;
+            newsExcerpt.value = news.excerpt;
+            newsContent.value = news.content || '';
+            newsStatus.value = news.status;
+            newsFeatured.value = news.featured || 0;
+            
+            // Update form title and button
+            formTitle.textContent = 'Edit News Article';
+            submitBtn.textContent = 'Update News Article';
+            
+            // Update character counts
+            titleCount.textContent = `${newsTitle.value.length}/100 characters`;
+            excerptCount.textContent = `${newsExcerpt.value.length}/200 characters`;
+            contentCount.textContent = `${newsContent.value.length}/1000 characters`;
+            
+            // Show the form page
+            showPage('addNews');
+        }
+
+        function deleteNews(id) {
+            if (!confirm('Are you sure you want to delete this news article? This action cannot be undone.')) {
+                return;
+            }
+            
+            const index = newsData.findIndex(item => item.id === id);
+            if (index !== -1) {
+                newsData.splice(index, 1);
+                localStorage.setItem('isleworthDeenNews', JSON.stringify(newsData));
+                
+                updateDashboard();
+                loadNewsTable();
+                showAlert(adminAlert, 'News article deleted successfully', 'success');
+            }
+        }
+
+        function resetNewsForm() {
+            newsForm.reset();
+            newsId.value = '';
+            newsDate.value = new Date().toISOString().split('T')[0];
+            formTitle.textContent = 'Add New News Article';
+            submitBtn.textContent = 'Save News Article';
+            
+            // Reset character counts
+            titleCount.textContent = '0/100 characters';
+            excerptCount.textContent = '0/200 characters';
+            contentCount.textContent = '0/1000 characters';
+        }
+
+        function showAlert(alertElement, message, type) {
+            alertElement.textContent = message;
+            alertElement.className = `alert alert-${type}`;
+            alertElement.style.display = 'block';
+            
+            // Hide alert after 5 seconds
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
+        }
+
+        // Make functions available globally for inline event handlers
+        window.editNews = editNews;
+        window.deleteNews = deleteNews;
+    </script>
+</body>
+</html>
