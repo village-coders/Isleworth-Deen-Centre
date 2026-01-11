@@ -544,7 +544,7 @@
 
         .about-image img {
             width: 100%;
-            height: 100%;
+            max-height: 450px;
             object-fit: cover;
         }
 
@@ -875,12 +875,6 @@
 
             </div>
             
-            <div class="news-item">
-                <div class="news-date">June 15, 2023</div>
-                <div class="news-title"><a href="#">Ramadan 2024 Schedule Announced</a></div>
-                <div class="news-excerpt">Special prayer times, iftar arrangements, and Taraweeh schedule for the upcoming Ramadan month.</div>
-                <span class="news-category">Announcement</span>
-            </div>
             
             <!-- <div class="news-item">
                 <div class="news-date">June 10, 2023</div>
@@ -1016,7 +1010,7 @@
                 <a href="#contact" class="btn">Visit Us</a>
             </div>
             <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mosque interior">
+                <img src="/image/people praying.jpeg" alt="Mosque interior">
             </div>
         </section>
 
@@ -1449,9 +1443,12 @@
 
         async function fetchNews(){
             try {
-                const response = await fetch(`${API_BASE_URL}/news?limit=3`);
+                const response = await fetch(`${API_BASE_URL}/news`);
 
                 const data = await response.json();
+
+                console.log(data);
+                
 
                 displayNewsItems(data.news);
             } catch (error) {
@@ -1467,6 +1464,13 @@
             data.forEach(item => {
                 const newsItem = document.createElement('div');
                 newsItem.classList.add('news-item');
+
+                const formatDate = new Date(item.date);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = formatDate.toLocaleDateString('en-GB', options);
+
+                item.date = formattedDate;
+
 
                 newsItem.innerHTML = `
                     <div class="news-date">${item.date}</div>
