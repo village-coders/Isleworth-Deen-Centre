@@ -1666,7 +1666,7 @@
                 
                 newsDisplay.innerHTML = `
                     <div class="news-item">
-                        <img src="/image/IsleworthDeen .jpeg" alt="Isleworth Deen Centre" class="news-image">
+                        <img src="" alt="Isleworth Deen Centre" class="news-image">
                         <div class="news-date">${placeholderDate}</div>
                         <div class="news-title"><a href="#">Welcome to Isleworth Deen Centre</a></div>
                         <div class="news-excerpt">Check back soon for the latest news and announcements from our community.</div>
@@ -1698,19 +1698,19 @@
                 if (!imageUrl) {
                     switch((item.category || '').toLowerCase()) {
                         case 'education':
-                            imageUrl = '/image/IsleworthDeen .jpeg';
+                            imageUrl = '';
                             break;
                         case 'community':
-                            imageUrl = '/image/people praying.jpeg';
+                            imageUrl = '';
                             break;
                         case 'events':
-                            imageUrl = '/image/jumah.jpeg';
+                            imageUrl = '';
                             break;
                         case 'facilities':
-                            imageUrl = '/image/IsleworthDeen .jpeg';
+                            imageUrl = '';
                             break;
                         default:
-                            imageUrl = '/image/IsleworthDeen .jpeg';
+                            imageUrl = '';
                     }
                 }
 
@@ -1726,7 +1726,7 @@
 
                 newsItem.innerHTML = `
                     <img src="${item.mainImage}" alt="${title}" class="news-image" 
-                         onerror="this.onerror=null; this.src='/image/IsleworthDeen .jpeg';">
+                         onerror="this.onerror=null; this.src='';">
                     <div class="news-date">${formattedDate}</div>
                     <div class="news-title"><a href="news-article.html?id=${item._id || ''}">${title}</a></div>
                     <div class="news-excerpt">${excerpt}</div>
