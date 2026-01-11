@@ -1724,9 +1724,15 @@
                     ? (item.title || '').substring(0, 60) + '...' 
                     : (item.title || '');
 
-                newsItem.innerHTML = `
-                    <img src="${item.mainImage}" alt="${title}" class="news-image" 
-                         onerror="this.onerror=null; this.src='';">
+                
+                if(item.mainImage){
+                    newsItem.innerHTML += `
+                        <img src="${item.mainImage}" alt="${title}" class="news-image" 
+                             onerror="this.onerror=null; this.src='';">
+                        `
+                }
+
+                newsItem.innerHTML += `
                     <div class="news-date">${formattedDate}</div>
                     <div class="news-title"><a href="news-article.html?id=${item._id || ''}">${title}</a></div>
                     <div class="news-excerpt">${excerpt}</div>
