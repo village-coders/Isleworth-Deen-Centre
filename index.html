@@ -6,6 +6,7 @@
     <title>Isleworth Deen Centre | Mosque & Community Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <style>
         :root {
             --primary: #1a5e3f;
@@ -161,16 +162,21 @@
 
         .hero {
             flex: 2;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/image/IsleworthDeen .jpeg');
+            border-radius: 4px;
+            overflow: hidden;
+            height: 400px;
+        }
+
+        .hero-slide {
             background-size: cover;
             background-position: center;
             color: var(--white);
             text-align: center;
             padding: 4rem 2rem;
-            border-radius: 4px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            height: 100%;
         }
 
         .hero h2 {
@@ -214,23 +220,24 @@
             color: var(--dark);
         }
 
-        /* News Section */
+        /* News Section with Professional Image Styling */
         .news-sidebar {
             flex: 1;
             background-color: var(--white);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            max-height: 500px;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            max-height: 400px;
             overflow-y: auto;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .news-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
+            margin-bottom: 1.8rem;
+            padding-bottom: 1rem;
             border-bottom: 2px solid var(--primary);
         }
 
@@ -238,6 +245,20 @@
             color: var(--primary);
             margin-bottom: 0;
             font-size: 1.5rem;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .news-header h3:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background-color: var(--secondary);
+            border-radius: 2px;
         }
 
         .view-all {
@@ -245,60 +266,174 @@
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
         }
 
         .view-all:hover {
             color: var(--primary-light);
-            text-decoration: underline;
+            text-decoration: none;
+            gap: 8px;
         }
 
         .news-item {
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--light-gray);
+            padding: 1.4rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .news-item:hover {
+            background-color: rgba(26, 94, 63, 0.02);
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-left: -10px;
+            margin-right: -10px;
+            border-radius: 8px;
         }
 
         .news-item:last-child {
             border-bottom: none;
         }
 
+        /* Professional News Image Styling */
+        .news-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1.2rem;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: brightness(0.98);
+            position: relative;
+            aspect-ratio: 16/9;
+        }
+
+        .news-image:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            filter: brightness(1.02);
+        }
+
+        /* Add subtle gradient overlay to images */
+        .news-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+            border-radius: 0 0 8px 8px;
+            pointer-events: none;
+        }
+
         .news-date {
             font-size: 0.8rem;
             color: var(--gray);
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .news-date:before {
+            content: '📅';
+            font-size: 0.8rem;
         }
 
         .news-title {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.6rem;
+            font-size: 1.05rem;
+            line-height: 1.4;
         }
 
         .news-title a {
             color: inherit;
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         .news-title a:hover {
             color: var(--primary-light);
-            text-decoration: underline;
+            text-decoration: none;
         }
 
         .news-excerpt {
             font-size: 0.9rem;
             color: var(--dark);
-            line-height: 1.5;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
         }
 
         .news-category {
             display: inline-block;
-            background-color: var(--light-gray);
+            background-color: rgba(212, 175, 55, 0.1);
             color: var(--primary);
-            padding: 0.2rem 0.6rem;
+            padding: 0.3rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
             margin-top: 0.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s;
+        }
+
+        .news-item:hover .news-category {
+            background-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Loading animation for images */
+        .news-image.loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Animation for news items */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Add delay for each news item */
+        .news-item:nth-child(1) { animation-delay: 0.1s; }
+        .news-item:nth-child(2) { animation-delay: 0.2s; }
+        .news-item:nth-child(3) { animation-delay: 0.3s; }
+        .news-item:nth-child(4) { animation-delay: 0.4s; }
+        .news-item:nth-child(5) { animation-delay: 0.5s; }
+
+        /* Scrollbar styling for news sidebar */
+        .news-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .news-sidebar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .news-sidebar::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .news-sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
         }
 
         /* Professional Prayer Times Section */
@@ -687,6 +822,10 @@
             .kingdom-name h2 {
                 font-size: 28px;
             }
+            
+            .news-sidebar {
+                max-height: none;
+            }
         }
 
         @media screen and (max-width: 768px) {
@@ -774,6 +913,10 @@
             .next-prayer-info {
                 text-align: center;
             }
+            
+            .news-image {
+                height: 140px;
+            }
         }
 
         @media screen and (max-width: 576px) {
@@ -804,6 +947,14 @@
             .nav-bar {
                 padding: 0px 15px;
             }
+            
+            .news-image {
+                height: 120px;
+            }
+            
+            .news-item {
+                padding: 1.2rem 0;
+            }
         }
     </style>
 </head>
@@ -821,7 +972,7 @@
         </div>
 
         <div class='kingdom-name'>
-            <img style="width: 70px;" src="/image/IDC Logo launchgood.png" alt="">
+            <img style="width: 70px;" src="/image/IDC Logo launchgood.png" alt="Isleworth Deen Centre Logo">
             <h2 style="margin-bottom: 10px; font-size: 35px; margin-top: 0;">Isleworth Deen Centre</h2>
         </div>
 
@@ -858,52 +1009,61 @@
     <!-- Hero and News Section -->
     <div class="hero-container" id="home">
         <!-- Hero Section -->
-        <section class="hero">
-            <h2>Welcome to Isleworth Deen Centre</h2>
-            <p class="arabic-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-            <p>A place of worship, community, and spiritual growth in the heart of Isleworth, London. Join us for daily prayers, educational programs, and community events.</p>
-            <a href="#prayer" class="btn">View Prayer Times</a>
-        </section>
+        <div id="heroCarousel" class="carousel slide hero" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="hero-slide" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/image/IsleworthDeen .jpeg');">
+                        <h2>Welcome to Isleworth Deen Centre</h2>
+                        <p class="arabic-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                        <p>A place of worship, community, and spiritual growth in the heart of Isleworth, London. Join us for daily prayers, educational programs, and community events.</p>
+                        <a href="#prayer" class="btn">View Prayer Times</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="hero-slide" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/image/jumah.jpeg');">
+                        <h2>Friday Prayer (Jumu'ah)</h2>
+                        <p class="arabic-text">الجمعة</p>
+                        <p>Join us every Friday for congregational prayer and spiritual enrichment. Multiple sessions available to accommodate everyone in our community.</p>
+                        <a href="#prayer" class="btn">Prayer Times</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="hero-slide" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/image/people praying.jpeg');">
+                        <h2>Community & Education</h2>
+                        <p class="arabic-text">المجتمع والتعليم</p>
+                        <p>Discover Quran classes, Islamic education, and community support services. A welcoming space for learning and spiritual growth.</p>
+                        <a href="#services" class="btn">Our Services</a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
 
         <!-- News Sidebar -->
         <aside class="news-sidebar">
             <div class="news-header">
                 <h3>Latest News</h3>
-                <a href="#" class="view-all">View All</a>
+                <a href="news.html" class="view-all">
+                    View All
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
 
             <div id="news-display">
-
+                <!-- News items will be dynamically loaded here -->
             </div>
-            
-            
-            <!-- <div class="news-item">
-                <div class="news-date">June 10, 2023</div>
-                <div class="news-title"><a href="#">New Quran Classes for Children</a></div>
-                <div class="news-excerpt">Registration now open for summer Quran memorization program for ages 7-15. Limited spots available.</div>
-                <span class="news-category">Education</span>
-            </div>
-            
-            <div class="news-item">
-                <div class="news-date">June 5, 2023</div>
-                <div class="news-title"><a href="#">Community Iftar Event</a></div>
-                <div class="news-excerpt">Join us for our monthly community iftar on June 20th. All are welcome to share in this blessed gathering.</div>
-                <span class="news-category">Community</span>
-            </div>
-            
-            <div class="news-item">
-                <div class="news-date">May 28, 2023</div>
-                <div class="news-title"><a href="#">Mosque Renovation Updates</a></div>
-                <div class="news-excerpt">Phase 2 of our renovation project begins next month. Donations welcome to support improvements.</div>
-                <span class="news-category">Facilities</span>
-            </div>
-            
-            <div class="news-item">
-                <div class="news-date">May 20, 2023</div>
-                <div class="news-title"><a href="#">Eid al-Adha 2023 Arrangements</a></div>
-                <div class="news-excerpt">Eid prayer times and celebration details for Eid al-Adha. Multiple prayer sessions to accommodate everyone.</div>
-                <span class="news-category">Events</span>
-            </div> -->
         </aside>
     </div>
 
@@ -1000,6 +1160,7 @@
                     <p><i class="fas fa-info-circle"></i> <strong>Friday Prayer (Jumu'ah):</strong> 1:15 PM (First Jama'ah), 1:45 PM (Second Jama'ah)</p>
                 </div>
             </div>
+        </section>
 
         <!-- About Section -->
         <section class="about" id="about">
@@ -1011,7 +1172,7 @@
                 <a href="#contact" class="btn">Visit Us</a>
             </div>
             <div class="about-image">
-                <img src="/image/people praying.jpeg" alt="Mosque interior">
+                <img src="/image/people praying.jpeg" alt="Mosque interior showing people praying">
             </div>
         </section>
 
@@ -1201,6 +1362,40 @@
             }
         };
 
+        // Sample news data (will be replaced by API call)
+        const sampleNewsData = [
+            {
+                title: "New Quran Classes for Children",
+                excerpt: "Registration now open for summer Quran memorization program for ages 7-15. Limited spots available.",
+                date: "2023-06-10",
+                category: "Education",
+                image: "/image/quran-class.jpg"
+            },
+            {
+                title: "Community Iftar Event",
+                excerpt: "Join us for our monthly community iftar on June 20th. All are welcome to share in this blessed gathering.",
+                date: "2023-06-05",
+                category: "Community",
+                image: "/image/iftar-event.jpg"
+            },
+            {
+                title: "Mosque Renovation Updates",
+                excerpt: "Phase 2 of our renovation project begins next month. Donations welcome to support improvements.",
+                date: "2023-05-28",
+                category: "Facilities",
+                image: "/image/mosque-renovation.jpg"
+            },
+            {
+                title: "Eid al-Adha 2023 Arrangements",
+                excerpt: "Eid prayer times and celebration details for Eid al-Adha. Multiple prayer sessions to accommodate everyone.",
+                date: "2023-05-20",
+                category: "Events",
+                image: "/image/eid-celebration.jpg"
+            }
+        ];
+
+        const API_BASE_URL = 'https://isleworth-website-backend-1.onrender.com/api';
+
         // Update time
         function updateTime() {
             const now = new Date();
@@ -1355,12 +1550,7 @@
         
         // Parse time string to minutes
         function parseTime(timeStr) {
-            const [time, modifier] = timeStr.split(' ');
-            let [hours, minutes] = time.split(':').map(Number);
-            
-            if (modifier === 'PM' && hours < 12) hours += 12;
-            if (modifier === 'AM' && hours === 12) hours = 0;
-            
+            const [hours, minutes] = timeStr.split(':').map(Number);
             return hours * 60 + minutes;
         }
         
@@ -1395,21 +1585,6 @@
             updatePrayerTimes(location);
         });
 
-        // Download timetable
-        // document.getElementById('downloadTimetable').addEventListener('click', function() {
-        //     alert('Download feature would generate a PDF timetable in a real implementation.');
-        // });
-
-        // Print timetable
-        // document.getElementById('printTimetable').addEventListener('click', function() {
-        //     window.print();
-        // });
-
-        // Monthly view
-        // document.getElementById('monthlyView').addEventListener('click', function() {
-        //     alert('Monthly prayer timetable view would open in a real implementation.');
-        // });
-
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1436,49 +1611,126 @@
             }
         });
 
-        const API_BASE_URL = 'https://isleworth-website-backend.onrender.com/api';
-
-
         // Display news items
-
-
         async function fetchNews(){
             try {
+                // Show loading skeleton
+                const newsDisplay = document.getElementById('news-display');
+                newsDisplay.innerHTML = `
+                    <div class="news-item">
+                        <div class="news-image loading"></div>
+                        <div class="news-date" style="width: 100px; height: 15px; background: #f0f0f0; margin-bottom: 8px; border-radius: 4px;"></div>
+                        <div class="news-title" style="width: 100%; height: 20px; background: #f0f0f0; margin-bottom: 8px; border-radius: 4px;"></div>
+                        <div class="news-excerpt" style="width: 100%; height: 40px; background: #f0f0f0; margin-bottom: 8px; border-radius: 4px;"></div>
+                        <div style="width: 80px; height: 24px; background: #f0f0f0; border-radius: 12px;"></div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-image loading"></div>
+                        <div class="news-date" style="width: 100px; height: 15px; background: #f0f0f0; margin-bottom: 8px; border-radius: 4px;"></div>
+                        <div class="news-title" style="width: 100%; height: 20px; background: #f0f0f0; margin-bottom: 8px; border-radius: 4px;"></div>
+                        <div class="news-excerpt" style="width: 100%; height: 40px; background: #f0f0f0; margin-bottom: 8px; border-radius: 4px;"></div>
+                        <div style="width: 80px; height: 24px; background: #f0f0f0; border-radius: 12px;"></div>
+                    </div>
+                `;
+
                 const response = await fetch(`${API_BASE_URL}/news`);
-
                 const data = await response.json();
-
-                console.log(data);
                 
-
-                displayNewsItems(data.news);
+                if (data.news && data.news.length > 0) {
+                    displayNewsItems(data.news);
+                } else {
+                    // Fallback to sample data if API returns empty
+                    displayNewsItems(sampleNewsData);
+                }
             } catch (error) {
-                console.log(error);
+                console.log('Error fetching news:', error);
+                // Fallback to sample data if API fails
+                displayNewsItems(sampleNewsData);
             }
         }
 
-        function displayNewsItems(data){
+        function displayNewsItems(data) {
             const newsDisplay = document.getElementById('news-display');
-
             newsDisplay.innerHTML = '';
 
-            data.forEach(item => {
+            // If no news items
+            if (data.length === 0) {
+                const placeholderDate = new Date().toLocaleDateString('en-GB', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                newsDisplay.innerHTML = `
+                    <div class="news-item">
+                        <img src="/image/IsleworthDeen .jpeg" alt="Isleworth Deen Centre" class="news-image">
+                        <div class="news-date">${placeholderDate}</div>
+                        <div class="news-title"><a href="#">Welcome to Isleworth Deen Centre</a></div>
+                        <div class="news-excerpt">Check back soon for the latest news and announcements from our community.</div>
+                        <span class="news-category">Announcement</span>
+                    </div>
+                `;
+                return;
+            }
+
+            data.forEach((item, index) => {
                 const newsItem = document.createElement('div');
                 newsItem.classList.add('news-item');
+                
+                // Add animation delay based on index
+                newsItem.style.animationDelay = `${0.1 + (index * 0.1)}s`;
 
-                const formatDate = new Date(item.date);
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = formatDate.toLocaleDateString('en-GB', options);
+                // Format date
+                let formattedDate;
+                try {
+                    const dateObj = new Date(item.date);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    formattedDate = dateObj.toLocaleDateString('en-GB', options);
+                } catch (error) {
+                    formattedDate = 'Recent';
+                }
 
-                item.date = formattedDate;
+                // Use fallback images based on category if no image provided
+                let imageUrl = item.image || '';
+                if (!imageUrl) {
+                    switch((item.category || '').toLowerCase()) {
+                        case 'education':
+                            imageUrl = '/image/IsleworthDeen .jpeg';
+                            break;
+                        case 'community':
+                            imageUrl = '/image/people praying.jpeg';
+                            break;
+                        case 'events':
+                            imageUrl = '/image/jumah.jpeg';
+                            break;
+                        case 'facilities':
+                            imageUrl = '/image/IsleworthDeen .jpeg';
+                            break;
+                        default:
+                            imageUrl = '/image/IsleworthDeen .jpeg';
+                    }
+                }
 
+                // Truncate excerpt if too long
+                const excerpt = (item.excerpt || '').length > 100 
+                    ? (item.excerpt || '').substring(0, 100) + '...' 
+                    : (item.excerpt || '');
+
+                // Truncate title if too long
+                const title = (item.title || '').length > 60 
+                    ? (item.title || '').substring(0, 60) + '...' 
+                    : (item.title || '');
 
                 newsItem.innerHTML = `
-                    <div class="news-date">${item.date}</div>
-                    <div class="news-title"><a href="#">${item.title}</a></div>
-                    <div class="news-excerpt">${item.excerpt}</div>
-                    <span class="news-category">${item.category}</span>
+                    <img src="${item.mainImage}" alt="${title}" class="news-image" 
+                         onerror="this.onerror=null; this.src='/image/IsleworthDeen .jpeg';">
+                    <div class="news-date">${formattedDate}</div>
+                    <div class="news-title"><a href="news-article.html?id=${item._id || ''}">${title}</a></div>
+                    <div class="news-excerpt">${excerpt}</div>
+                    <span class="news-category">${item.category || 'General'}</span>
                 `;
+
+
 
                 newsDisplay.appendChild(newsItem);
             });
@@ -1486,15 +1738,18 @@
 
         // Initialize everything
         function initializePage() {
-            fetchNews()
             updateTime();
             updateDates();
             updatePrayerTimes('isleworth');
             setInterval(updateCountdownEverySecond, 1000);
+            
+            // Fetch news after a short delay to show loading state
+            setTimeout(fetchNews, 300);
         }
 
         // Start when page loads
         window.addEventListener('DOMContentLoaded', initializePage);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

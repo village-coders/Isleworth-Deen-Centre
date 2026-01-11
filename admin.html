@@ -816,20 +816,20 @@
                             <input type="hidden" id="newsId" value="">
                             
                             <div class="form-group">
-                                <label for="newsTitle">News Title *</label>
-                                <input type="text" id="newsTitle" name="newsTitle" required>
+                                <label for="newsTitle">News Title</label>
+                                <input type="text" id="newsTitle" name="newsTitle">
                                 <div class="char-count" id="titleCount">0/100 characters</div>
                             </div>
                             
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="newsDate">Publication Date *</label>
-                                    <input type="date" id="newsDate" name="newsDate" required>
+                                    <label for="newsDate">Publication Date</label>
+                                    <input type="date" id="newsDate" name="newsDate">
                                 </div>
-                                
+
                                 <div class="form-group">
-                                    <label for="newsCategory">Category *</label>
-                                    <select id="newsCategory" name="newsCategory" required>
+                                    <label for="newsCategory">Category</label>
+                                    <select id="newsCategory" name="newsCategory">
                                         <option value="">Select Category</option>
                                         <option value="Announcement">Announcement</option>
                                         <option value="Education">Education</option>
@@ -843,9 +843,9 @@
                             
                             <!-- Image Upload Section -->
                             <div class="form-group">
-                                <label for="mainImage">Main Image *</label>
-                                <input type="file" id="mainImage" name="mainImage" accept="image/*" required>
-                                <small class="char-count">Required - This will be the primary image for the news article</small>
+                                <label for="mainImage">Main Image</label>
+                                <input type="file" id="mainImage" name="mainImage" accept="image/*">
+                                <small class="char-count">Optional - This will be the primary image for the news article</small>
                                 <div id="mainImagePreview" class="image-preview" style="display: none;">
                                     <img id="mainImagePreviewImg" src="" alt="Main image preview">
                                 </div>
@@ -881,8 +881,8 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="newsExcerpt">News Excerpt *</label>
-                                <textarea id="newsExcerpt" name="newsExcerpt" rows="3" required></textarea>
+                                <label for="newsExcerpt">News Excerpt</label>
+                                <textarea id="newsExcerpt" name="newsExcerpt" rows="3"></textarea>
                                 <div class="char-count" id="excerptCount">0/200 characters</div>
                             </div>
                             
@@ -1502,17 +1502,7 @@
             const content = newsContent.value.trim();
             const featured = newsFeatured.value === 'true';
             
-            // Validate required fields
-            if (!title || !date || !category || !excerpt) {
-                showAlert(adminAlert, 'Please fill in all required fields', 'error');
-                return;
-            }
-            
-            // Validate main image for new articles
-            if (!id && !mainImageInput.files[0]) {
-                showAlert(adminAlert, 'Main image is required for new articles', 'error');
-                return;
-            }
+            // All fields are now optional
             
             // Create FormData object for file upload
             const formData = new FormData();
