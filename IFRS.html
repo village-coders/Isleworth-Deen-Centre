@@ -2809,7 +2809,7 @@
             
             // Set dashboard title based on role
             let roleDisplay = userRole;
-            if (userRole === 'admin') roleDisplay = 'Administrator';
+            if (userRole === 'admin') roleDisplay = 'Admin';
             else if (userRole === 'administrator') roleDisplay = 'Administrator';
             else if (userRole === 'financial officer') roleDisplay = 'Financial Officer';
             else if (userRole === 'accountant') roleDisplay = 'Accountant';
@@ -3371,13 +3371,15 @@
             
             // Verify claim button - only for Financial Officer on new/pending claims
             if (e.target.closest('.verify-claim-btn')) {
-                if (currentUser.role !== 'financial officer') {
+                if (currentUser.role === 'financial officer' || currentUser.role === 'admin') {
+                    const button = e.target.closest('.verify-claim-btn');
+                    const claimId = button.getAttribute('data-id');
+                    await updateClaimStatus(claimId, 'verified');
+                }else{
                     showToast('You are not authorized to verify claims', 'error');
                     return;
                 }
-                const button = e.target.closest('.verify-claim-btn');
-                const claimId = button.getAttribute('data-id');
-                await updateClaimStatus(claimId, 'verified');
+                
             }
             
             // Approve claim button - only for Administrator on verified claims
