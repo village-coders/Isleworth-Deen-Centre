@@ -3034,6 +3034,9 @@
             const tableElement = document.getElementById('adminClaimsTable');
             const tableBody = document.getElementById('adminClaimsTableBody');
             const userRole = currentUser.role;
+
+            // console.log(userRole);
+            
             
             // Show loading state
             showLoadingState([loadingElement], [emptyElement], [tableElement]);
@@ -3053,6 +3056,9 @@
                 }
                 
                 const data = await response.json();
+
+                // console.log(data);
+                
                 
                 if (response.ok) {
                     // Clear table
@@ -3105,6 +3111,9 @@
                             default:
                                 filteredClaims = data.data;
                         }
+
+                        // console.log(filteredClaims);
+                        
                         
                         // Update stats with all claims (not filtered)
                         updateAdminStats(data.data);
@@ -3201,7 +3210,52 @@
                     
                 case 'admin':
                     // Full admin - keep existing full access logic
-                    // (Your existing admin code here)
+                    if(claimStatus === 'verified'){
+                        actions += `
+                            <button class="btn-success btn-small approve-claim-btn" data-id="${claim._id}">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn-primary btn-small view-claim-btn" data-id="${claim._id}" data-admin="true">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        `;
+                    }else if(claimStatus === 'rejected'){
+                        actions += `
+                            <button class="btn-success btn-small approve-claim-btn" data-id="${claim._id}">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn-primary btn-small view-claim-btn" data-id="${claim._id}" data-admin="true">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        `
+                    }else if(claimStatus === 'new' || claimStatus === 'pending' || claimStatus === 'submitted'){
+                        actions += `
+                            <button class="btn-success btn-small verify-claim-btn" data-id="${claim._id}">
+                                <i class="fas fa-check"></i> Verify
+                            </button>
+                            <button class="btn-primary btn-small view-claim-btn" data-id="${claim._id}" data-admin="true">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        `
+                    }else if(claimStatus === 'paid'){
+                        actions += `
+                            <button class="btn-primary btn-small view-claim-btn" data-id="${claim._id}" data-admin="true">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        `
+                    }else if(claimStatus === 'approved'){
+                        actions += `
+
+                            <button class="btn-primary btn-small view-claim-btn" data-id="${claim._id}" data-admin="true">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn-success btn-small pay-claim-btn" data-id="${claim._id}">
+                                <i class="fas fa-pound-sign"></i> Pay
+                            </button>
+
+                        `
+                    }
+
                     break;
                     
                 case 'accountant':
