@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #003366;
+            --primary-color: #1a5e3f;
             --secondary-color: #00509e;
             --accent-color: #4CAF50;
             --warning-color: #ff9800;
@@ -231,9 +231,11 @@
         }
         
         .stats-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            display: flex;
+            /* flex-wrap: wrap; */
+            /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
             gap: 20px;
+            flex-direction: row !important;
             margin-bottom: 30px;
         }
         
@@ -835,10 +837,91 @@
             font-weight: 600;
         }
         
+        /* Expense table management buttons */
+        .expense-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .expense-table-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+        
+        .expense-table-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .add-expense-table-btn, .remove-expense-table-btn {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .add-expense-table-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .add-expense-table-btn:hover {
+            background-color: #3d8b40;
+        }
+        
+        .remove-expense-table-btn {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .remove-expense-table-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        .remove-expense-table-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .expense-table-section {
+            margin-bottom: 30px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            position: relative;
+        }
+        
+        .expense-table-section:not(:first-child) {
+            margin-top: 20px;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .expense-table-section-title {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
         /* Responsive Design */
         @media (max-width: 1200px) {
             .stats-cards {
-                grid-template-columns: repeat(2, 1fr);
+                /* grid-template-columns: repeat(2, 1fr); */
+                flex-wrap: wrap;
             }
         }
         
@@ -963,6 +1046,17 @@
             .status-badge {
                 font-size: 10px;
                 padding: 4px 8px;
+            }
+            
+            .expense-table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .expense-table-actions {
+                width: 100%;
+                justify-content: space-between;
             }
         }
         
@@ -1312,6 +1406,26 @@
                         <p>Approved Claims</p>
                     </div>
                 </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e3f2fd; color: #00509e ;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="workerPaidClaims">0</h3>
+                        <p>Paid Claims</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e3f2fd; color: #721c24;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="workerRejectedClaims">0</h3>
+                        <p>Rejected Claims</p>
+                    </div>
+                </div>
             </div>
             
             <div id="manageClaimSection" class="section active">
@@ -1459,111 +1573,133 @@
                                 </div>
                             </div>
                             
-                            <!-- Expense Table -->
-                            <div class="expense-table-container">
-                                <table class="expense-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Expense Type</th>
-                                            <th>Description</th>
-                                            <th>Currency</th>
-                                            <th>C.Card</th>
-                                            <th>Cash</th>
-                                            <th>Bank Transferred</th>
-                                            <th>Vat</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <select id="expenseType" class="form-control" style="min-width: 100px;" required>
-                                                    <option value="None">None</option>
-                                                    <option value="Expense">Expense</option>
-                                                    <option value="Service">Service</option>
-                                                    <option value="Material">Material</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select id="expenseDescription" class="form-control" style="min-width: 150px;" required>
-                                                    <option value="">...Select Option...</option>
-                                                    <option value="Travel">Travel</option>
-                                                    <option value="Accommodation">Accommodation</option>
-                                                    <option value="Meals">Meals</option>
-                                                    <option value="Equipment">Equipment</option>
-                                                    <option value="Software">Software</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select id="currency" class="form-control" style="min-width: 100px;" required>
-                                                    <option value="None">None</option>
-                                                    <option value="GBP">GBP</option>
-                                                    <option value="USD">USD</option>
-                                                    <option value="EUR">EUR</option>
-                                                </select>
-                                            </td>
-                                            <td class="checkbox-cell">
-                                                <input type="checkbox" id="creditCard" checked>
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="cashAmount" class="form-control" value="0.00" step="0.01" min="0">
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="bankTransferAmount" class="form-control" value="0.00" step="0.01" min="0">
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="vatAmount" class="form-control" value="0.00" step="0.01" min="0">
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="workerTotalAmount" class="form-control" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="4">Sub Total:</td>
-                                            <td id="workerSubTotalCash">00.00</td>
-                                            <td id="workerSubTotalBank">00.00</td>
-                                            <td id="workerSubTotalVat">00.00</td>
-                                            <td id="workerSubTotalTotal">00.00</td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            
-                            <!-- Reason Section -->
-                            <div class="reason-section">
-                                <label for="reason">Reason:</label>
-                                <select id="reason" class="form-control" required>
-                                    <option value="">...Select Option...</option>
-                                    <option value="Overseas Travel">Overseas Travel</option>
-                                    <option value="Training">Training</option>
-                                    <option value="Other Authorised">Other Authorised</option>
-                                    <option value="Event">Event</option>
-                                    <option value="Seminar/Conference">Seminar/Conference</option>
-                                    <option value="Office Expense">Office Expense</option>
-                                    <option value="Meeting">Meeting</option>
-                                    <option value="Telephone Expense">Telephone Expense</option>
-                                    <option value="External Invoices">External Invoices</option>
-                                    <option value="Telephone Claim">Telephone Claim</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Additional Notes -->
-                            <div class="form-group">
-                                <label for="claimNotes">Additional Notes (Optional)</label>
-                                <textarea id="claimNotes" class="form-control" rows="2" placeholder="Any additional information..."></textarea>
-                            </div>
-                            
-                            <!-- Receipt Upload -->
-                            <div class="form-row">
-                                <div class="form-col">
-                                    <div class="form-group">
-                                        <label for="claimImage">Upload Receipt/Image</label>
-                                        <input type="file" id="claimImage" class="form-control" accept="image/*,.pdf">
-                                        <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt (optional)</small>
+                            <!-- Expense Tables Container -->
+                            <div id="expenseTablesContainer">
+                                <div class="expense-table-section" data-table-index="0">
+                                    <div class="expense-table-section-title">Expense Table #1</div>
+                                    <div class="expense-table-header">
+                                        <div class="expense-table-title">Expense Details</div>
+                                        <div class="expense-table-actions">
+                                            <button type="button" class="remove-expense-table-btn" onclick="removeExpenseTable(this)">
+                                                <i class="fas fa-minus"></i> Remove Table
+                                            </button>
+                                            <button type="button" class="add-expense-table-btn" onclick="addExpenseTable()">
+                                                <i class="fas fa-plus"></i> Add Table
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="expense-table-container">
+                                        <table class="expense-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Expense Type</th>
+                                                    <th>Description</th>
+                                                    <th>Currency</th>
+                                                    <th>C.Card</th>
+                                                    <th>Cash</th>
+                                                    <th>Bank Transferred</th>
+                                                    <th>Vat</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select name="expenseType[0]" class="form-control expense-type" required>
+                                                            <option value="None">None</option>
+                                                            <option value="Expense">Expense</option>
+                                                            <option value="Service">Service</option>
+                                                            <option value="Material">Material</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select name="expenseDescription[0]" class="form-control expense-description" required>
+                                                            <option value="">...Select Option...</option>
+                                                            <option value="Travel">Travel</option>
+                                                            <option value="Accommodation">Accommodation</option>
+                                                            <option value="Meals">Meals</option>
+                                                            <option value="Equipment">Equipment</option>
+                                                            <option value="Software">Software</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select name="currency[0]" class="form-control currency" required>
+                                                            <option value="None">None</option>
+                                                            <option value="GBP">GBP</option>
+                                                            <option value="USD">USD</option>
+                                                            <option value="EUR">EUR</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="checkbox-cell">
+                                                        <input type="checkbox" name="creditCard[0]" class="credit-card" checked>
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="cashAmount[0]" class="form-control cash-amount" value="0.00" step="0.01" min="0" oninput="calculateTableTotal(this, 0)">
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="bankTransferAmount[0]" class="form-control bank-transfer-amount" value="0.00" step="0.01" min="0" oninput="calculateTableTotal(this, 0)">
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="vatAmount[0]" class="form-control vat-amount" value="0.00" step="0.01" min="0">
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="totalAmount[0]" class="form-control total-amount" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="4">Sub Total:</td>
+                                                    <td class="sub-total-cash">00.00</td>
+                                                    <td class="sub-total-bank">00.00</td>
+                                                    <td class="sub-total-vat">00.00</td>
+                                                    <td class="sub-total-total">00.00</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    
+                                    <!-- Additional fields for each expense table -->
+                                    <div class="reason-section" style="margin-top: 20px;">
+                                        <label for="reason_0">Reason for this expense:</label>
+                                        <select id="reason_0" name="reason[0]" class="form-control table-reason" required>
+                                            <option value="">...Select Option...</option>
+                                            <option value="Overseas Travel">Overseas Travel</option>
+                                            <option value="Training">Training</option>
+                                            <option value="Other Authorised">Other Authorised</option>
+                                            <option value="Event">Event</option>
+                                            <option value="Seminar/Conference">Seminar/Conference</option>
+                                            <option value="Office Expense">Office Expense</option>
+                                            <option value="Meeting">Meeting</option>
+                                            <option value="Telephone Expense">Telephone Expense</option>
+                                            <option value="External Invoices">External Invoices</option>
+                                            <option value="Telephone Claim">Telephone Claim</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group" style="margin-top: 15px;">
+                                        <label for="tableNotes_0">Notes for this expense (Optional)</label>
+                                        <textarea id="tableNotes_0" name="tableNotes[0]" class="form-control table-notes" rows="2" placeholder="Notes specific to this expense..."></textarea>
+                                    </div>
+                                    
+                                    <!-- Individual receipt upload for each table -->
+                                    <div class="form-row">
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="tableReceipt_0">Upload Receipt for this expense</label>
+                                                <input type="file" id="tableReceipt_0" name="tableReceipt[0]" class="form-control table-receipt" accept="image/*,.pdf">
+                                                <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt for this specific expense</small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <!-- Additional Notes (Common for all tables) -->
+                            <div class="form-group">
+                                <label for="claimNotes">Additional Notes (Optional - Common for all expenses)</label>
+                                <textarea id="claimNotes" class="form-control" rows="2" placeholder="Any additional information common to all expenses..."></textarea>
                             </div>
                             
                             <div id="claimFormError" class="form-group" style="display: none;">
@@ -1573,7 +1709,7 @@
                             <div class="form-actions">
                                 <button type="button" class="btn-secondary" id="resetClaimForm">Reset</button>
                                 <button type="submit" class="btn-primary" id="submitClaimBtn">
-                                    <span id="submitClaimBtnText">Submit Claim</span>
+                                    <span id="submitClaimBtnText">Submit All Claims</span>
                                     <span id="submitClaimBtnSpinner" class="loading-spinner hidden"></span>
                                 </button>
                             </div>
@@ -1738,6 +1874,16 @@
                         <p>Approved Claims</p>
                     </div>
                 </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e8f5e9; color: #2e7d32;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="adminRejectedClaims">0</h3>
+                        <p>Rejected Claims</p>
+                    </div>
+                </div>
                 
                 <div class="stat-card">
                     <div class="stat-icon" style="background-color: #e8f5e9; color: #2e7d32;">
@@ -1892,111 +2038,133 @@
                                 </div>
                             </div>
                             
-                            <!-- Expense Table -->
-                            <div class="expense-table-container">
-                                <table class="expense-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Expense Type</th>
-                                            <th>Description</th>
-                                            <th>Currency</th>
-                                            <th>C.Card</th>
-                                            <th>Cash</th>
-                                            <th>Bank Transferred</th>
-                                            <th>Vat</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <select id="adminExpenseType" class="form-control" style="min-width: 100px;" required>
-                                                    <option value="None">None</option>
-                                                    <option value="Expense">Expense</option>
-                                                    <option value="Service">Service</option>
-                                                    <option value="Material">Material</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select id="adminExpenseDescription" class="form-control" style="min-width: 150px;" required>
-                                                    <option value="">...Select Option...</option>
-                                                    <option value="Travel">Travel</option>
-                                                    <option value="Accommodation">Accommodation</option>
-                                                    <option value="Meals">Meals</option>
-                                                    <option value="Equipment">Equipment</option>
-                                                    <option value="Software">Software</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select id="adminCurrency" class="form-control" style="min-width: 100px;" required>
-                                                    <option value="None">None</option>
-                                                    <option value="GBP">GBP</option>
-                                                    <option value="USD">USD</option>
-                                                    <option value="EUR">EUR</option>
-                                                </select>
-                                            </td>
-                                            <td class="checkbox-cell">
-                                                <input type="checkbox" id="adminCreditCard" checked>
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="adminCashAmount" class="form-control" value="0.00" step="0.01" min="0">
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="adminBankTransferAmount" class="form-control" value="0.00" step="0.01" min="0">
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="adminVatAmount" class="form-control" value="0.00" step="0.01" min="0">
-                                            </td>
-                                            <td class="amount-input">
-                                                <input type="number" id="adminTotalAmount" class="form-control" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="4">Sub Total:</td>
-                                            <td id="adminSubTotalCash">00.00</td>
-                                            <td id="adminSubTotalBank">00.00</td>
-                                            <td id="adminSubTotalVat">00.00</td>
-                                            <td id="adminSubTotalTotal">00.00</td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            
-                            <!-- Reason Section -->
-                            <div class="reason-section">
-                                <label for="adminReason">Reason:</label>
-                                <select id="adminReason" class="form-control" required>
-                                    <option value="">...Select Option...</option>
-                                    <option value="Overseas Travel">Overseas Travel</option>
-                                    <option value="Training">Training</option>
-                                    <option value="Other Authorised">Other Authorised</option>
-                                    <option value="Event">Event</option>
-                                    <option value="Seminar/Conference">Seminar/Conference</option>
-                                    <option value="Office Expense">Office Expense</option>
-                                    <option value="Meeting">Meeting</option>
-                                    <option value="Telephone Expense">Telephone Expense</option>
-                                    <option value="External Invoices">External Invoices</option>
-                                    <option value="Telephone Claim">Telephone Claim</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Additional Notes -->
-                            <div class="form-group">
-                                <label for="adminClaimNotes">Additional Notes (Optional)</label>
-                                <textarea id="adminClaimNotes" class="form-control" rows="2" placeholder="Any additional information..."></textarea>
-                            </div>
-                            
-                            <!-- Receipt Upload -->
-                            <div class="form-row">
-                                <div class="form-col">
-                                    <div class="form-group">
-                                        <label for="adminClaimImage">Upload Receipt/Image</label>
-                                        <input type="file" id="adminClaimImage" class="form-control" accept="image/*,.pdf">
-                                        <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt (optional)</small>
+                            <!-- Expense Tables Container for Admin -->
+                            <div id="adminExpenseTablesContainer">
+                                <div class="expense-table-section" data-table-index="0">
+                                    <div class="expense-table-section-title">Expense Table #1</div>
+                                    <div class="expense-table-header">
+                                        <div class="expense-table-title">Expense Details</div>
+                                        <div class="expense-table-actions">
+                                            <button type="button" class="remove-expense-table-btn" onclick="removeAdminExpenseTable(this)">
+                                                <i class="fas fa-minus"></i> Remove Table
+                                            </button>
+                                            <button type="button" class="add-expense-table-btn" onclick="addAdminExpenseTable()">
+                                                <i class="fas fa-plus"></i> Add Table
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="expense-table-container">
+                                        <table class="expense-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Expense Type</th>
+                                                    <th>Description</th>
+                                                    <th>Currency</th>
+                                                    <th>C.Card</th>
+                                                    <th>Cash</th>
+                                                    <th>Bank Transferred</th>
+                                                    <th>Vat</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select name="adminExpenseType[0]" class="form-control admin-expense-type" required>
+                                                            <option value="None">None</option>
+                                                            <option value="Expense">Expense</option>
+                                                            <option value="Service">Service</option>
+                                                            <option value="Material">Material</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select name="adminExpenseDescription[0]" class="form-control admin-expense-description" required>
+                                                            <option value="">...Select Option...</option>
+                                                            <option value="Travel">Travel</option>
+                                                            <option value="Accommodation">Accommodation</option>
+                                                            <option value="Meals">Meals</option>
+                                                            <option value="Equipment">Equipment</option>
+                                                            <option value="Software">Software</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select name="adminCurrency[0]" class="form-control admin-currency" required>
+                                                            <option value="None">None</option>
+                                                            <option value="GBP">GBP</option>
+                                                            <option value="USD">USD</option>
+                                                            <option value="EUR">EUR</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="checkbox-cell">
+                                                        <input type="checkbox" name="adminCreditCard[0]" class="admin-credit-card" checked>
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="adminCashAmount[0]" class="form-control admin-cash-amount" value="0.00" step="0.01" min="0" oninput="calculateAdminTableTotal(this, 0)">
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="adminBankTransferAmount[0]" class="form-control admin-bank-transfer-amount" value="0.00" step="0.01" min="0" oninput="calculateAdminTableTotal(this, 0)">
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="adminVatAmount[0]" class="form-control admin-vat-amount" value="0.00" step="0.01" min="0">
+                                                    </td>
+                                                    <td class="amount-input">
+                                                        <input type="number" name="adminTotalAmount[0]" class="form-control admin-total-amount" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="4">Sub Total:</td>
+                                                    <td class="admin-sub-total-cash">00.00</td>
+                                                    <td class="admin-sub-total-bank">00.00</td>
+                                                    <td class="admin-sub-total-vat">00.00</td>
+                                                    <td class="admin-sub-total-total">00.00</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    
+                                    <!-- Additional fields for each expense table -->
+                                    <div class="reason-section" style="margin-top: 20px;">
+                                        <label for="adminReason_0">Reason for this expense:</label>
+                                        <select id="adminReason_0" name="adminReason[0]" class="form-control admin-table-reason" required>
+                                            <option value="">...Select Option...</option>
+                                            <option value="Overseas Travel">Overseas Travel</option>
+                                            <option value="Training">Training</option>
+                                            <option value="Other Authorised">Other Authorised</option>
+                                            <option value="Event">Event</option>
+                                            <option value="Seminar/Conference">Seminar/Conference</option>
+                                            <option value="Office Expense">Office Expense</option>
+                                            <option value="Meeting">Meeting</option>
+                                            <option value="Telephone Expense">Telephone Expense</option>
+                                            <option value="External Invoices">External Invoices</option>
+                                            <option value="Telephone Claim">Telephone Claim</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group" style="margin-top: 15px;">
+                                        <label for="adminTableNotes_0">Notes for this expense (Optional)</label>
+                                        <textarea id="adminTableNotes_0" name="adminTableNotes[0]" class="form-control admin-table-notes" rows="2" placeholder="Notes specific to this expense..."></textarea>
+                                    </div>
+                                    
+                                    <!-- Individual receipt upload for each table -->
+                                    <div class="form-row">
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="adminTableReceipt_0">Upload Receipt for this expense</label>
+                                                <input type="file" id="adminTableReceipt_0" name="adminTableReceipt[0]" class="form-control admin-table-receipt" accept="image/*,.pdf">
+                                                <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt for this specific expense</small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <!-- Additional Notes (Common for all tables) -->
+                            <div class="form-group">
+                                <label for="adminClaimNotes">Additional Notes (Optional - Common for all expenses)</label>
+                                <textarea id="adminClaimNotes" class="form-control" rows="2" placeholder="Any additional information common to all expenses..."></textarea>
                             </div>
                             
                             <div id="adminClaimFormError" class="form-group" style="display: none;">
@@ -2006,7 +2174,7 @@
                             <div class="form-actions">
                                 <button type="button" class="btn-secondary" id="resetAdminClaimForm">Reset</button>
                                 <button type="submit" class="btn-primary" id="submitAdminClaimBtn">
-                                    <span id="submitAdminClaimBtnText">Submit Claim</span>
+                                    <span id="submitAdminClaimBtnText">Submit All Claims</span>
                                     <span id="submitAdminClaimBtnSpinner" class="loading-spinner hidden"></span>
                                 </button>
                             </div>
@@ -2184,7 +2352,7 @@
     <script>
         // API Configuration
         const API_BASE_URL = 'https://hfa-internal-record-system.onrender.com/api';
-        // const API_BASE_URL = 'http://localhost:5000/api';
+        // const API_BASE_URL = 'http://localhost:500/api';
         
         // Current user data
         let currentUser = null;
@@ -2199,6 +2367,10 @@
         
         // Current claims filter for admin
         let adminCurrentFilter = 'submitted';
+        
+        // Track expense tables
+        let expenseTableCount = 1;
+        let adminExpenseTableCount = 1;
         
         // DOM elements
         const loginPage = document.getElementById('loginPage');
@@ -2230,10 +2402,6 @@
             // Generate initial reference numbers
             document.getElementById('claimReferenceNo').textContent = generateReferenceNo();
             document.getElementById('adminClaimReferenceNo').textContent = generateReferenceNo();
-            
-            // Initialize totals calculation
-            calculateTotals();
-            calculateAdminTotals();
             
             // Check for saved token
             const savedToken = localStorage.getItem('hfa_auth_token');
@@ -2350,28 +2518,6 @@
             
             document.getElementById('resetClaimForm').addEventListener('click', function() {
                 resetNewClaimForm();
-            });
-            
-            // Amount calculation listeners for worker form
-            document.getElementById('cashAmount').addEventListener('input', function() {
-                calculateTotals();
-            });
-            document.getElementById('bankTransferAmount').addEventListener('input', function() {
-                calculateTotals();
-            });
-            document.getElementById('vatAmount').addEventListener('input', function() {
-                calculateTotals();
-            });
-            
-            // Amount calculation listeners for admin form
-            document.getElementById('adminCashAmount').addEventListener('input', function() {
-                calculateAdminTotals();
-            });
-            document.getElementById('adminBankTransferAmount').addEventListener('input', function() {
-                calculateAdminTotals();
-            });
-            document.getElementById('adminVatAmount').addEventListener('input', function() {
-                calculateAdminTotals();
             });
             
             // Admin dashboard events
@@ -3301,95 +3447,103 @@
             }
         }
         
-        // Function to calculate totals for worker expense table
-        function calculateTotals() {
-            const cash = parseFloat(document.getElementById('cashAmount').value) || 0;
-            const bankTransfer = parseFloat(document.getElementById('bankTransferAmount').value) || 0;
-            const vat = parseFloat(document.getElementById('vatAmount').value) || 0;
-            const total = cash + bankTransfer + vat;
+        // Function to calculate total for a specific table (Worker)
+        function calculateTableTotal(input, tableIndex) {
+            const tableSection = document.querySelector(`.expense-table-section[data-table-index="${tableIndex}"]`);
+            if (!tableSection) return;
             
-            // Update total field
-            document.getElementById('workerTotalAmount').value = total.toFixed(2);
+            const cashInput = tableSection.querySelector('.cash-amount');
+            const bankInput = tableSection.querySelector('.bank-transfer-amount');
+            const vatInput = tableSection.querySelector('.vat-amount');
+            const totalInput = tableSection.querySelector('.total-amount');
+            const cashTotalCell = tableSection.querySelector('.sub-total-cash');
+            const bankTotalCell = tableSection.querySelector('.sub-total-bank');
+            const vatTotalCell = tableSection.querySelector('.sub-total-vat');
+            const totalCell = tableSection.querySelector('.sub-total-total');
             
-            // Update subtotal row
-            document.getElementById('workerSubTotalCash').textContent = cash.toFixed(2);
-            document.getElementById('workerSubTotalBank').textContent = bankTransfer.toFixed(2);
-            document.getElementById('workerSubTotalVat').textContent = vat.toFixed(2);
-            document.getElementById('workerSubTotalTotal').textContent = total.toFixed(2);
+            const cash = parseFloat(cashInput.value) || 0;
+            const bank = parseFloat(bankInput.value) || 0;
+            const vat = parseFloat(vatInput.value) || 0;
+            const total = cash + bank;
+            
+            if (totalInput) totalInput.value = total.toFixed(2);
+            if (cashTotalCell) cashTotalCell.textContent = cash.toFixed(2);
+            if (bankTotalCell) bankTotalCell.textContent = bank.toFixed(2);
+            if (vatTotalCell) vatTotalCell.textContent = vat.toFixed(2);
+            if (totalCell) totalCell.textContent = total.toFixed(2);
         }
         
-        // Function to calculate totals for admin expense table
-        function calculateAdminTotals() {
-            const cash = parseFloat(document.getElementById('adminCashAmount').value) || 0;
-            const bankTransfer = parseFloat(document.getElementById('adminBankTransferAmount').value) || 0;
-            const vat = parseFloat(document.getElementById('adminVatAmount').value) || 0;
-            const total = cash + bankTransfer + vat;
+        // Function to calculate total for a specific admin table
+        function calculateAdminTableTotal(input, tableIndex) {
+            const tableSection = document.querySelector(`.expense-table-section[data-table-index="${tableIndex}"]`);
+            if (!tableSection) return;
             
-            // Update total field
-            document.getElementById('adminTotalAmount').value = total.toFixed(2);
+            const cashInput = tableSection.querySelector('.admin-cash-amount');
+            const bankInput = tableSection.querySelector('.admin-bank-transfer-amount');
+            const vatInput = tableSection.querySelector('.admin-vat-amount');
+            const totalInput = tableSection.querySelector('.admin-total-amount');
+            const cashTotalCell = tableSection.querySelector('.admin-sub-total-cash');
+            const bankTotalCell = tableSection.querySelector('.admin-sub-total-bank');
+            const vatTotalCell = tableSection.querySelector('.admin-sub-total-vat');
+            const totalCell = tableSection.querySelector('.admin-sub-total-total');
             
-            // Update subtotal row
-            document.getElementById('adminSubTotalCash').textContent = cash.toFixed(2);
-            document.getElementById('adminSubTotalBank').textContent = bankTransfer.toFixed(2);
-            document.getElementById('adminSubTotalVat').textContent = vat.toFixed(2);
-            document.getElementById('adminSubTotalTotal').textContent = total.toFixed(2);
+            const cash = parseFloat(cashInput.value) || 0;
+            const bank = parseFloat(bankInput.value) || 0;
+            const vat = parseFloat(vatInput.value) || 0;
+            const total = cash + bank;
+            
+            if (totalInput) totalInput.value = total.toFixed(2);
+            if (cashTotalCell) cashTotalCell.textContent = cash.toFixed(2);
+            if (bankTotalCell) bankTotalCell.textContent = bank.toFixed(2);
+            if (vatTotalCell) vatTotalCell.textContent = vat.toFixed(2);
+            if (totalCell) totalCell.textContent = total.toFixed(2);
         }
         
-        // Function to reset the new claim form
+        // Function to reset the new claim form (Worker)
         function resetNewClaimForm() {
+            // Reset common fields
             document.getElementById('claimantName').value = currentUser ? (currentUser.name || currentUser.email || 'Test') : 'Test';
             document.getElementById('claimType').value = '';
             document.getElementById('companyName').value = '';
             document.getElementById('contactPerson').value = '';
             document.getElementById('contactEmail').value = '';
             document.getElementById('claimDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('expenseType').value = 'None';
-            document.getElementById('expenseDescription').value = '';
-            document.getElementById('currency').value = 'None';
-            document.getElementById('creditCard').checked = true;
-            document.getElementById('cashAmount').value = '0.00';
-            document.getElementById('bankTransferAmount').value = '0.00';
-            document.getElementById('vatAmount').value = '0.00';
-            document.getElementById('workerTotalAmount').value = '0.00';
-            document.getElementById('reason').value = '';
             document.getElementById('claimNotes').value = '';
-            document.getElementById('claimImage').value = '';
             
-            // Reset subtotal row
-            document.getElementById('workerSubTotalCash').textContent = '00.00';
-            document.getElementById('workerSubTotalBank').textContent = '00.00';
-            document.getElementById('workerSubTotalVat').textContent = '00.00';
-            document.getElementById('workerSubTotalTotal').textContent = '00.00';
+            // Reset all expense tables to one default table
+            const container = document.getElementById('expenseTablesContainer');
+            container.innerHTML = '';
+            
+            // Add one default table
+            const newTableHTML = createExpenseTableHTML(0);
+            container.innerHTML = newTableHTML;
+            expenseTableCount = 1;
             
             // Update reference number
             document.getElementById('claimReferenceNo').textContent = generateReferenceNo();
+            
+            showToast('Form has been reset.', 'info');
         }
         
         // Function to reset the admin claim form
         function resetAdminClaimForm() {
+            // Reset common fields
             document.getElementById('adminClaimantName').value = currentUser ? (currentUser.name || currentUser.email || 'Admin') : 'Admin';
             document.getElementById('adminClaimType').value = '';
             document.getElementById('adminCompanyName').value = '';
             document.getElementById('adminContactPerson').value = '';
             document.getElementById('adminContactEmail').value = '';
             document.getElementById('adminClaimDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('adminExpenseType').value = 'None';
-            document.getElementById('adminExpenseDescription').value = '';
-            document.getElementById('adminCurrency').value = 'None';
-            document.getElementById('adminCreditCard').checked = true;
-            document.getElementById('adminCashAmount').value = '0.00';
-            document.getElementById('adminBankTransferAmount').value = '0.00';
-            document.getElementById('adminVatAmount').value = '0.00';
-            document.getElementById('adminTotalAmount').value = '0.00';
-            document.getElementById('adminReason').value = '';
             document.getElementById('adminClaimNotes').value = '';
-            document.getElementById('adminClaimImage').value = '';
 
-            // Reset subtotal row
-            document.getElementById('adminSubTotalCash').textContent = '00.00';
-            document.getElementById('adminSubTotalBank').textContent = '00.00';
-            document.getElementById('adminSubTotalVat').textContent = '00.00';
-            document.getElementById('adminSubTotalTotal').textContent = '00.00';
+            // Reset all expense tables to one default table
+            const container = document.getElementById('adminExpenseTablesContainer');
+            container.innerHTML = '';
+            
+            // Add one default table
+            const newTableHTML = createAdminExpenseTableHTML(0);
+            container.innerHTML = newTableHTML;
+            adminExpenseTableCount = 1;
             
             // Update reference number
             document.getElementById('adminClaimReferenceNo').textContent = generateReferenceNo();
@@ -3397,40 +3551,24 @@
             showToast('Form has been reset.', 'info');
         }
         
-        // Function to submit a new claim
+        // Function to submit a new claim with multiple expense tables
         async function submitNewClaim(role) {
             if (!currentUser || !authToken) {
                 showToast('Please login first', 'error');
                 return;
             }
             
-            let claimDate, claimType, description, amount, notes, image, reason;
+            // Get common form data
+            let claimDate, claimType, companyName, contactPerson, contactEmail, notes;
             let submitBtn, submitBtnText, submitBtnSpinner, formError, formErrorMessage;
-            let claimantName, companyName, contactPerson, contactEmail;
-            let expenseType, expenseDesc, currency, creditCard;
-            let cashAmount, bankTransferAmount, vatAmount, totalAmount;
             
             if (role === 'worker') {
-                claimantName = document.getElementById('claimantName').value;
                 claimDate = document.getElementById('claimDate').value;
                 claimType = document.getElementById('claimType').value;
                 companyName = document.getElementById('companyName').value;
                 contactPerson = document.getElementById('contactPerson').value;
                 contactEmail = document.getElementById('contactEmail').value;
-                expenseType = document.getElementById('expenseType').value;
-                expenseDesc = document.getElementById('expenseDescription').value;
-                
-                currency = document.getElementById('currency').value;
-                creditCard = document.getElementById('creditCard').checked;
-                cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-                bankTransferAmount = parseFloat(document.getElementById('bankTransferAmount').value) || 0;
-                vatAmount = parseFloat(document.getElementById('vatAmount').value) || 0;
-                totalAmount = parseFloat(document.getElementById('workerTotalAmount').value) || 0;
-                reason = document.getElementById('reason').value;
                 notes = document.getElementById('claimNotes').value;
-                image = document.getElementById('claimImage').files[0];
-                
-                amount = totalAmount;
                 
                 submitBtn = document.getElementById('submitClaimBtn');
                 submitBtnText = document.getElementById('submitClaimBtnText');
@@ -3438,30 +3576,12 @@
                 formError = document.getElementById('claimFormError');
                 formErrorMessage = document.getElementById('claimFormErrorMessage');
             } else {
-                claimantName = document.getElementById('adminClaimantName').value;
                 claimDate = document.getElementById('adminClaimDate').value;
                 claimType = document.getElementById('adminClaimType').value;
                 companyName = document.getElementById('adminCompanyName').value;
                 contactPerson = document.getElementById('adminContactPerson').value;
                 contactEmail = document.getElementById('adminContactEmail').value;
-                expenseDesc = document.getElementById('adminExpenseDescription').value;
-                reason = document.getElementById('adminReason').value;
                 notes = document.getElementById('adminClaimNotes').value;
-                image = document.getElementById('adminClaimImage').files[0];
-                creditCard = document.getElementById('adminCreditCard').checked;
-                
-                // Set default values for other fields
-                expenseType = document.getElementById("adminExpenseType").value || 'None';
-                description = expenseDesc;
-
-                currency = document.getElementById('adminCurrency').value;
-                
-                cashAmount = parseFloat(document.getElementById('adminCashAmount').value) || 0;
-                bankTransferAmount = parseFloat(document.getElementById('adminBankTransferAmount').value) || 0;
-                vatAmount = parseFloat(document.getElementById('adminVatAmount').value) || 0;
-                totalAmount = parseFloat(document.getElementById('adminTotalAmount').value) || 0;
-                
-                amount = totalAmount;
                 
                 submitBtn = document.getElementById('submitAdminClaimBtn');
                 submitBtnText = document.getElementById('submitAdminClaimBtnText');
@@ -3470,17 +3590,53 @@
                 formErrorMessage = document.getElementById('adminClaimFormErrorMessage');
             }
             
-            // Validate required fields
-            if (!claimantName || !claimDate || !claimType || !reason) {
+            // Get claimant name
+            const claimantName = role === 'worker' 
+                ? document.getElementById('claimantName').value 
+                : document.getElementById('adminClaimantName').value;
+            
+            // Validate common required fields
+            if (!claimantName || !claimDate || !claimType) {
                 formError.style.display = 'block';
-                formErrorMessage.textContent = 'Please fill in all required fields (ClaimantName, Date, Claim Type, and Reason)';
+                formErrorMessage.textContent = 'Please fill in all required fields (Claimant Name, Date, and Claim Type)';
                 return;
             }
             
-            if (totalAmount <= 0) {
+            // Get all expense tables
+            const expenseTables = role === 'worker' 
+                ? document.querySelectorAll('#expenseTablesContainer .expense-table-section')
+                : document.querySelectorAll('#adminExpenseTablesContainer .expense-table-section');
+                
+            if (expenseTables.length === 0) {
                 formError.style.display = 'block';
-                formErrorMessage.textContent = 'Please enter a valid amount greater than 0';
+                formErrorMessage.textContent = 'Please add at least one expense table';
                 return;
+            }
+            
+            // Validate each expense table
+            for (let i = 0; i < expenseTables.length; i++) {
+                const table = expenseTables[i];
+                const expenseDesc = role === 'worker' 
+                    ? table.querySelector('.expense-description').value
+                    : table.querySelector('.admin-expense-description').value;
+                const reason = role === 'worker'
+                    ? table.querySelector('.table-reason').value
+                    : table.querySelector('.admin-table-reason').value;
+                const totalAmount = role === 'worker'
+                    ? parseFloat(table.querySelector('.total-amount').value) || 0
+                    : parseFloat(table.querySelector('.admin-total-amount').value) || 0;
+                
+                if (!expenseDesc || !reason) {
+                    formError.style.display = 'block';
+                    formErrorMessage.textContent = `Please fill in all required fields in Expense Table #${i + 1}`;
+                    return;
+                }
+                
+                if (totalAmount <= 0) {
+                    formError.style.display = 'block';
+                    formErrorMessage.textContent = `Please enter a valid amount greater than 0 in Expense Table #${i + 1}`;
+                    return;
+                }
             }
             
             // Show loading state
@@ -3489,71 +3645,132 @@
             submitBtnSpinner.classList.remove('hidden');
             formError.style.display = 'none';
             
-            try {
-                // Create FormData for file upload
-                const formData = new FormData();
-                formData.append('date', claimDate);
-                formData.append('claim_id', generateReferenceNo());
-                formData.append('category', claimType);
-                formData.append('expense_description', expenseDesc);
-                formData.append('amount', amount);
-                formData.append('receipt', creditCard);
+            // Submit each expense table as a separate claim
+            let successfulSubmissions = 0;
+            let failedSubmissions = 0;
+            
+            for (let i = 0; i < expenseTables.length; i++) {
+                const table = expenseTables[i];
                 
-                // Add new fields
-                formData.append('claimant_name', claimantName);
-                formData.append('company_name', companyName || '');
-                formData.append('contact_person', contactPerson || '');
-                formData.append('contact_email', contactEmail || '');
-                formData.append('expense_type', expenseType);
-                formData.append('currency', currency);
-                formData.append('cash_amount', cashAmount);
-                formData.append('bank_transfer_amount', bankTransferAmount);
-                formData.append('vat_amount', vatAmount);
-                formData.append('reason', reason);
-                
-                if (notes) formData.append('notes', notes);
-                if (image) formData.append('image', image);
-                
-                const response = await fetch(`${API_BASE_URL}/claims`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`,
-                    },
-                    body: formData
-                });
-
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showToast('Claim submitted successfully!', 'success');
+                try {
+                    // Get table-specific data
+                    let expenseType, expenseDesc, currency, creditCard, cashAmount, bankTransferAmount, vatAmount, totalAmount, reason, tableNotes, tableReceipt;
                     
-                    // Reset form
                     if (role === 'worker') {
-                        resetNewClaimForm();
-                        switchWorkerSection('manageClaimSection', 'Manage Claim Sheet');
+                        expenseType = table.querySelector('.expense-type').value;
+                        expenseDesc = table.querySelector('.expense-description').value;
+                        currency = table.querySelector('.currency').value;
+                        creditCard = table.querySelector('.credit-card').checked;
+                        cashAmount = parseFloat(table.querySelector('.cash-amount').value) || 0;
+                        bankTransferAmount = parseFloat(table.querySelector('.bank-transfer-amount').value) || 0;
+                        vatAmount = parseFloat(table.querySelector('.vat-amount').value) || 0;
+                        totalAmount = parseFloat(table.querySelector('.total-amount').value) || 0;
+                        reason = table.querySelector('.table-reason').value;
+                        tableNotes = table.querySelector('.table-notes').value;
+                        tableReceipt = table.querySelector('.table-receipt').files[0];
                     } else {
-                        resetAdminClaimForm();
-                        switchAdminSection('adminManageClaimSection', 'Manage Claims');
+                        expenseType = table.querySelector('.admin-expense-type').value;
+                        expenseDesc = table.querySelector('.admin-expense-description').value;
+                        currency = table.querySelector('.admin-currency').value;
+                        creditCard = table.querySelector('.admin-credit-card').checked;
+                        cashAmount = parseFloat(table.querySelector('.admin-cash-amount').value) || 0;
+                        bankTransferAmount = parseFloat(table.querySelector('.admin-bank-transfer-amount').value) || 0;
+                        vatAmount = parseFloat(table.querySelector('.admin-vat-amount').value) || 0;
+                        totalAmount = parseFloat(table.querySelector('.admin-total-amount').value) || 0;
+                        reason = table.querySelector('.admin-table-reason').value;
+                        tableNotes = table.querySelector('.admin-table-notes').value;
+                        tableReceipt = table.querySelector('.admin-table-receipt').files[0];
                     }
                     
-                    // Refresh claims
-                    if (role === 'worker') {
-                        loadWorkerClaims();
-                    } else {
-                        loadAdminClaims();
+                    // Create FormData for this claim
+                    const formData = new FormData();
+                    formData.append('date', claimDate);
+                    formData.append('claim_id', generateReferenceNo());
+                    formData.append('category', claimType);
+                    formData.append('expense_description', expenseDesc);
+                    formData.append('amount', totalAmount);
+                    formData.append('receipt', creditCard);
+                    
+                    // Add common fields
+                    formData.append('claimant_name', claimantName);
+                    formData.append('company_name', companyName || '');
+                    formData.append('contact_person', contactPerson || '');
+                    formData.append('contact_email', contactEmail || '');
+                    formData.append('expense_type', expenseType);
+                    formData.append('currency', currency);
+                    formData.append('cash_amount', cashAmount);
+                    formData.append('bank_transfer_amount', bankTransferAmount);
+                    formData.append('vat_amount', vatAmount);
+                    formData.append('reason', reason);
+                    
+                    // Combine common notes with table-specific notes
+                    const combinedNotes = [];
+                    if (notes) combinedNotes.push(`General Notes: ${notes}`);
+                    if (tableNotes) combinedNotes.push(`Expense ${i + 1} Notes: ${tableNotes}`);
+                    if (combinedNotes.length > 0) {
+                        formData.append('notes', combinedNotes.join('\n\n'));
                     }
-                } else {
-                    throw new Error(data.message || 'Failed to submit claim');
+                    
+                    // Add table-specific receipt if available
+                    if (tableReceipt) {
+                        formData.append('image', tableReceipt);
+                    }
+                    
+                    // Submit the claim
+                    const response = await fetch(`${API_BASE_URL}/claims`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`,
+                        },
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        successfulSubmissions++;
+                        console.log(`Claim ${i + 1} submitted successfully`);
+                    } else {
+                        failedSubmissions++;
+                        console.error(`Failed to submit claim ${i + 1}:`, data.message);
+                    }
+                    
+                } catch (error) {
+                    failedSubmissions++;
+                    console.error(`Error submitting claim ${i + 1}:`, error);
                 }
-            } catch (error) {
+            }
+            
+            // Reset loading state
+            submitBtn.disabled = false;
+            submitBtnText.textContent = 'Submit All Claims';
+            submitBtnSpinner.classList.add('hidden');
+            
+            // Show summary message
+            if (failedSubmissions === 0) {
+                showToast(`Successfully submitted ${successfulSubmissions} claim(s)!`, 'success');
+                
+                // Reset form and navigate back
+                if (role === 'worker') {
+                    resetNewClaimForm();
+                    switchWorkerSection('manageClaimSection', 'Manage Claim Sheet');
+                } else {
+                    resetAdminClaimForm();
+                    switchAdminSection('adminManageClaimSection', 'Manage Claims');
+                }
+                
+                // Refresh claims
+                if (role === 'worker') {
+                    loadWorkerClaims();
+                } else {
+                    loadAdminClaims();
+                }
+            } else if (successfulSubmissions > 0) {
+                showToast(`Submitted ${successfulSubmissions} claim(s) successfully, but ${failedSubmissions} failed.`, 'warning');
+            } else {
                 formError.style.display = 'block';
-                formErrorMessage.textContent = error.message;
-                showToast(error.message, 'error');
-            } finally {
-                // Reset loading state
-                submitBtn.disabled = false;
-                submitBtnText.textContent = 'Submit Claim';
-                submitBtnSpinner.classList.add('hidden');
+                formErrorMessage.textContent = 'Failed to submit any claims. Please try again.';
+                showToast('Failed to submit claims', 'error');
             }
         }
         
@@ -3830,612 +4047,1092 @@
                 console.error('Suspend user error:', error);
                 // Restore button state on error
                 if (suspendBtn) {
-                        suspendBtn.innerHTML = originalText;
-                        suspendBtn.disabled = false;
-                    }
+                    suspendBtn.innerHTML = originalText;
+                    suspendBtn.disabled = false;
                 }
             }
+        }
+        
+        // Function to delete a user
+        async function deleteUser(userId, userName) {
+            // Prevent deleting the current user
+            if (currentUser && currentUser._id === userId) {
+                showToast('You cannot delete your own account!', 'error');
+                return;
+            }
             
-            // Function to delete a user
-            async function deleteUser(userId, userName) {
-                // Prevent deleting the current user
-                if (currentUser && currentUser._id === userId) {
-                    showToast('You cannot delete your own account!', 'error');
-                    return;
-                }
-                
-                if (!confirm(`Are you sure you want to delete the user "${userName}"? This action cannot be undone.`)) {
-                    return;
-                }
-                
-                if (!currentUser || !authToken) return;
-                
-                // Find and disable the delete button
-                const deleteBtn = document.querySelector(`.delete-user-btn[data-id="${userId}"]`);
-                const originalText = deleteBtn ? deleteBtn.innerHTML : '';
-                
-                if (deleteBtn) {
-                    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-                    deleteBtn.disabled = true;
-                }
-                
-                try {
-                    const res = await fetch(`${API_BASE_URL}/users/${userId}/delete`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': `Bearer ${authToken}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    
-                    const data = await res.json();
-                    
-                    if (res.ok) {
-                        showToast(`User "${userName}" deleted successfully`, 'success');
-                        loadUsers();
-                    } else {
-                        showToast(data.message || 'Failed to delete user', 'error');
-                        // Restore button state on error
-                        if (deleteBtn) {
-                            deleteBtn.innerHTML = originalText;
-                            deleteBtn.disabled = false;
-                        }
+            if (!confirm(`Are you sure you want to delete the user "${userName}"? This action cannot be undone.`)) {
+                return;
+            }
+            
+            if (!currentUser || !authToken) return;
+            
+            // Find and disable the delete button
+            const deleteBtn = document.querySelector(`.delete-user-btn[data-id="${userId}"]`);
+            const originalText = deleteBtn ? deleteBtn.innerHTML : '';
+            
+            if (deleteBtn) {
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                deleteBtn.disabled = true;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${userId}/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
                     }
-                } catch (error) {
-                    showToast('Failed to delete user. Please try again.', 'error');
-                    console.error('Delete user error:', error);
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    showToast(`User "${userName}" deleted successfully`, 'success');
+                    loadUsers();
+                } else {
+                    showToast(data.message || 'Failed to delete user', 'error');
                     // Restore button state on error
                     if (deleteBtn) {
                         deleteBtn.innerHTML = originalText;
                         deleteBtn.disabled = false;
                     }
                 }
+            } catch (error) {
+                showToast('Failed to delete user. Please try again.', 'error');
+                console.error('Delete user error:', error);
+                // Restore button state on error
+                if (deleteBtn) {
+                    deleteBtn.innerHTML = originalText;
+                    deleteBtn.disabled = false;
+                }
             }
+        }
 
-            // Function to view user details
-            async function viewUserDetails(userId) {
-                if (!currentUser || !authToken) return;
-                
-                try {
-                    const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${authToken}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    const data = await res.json();
-                    
-                    if (res.ok) {
-                        const user = data.data;
-                        let userDetailsHtml = `
-                            <div class="claim-detail-item">
-                                <div class="claim-detail-label">Employee ID</div>
-                                <div class="claim-detail-value">${user.employee_id || 'N/A'}</div>
-                            </div>
-                            <div class="claim-detail-item">
-                                <div class="claim-detail-label">Name</div>
-                                <div class="claim-detail-value">${user.name || 'N/A'}</div>
-                            </div>
-                            <div class="claim-detail-item">
-                                <div class="claim-detail-label">Email</div>
-                                <div class="claim-detail-value">${user.email || 'N/A'}</div>
-                            </div>
-                            <div class="claim-detail-item">
-                                <div class="claim-detail-label">Role</div>
-                                <div class="claim-detail-value">${user.role || 'N/A'}</div>
-                            </div>
-                            <div class="claim-detail-item">
-                                <div class="claim-detail-label">Status</div>
-                                <div class="claim-detail-value">${getUserStatusBadge(user.status || 'active')}</div>
-                            </div>
-                            <div class="claim-detail-item">
-                                <div class="claim-detail-label">Department</div>
-                                <div class="claim-detail-value">${user.department || 'N/A'}</div>
-                            </div>
-                            <div class="claim-detail-item">
-                                <div class="claim-detail-label">Created At</div>
-                                <div class="claim-detail-value">${new Date(user.createdAt).toLocaleDateString('en-GB')}</div>
-                            </div>
-                        `;
-                        
-                        document.getElementById('viewUserDetails').innerHTML = userDetailsHtml;
-                        document.getElementById('modalUserTitle').textContent = `User Details: ${user.name || 'N/A'}`;
-                        showModal('viewUserModal');
-                    } else {
-                        showToast(data.message || 'Failed to load user details', 'error');
-                    }
-                } catch (error) {
-                    showToast('Failed to load user details. Please try again.', 'error');
-                }
-            }
+        // Function to view user details
+        async function viewUserDetails(userId) {
+            if (!currentUser || !authToken) return;
             
-            // Function to view claim details
-            async function viewClaimDetails(claimId, isAdmin = false) {
-                try {
-                    const response = await fetch(`${API_BASE_URL}/claims/${claimId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${authToken}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        const claim = data.data;
-                        
-                        if (claim) {
-                            displayClaimModal(claim, isAdmin);
-                        } else {
-                            showToast('Claim not found', 'error');
-                        }
-                    } else {
-                        throw new Error('Failed to load claim details');
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
                     }
-                } catch (error) {
-                    showToast(error.message, 'error');
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    const user = data.data;
+                    let userDetailsHtml = `
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Employee ID</div>
+                            <div class="claim-detail-value">${user.employee_id || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Name</div>
+                            <div class="claim-detail-value">${user.name || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Email</div>
+                            <div class="claim-detail-value">${user.email || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Role</div>
+                            <div class="claim-detail-value">${user.role || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Status</div>
+                            <div class="claim-detail-value">${getUserStatusBadge(user.status || 'active')}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Department</div>
+                            <div class="claim-detail-value">${user.department || 'N/A'}</div>
+                        </div>
+                        <div class="claim-detail-item">
+                            <div class="claim-detail-label">Created At</div>
+                            <div class="claim-detail-value">${new Date(user.createdAt).toLocaleDateString('en-GB')}</div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('viewUserDetails').innerHTML = userDetailsHtml;
+                    document.getElementById('modalUserTitle').textContent = `User Details: ${user.name || 'N/A'}`;
+                    showModal('viewUserModal');
+                } else {
+                    showToast(data.message || 'Failed to load user details', 'error');
                 }
+            } catch (error) {
+                showToast('Failed to load user details. Please try again.', 'error');
             }
+        }
+        
+        // Function to view claim details
+        async function viewClaimDetails(claimId, isAdmin = false) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims/${claimId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const claim = data.data;
+                    
+                    if (claim) {
+                        displayClaimModal(claim, isAdmin);
+                    } else {
+                        showToast('Claim not found', 'error');
+                    }
+                } else {
+                    throw new Error('Failed to load claim details');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+        
+        // Function to display claim modal
+        function displayClaimModal(claim, isAdmin = false) {
+            // Format date
+            const dateObj = new Date(claim.createdAt || claim.date);
+            const formattedDate = dateObj.toLocaleDateString('en-GB');
             
-            // Function to display claim modal
-            function displayClaimModal(claim, isAdmin = false) {
-                // Format date
-                const dateObj = new Date(claim.createdAt || claim.date);
-                const formattedDate = dateObj.toLocaleDateString('en-GB');
-                
-                // Status display
-                let statusBadge = getStatusBadge(claim.status);
-                
-                // Create details HTML
-                let detailsHTML = `
+            // Status display
+            let statusBadge = getStatusBadge(claim.status);
+            
+            // Create details HTML
+            let detailsHTML = `
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Claim ID</div>
+                    <div class="claim-detail-value">${claim.claim_id || claim.id}</div>
+                </div>
+                ${claim.claimant_name ? `
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Submitted By</div>
+                    <div class="claim-detail-value">${claim.claimant_name || claim.user.email}</div>
+                </div>` : ''}
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Date Submitted</div>
+                    <div class="claim-detail-value">${formattedDate}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Status</div>
+                    <div class="claim-detail-value">${statusBadge}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Category</div>
+                    <div class="claim-detail-value">${claim.category || 'Uncategorized'}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Amount</div>
+                    <div class="claim-detail-value">£${parseFloat(claim.amount || 0).toFixed(2)}</div>
+                </div>
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Receipt Available</div>
+                    <div class="claim-detail-value">${claim.receipt ? 'Yes' : 'No'}</div>
+                </div>
+            `;
+            
+            // Add additional fields if they exist
+            if (claim.claimant_name) {
+                detailsHTML += `
                     <div class="claim-detail-item">
-                        <div class="claim-detail-label">Claim ID</div>
-                        <div class="claim-detail-value">${claim.claim_id || claim.id}</div>
-                    </div>
-                    ${claim.claimant_name ? `
-                    <div class="claim-detail-item">
-                        <div class="claim-detail-label">Submitted By</div>
-                        <div class="claim-detail-value">${claim.claimant_name || claim.user.email}</div>
-                    </div>` : ''}
-                    <div class="claim-detail-item">
-                        <div class="claim-detail-label">Date Submitted</div>
-                        <div class="claim-detail-value">${formattedDate}</div>
-                    </div>
-                    <div class="claim-detail-item">
-                        <div class="claim-detail-label">Status</div>
-                        <div class="claim-detail-value">${statusBadge}</div>
-                    </div>
-                    <div class="claim-detail-item">
-                        <div class="claim-detail-label">Category</div>
-                        <div class="claim-detail-value">${claim.category || 'Uncategorized'}</div>
-                    </div>
-                    <div class="claim-detail-item">
-                        <div class="claim-detail-label">Amount</div>
-                        <div class="claim-detail-value">£${parseFloat(claim.amount || 0).toFixed(2)}</div>
-                    </div>
-                    <div class="claim-detail-item">
-                        <div class="claim-detail-label">Receipt Available</div>
-                        <div class="claim-detail-value">${claim.receipt ? 'Yes' : 'No'}</div>
+                        <div class="claim-detail-label">Claimant Name</div>
+                        <div class="claim-detail-value">${claim.claimant_name}</div>
                     </div>
                 `;
-                
-                // Add additional fields if they exist
-                if (claim.claimant_name) {
-                    detailsHTML += `
-                        <div class="claim-detail-item">
-                            <div class="claim-detail-label">Claimant Name</div>
-                            <div class="claim-detail-value">${claim.claimant_name}</div>
-                        </div>
-                    `;
-                }
-                
-                if (claim.reason) {
-                    detailsHTML += `
-                        <div class="claim-detail-item">
-                            <div class="claim-detail-label">Reason</div>
-                            <div class="claim-detail-value">${claim.reason}</div>
-                        </div>
-                    `;
-                }
-                
-                // Add image if available
-                if (claim.receipt_url) {
-                    const fileExtension = claim.receipt_url.split('.').pop().toLowerCase();
-                    const isPDF = fileExtension === 'pdf';
-                    
-                    detailsHTML += `
-                        <div class="claim-detail-item">
-                            <div class="claim-detail-label">Uploaded Document</div>
-                            <div class="claim-detail-value">
-                    `;
-                    
-                    if (isPDF) {
-                        detailsHTML += `
-                            <p><i class="fas fa-file-pdf" style="color: #e74c3c; margin-right: 8px;"></i> 
-                            <a href="${claim.receipt_url}" target="_blank" style="color: var(--primary-color); text-decoration: none;">
-                                View PDF Receipt
-                            </a></p>
-                        `;
-                    } else {
-                        detailsHTML += `
-                            <img src="${claim.receipt_url}" alt="Receipt" class="image-preview">
-                            <br>
-                            <a href="${claim.receipt_url}" target="_blank" style="color: var(--primary-color); text-decoration: none; font-size: 14px; margin-top: 10px; display: inline-block;">
-                                <i class="fas fa-external-link-alt" style="margin-right: 5px;"></i> Open full image
-                            </a>
-                        `;
-                    }
-                    
-                    detailsHTML += `</div></div>`;
-                }
+            }
+            
+            if (claim.reason) {
+                detailsHTML += `
+                    <div class="claim-detail-item">
+                        <div class="claim-detail-label">Reason</div>
+                        <div class="claim-detail-value">${claim.reason}</div>
+                    </div>
+                `;
+            }
+            
+            // Add image if available
+            if (claim.receipt_url) {
+                const fileExtension = claim.receipt_url.split('.').pop().toLowerCase();
+                const isPDF = fileExtension === 'pdf';
                 
                 detailsHTML += `
                     <div class="claim-detail-item">
-                        <div class="claim-detail-label">Expense Description</div>
-                        <div class="claim-detail-value" style="background-color: #f8f9fa; padding: 15px; border-radius: var(--border-radius);">
-                            ${claim.expense_description || 'No description'}
-                        </div>
-                    </div>
+                        <div class="claim-detail-label">Uploaded Document</div>
+                        <div class="claim-detail-value">
                 `;
                 
-                // Add notes if available
-                if (claim.notes) {
+                if (isPDF) {
                     detailsHTML += `
-                        <div class="claim-detail-item">
-                            <div class="claim-detail-label">Notes</div>
-                            <div class="claim-detail-value" style="background-color: #f8f9fa; padding: 15px; border-radius: var(--border-radius);">
-                                ${claim.notes}
-                            </div>
-                        </div>
+                        <p><i class="fas fa-file-pdf" style="color: #e74c3c; margin-right: 8px;"></i> 
+                        <a href="${claim.receipt_url}" target="_blank" style="color: var(--primary-color); text-decoration: none;">
+                            View PDF Receipt
+                        </a></p>
+                    `;
+                } else {
+                    detailsHTML += `
+                        <img src="${claim.receipt_url}" alt="Receipt" class="image-preview">
+                        <br>
+                        <a href="${claim.receipt_url}" target="_blank" style="color: var(--primary-color); text-decoration: none; font-size: 14px; margin-top: 10px; display: inline-block;">
+                            <i class="fas fa-external-link-alt" style="margin-right: 5px;"></i> Open full image
+                        </a>
                     `;
                 }
                 
-                // Set modal content
-                document.getElementById('claimDetails').innerHTML = detailsHTML;
-                document.getElementById('modalClaimTitle').textContent = `Claim Details: ${claim.claim_id || claim.id}`;
-                
-                // Show modal
-                showModal('viewClaimModal');
+                detailsHTML += `</div></div>`;
             }
             
-            // Function to delete a claim (worker)
-            async function deleteClaim(claimId) {
-                if (!confirm('Are you sure you want to delete this claim?')) return;
-                
-                try {
-                    const response = await fetch(`${API_BASE_URL}/claims/${claimId}/delete`, {
-                        method: 'DELETE',
-                        headers: { 
-                            'Authorization': `Bearer ${authToken}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
+            detailsHTML += `
+                <div class="claim-detail-item">
+                    <div class="claim-detail-label">Expense Description</div>
+                    <div class="claim-detail-value" style="background-color: #f8f9fa; padding: 15px; border-radius: var(--border-radius);">
+                        ${claim.expense_description || 'No description'}
+                    </div>
+                </div>
+            `;
+            
+            // Add notes if available
+            if (claim.notes) {
+                detailsHTML += `
+                    <div class="claim-detail-item">
+                        <div class="claim-detail-label">Notes</div>
+                        <div class="claim-detail-value" style="background-color: #f8f9fa; padding: 15px; border-radius: var(--border-radius);">
+                            ${claim.notes}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Set modal content
+            document.getElementById('claimDetails').innerHTML = detailsHTML;
+            document.getElementById('modalClaimTitle').textContent = `Claim Details: ${claim.claim_id || claim.id}`;
+            
+            // Show modal
+            showModal('viewClaimModal');
+        }
+        
+        // Function to delete a claim (worker)
+        async function deleteClaim(claimId) {
+            if (!confirm('Are you sure you want to delete this claim?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/claims/${claimId}/delete`, {
+                    method: 'DELETE',
+                    headers: { 
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-                    const data = response.json()
+                const data = response.json()
+                
+                if (response.ok) {
+                    showToast('Claim deleted successfully!', 'success');
+                    loadWorkerClaims();
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+        
+        // Function to update claim status
+        async function updateClaimStatus(claimId, newStatus) {
+            if (!confirm(`Are you sure you want to mark this claim as ${newStatus}?`)) {
+                return;
+            }
+            
+            // Find and disable the button
+            const button = document.querySelector(`[data-id="${claimId}"]`);
+            const originalText = button ? button.innerHTML : '';
+            
+            if (button) {
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+                button.disabled = true;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/claims/${claimId}/status/`, {
+                    method: "PUT",
+                    headers: { 
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus,
+                        notes: `Status changed to ${newStatus} by ${currentUser.name || currentUser.email}`
+                    })
+                });
+
+                const data = await res.json();
+
+                if(data.success){
+                    showToast(`Claim marked as ${newStatus} successfully!`, 'success');
                     
-                    if (response.ok) {
-                        showToast('Claim deleted successfully!', 'success');
+                    // Refresh claims based on user role
+                    if (currentUser.role === 'worker') {
                         loadWorkerClaims();
                     } else {
-                        throw new Error(data.message);
+                        loadAdminClaims();
                     }
-                } catch (error) {
-                    showToast(error.message, 'error');
-                }
-            }
-            
-            // Function to update claim status
-            async function updateClaimStatus(claimId, newStatus) {
-                if (!confirm(`Are you sure you want to mark this claim as ${newStatus}?`)) {
-                    return;
+                } else {
+                    throw new Error(data.message || 'Failed to update status');
                 }
                 
-                // Find and disable the button
-                const button = document.querySelector(`[data-id="${claimId}"]`);
-                const originalText = button ? button.innerHTML : '';
-                
+            } catch (error) {
+                showToast(error.message, 'error');
+                // Restore button state on error
                 if (button) {
-                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-                    button.disabled = true;
-                }
-                
-                try {
-                    const res = await fetch(`${API_BASE_URL}/claims/${claimId}/status/`, {
-                        method: "PUT",
-                        headers: { 
-                            'Authorization': `Bearer ${authToken}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            status: newStatus,
-                            notes: `Status changed to ${newStatus} by ${currentUser.name || currentUser.email}`
-                        })
-                    });
-
-                    const data = await res.json();
-
-                    if(data.success){
-                        showToast(`Claim marked as ${newStatus} successfully!`, 'success');
-                        
-                        // Refresh claims based on user role
-                        if (currentUser.role === 'worker') {
-                            loadWorkerClaims();
-                        } else {
-                            loadAdminClaims();
-                        }
-                    } else {
-                        throw new Error(data.message || 'Failed to update status');
-                    }
-                    
-                } catch (error) {
-                    showToast(error.message, 'error');
-                    // Restore button state on error
-                    if (button) {
-                        button.innerHTML = originalText;
-                        button.disabled = false;
-                    }
+                    button.innerHTML = originalText;
+                    button.disabled = false;
                 }
             }
-            
-            // Function to create a new user
-            async function createUser() {
-                if (!currentUser || !authToken) {
-                    showToast('Please login first', 'error');
-                    return;
-                }
-                
-                const userName = document.getElementById('createUserName').value;
-                const userEmail = document.getElementById('createUserEmail').value;
-                const userPassword = document.getElementById('createUserPassword').value;
-                const userRole = document.getElementById('createUserRole').value;
-                const userStatus = document.getElementById('createUserStatus').value;
-                const userDepartment = document.getElementById('createUserDepartment').value;
-                const submitBtn = document.getElementById('submitCreateUserBtn');
-                const submitBtnText = document.getElementById('submitCreateUserBtnText');
-                const submitBtnSpinner = document.getElementById('submitCreateUserBtnSpinner');
-                const formError = document.getElementById('createUserFormError');
-                const formErrorMessage = document.getElementById('createUserFormErrorMessage');
-                
-                // Validate
-                if (!userName || !userEmail || !userPassword || !userRole || !userStatus) {
-                    formError.style.display = 'block';
-                    formErrorMessage.textContent = 'Please fill in all required fields';
-                    return;
-                }
-                
-                // Show loading state
-                submitBtn.disabled = true;
-                submitBtnText.textContent = 'Creating...';
-                submitBtnSpinner.classList.remove('hidden');
-                formError.style.display = 'none';
-                
-                try {
-                    const response = await fetch(`${API_BASE_URL}/users`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization' : `Bearer ${authToken}`
-                        },
-                        body: JSON.stringify({
-                            name: userName,
-                            email: userEmail,
-                            password: userPassword,
-                            role: userRole,
-                            status: userStatus,
-                            department: userDepartment || undefined
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (response.ok) {
-                        showToast('User created successfully!', 'success');
-                        
-                        // Close modal and reset form
-                        hideModal('createUserModal');
-                        document.getElementById('createUserForm').reset();
-                        
-                        // Refresh users list
-                        loadUsers();
-                    } else {
-                        throw new Error(data.message || 'Failed to create user');
-                    }
-                } catch (error) {
-                    formError.style.display = 'block';
-                    formErrorMessage.textContent = error.message;
-                    showToast(error.message, 'error');
-                } finally {
-                    // Reset loading state
-                    submitBtn.disabled = false;
-                    submitBtnText.textContent = 'Create User';
-                    submitBtnSpinner.classList.add('hidden');
-                }
+        }
+        
+        // Function to create a new user
+        async function createUser() {
+            if (!currentUser || !authToken) {
+                showToast('Please login first', 'error');
+                return;
             }
             
-            // Helper Functions
+            const userName = document.getElementById('createUserName').value;
+            const userEmail = document.getElementById('createUserEmail').value;
+            const userPassword = document.getElementById('createUserPassword').value;
+            const userRole = document.getElementById('createUserRole').value;
+            const userStatus = document.getElementById('createUserStatus').value;
+            const userDepartment = document.getElementById('createUserDepartment').value;
+            const submitBtn = document.getElementById('submitCreateUserBtn');
+            const submitBtnText = document.getElementById('submitCreateUserBtnText');
+            const submitBtnSpinner = document.getElementById('submitCreateUserBtnSpinner');
+            const formError = document.getElementById('createUserFormError');
+            const formErrorMessage = document.getElementById('createUserFormErrorMessage');
             
-            function showModal(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.style.display = 'flex';
-                }
+            // Validate
+            if (!userName || !userEmail || !userPassword || !userRole || !userStatus) {
+                formError.style.display = 'block';
+                formErrorMessage.textContent = 'Please fill in all required fields';
+                return;
             }
             
-            function hideModal(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.style.display = 'none';
-                }
-            }
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtnText.textContent = 'Creating...';
+            submitBtnSpinner.classList.remove('hidden');
+            formError.style.display = 'none';
             
-            function generateReferenceNo() {
-                const prefix = 'ISL';
-                const randomNum = Math.floor(100000 + Math.random() * 900000);
-                return `${prefix}-${randomNum}`;
-            }
-            
-            function showLoadingState(loadingElements, emptyElements, tableElements) {
-                loadingElements.forEach(el => {
-                    if (el) el.style.display = 'block';
+            try {
+                const response = await fetch(`${API_BASE_URL}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization' : `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        name: userName,
+                        email: userEmail,
+                        password: userPassword,
+                        role: userRole,
+                        status: userStatus,
+                        department: userDepartment || undefined
+                    })
                 });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showToast('User created successfully!', 'success');
+                    
+                    // Close modal and reset form
+                    hideModal('createUserModal');
+                    document.getElementById('createUserForm').reset();
+                    
+                    // Refresh users list
+                    loadUsers();
+                } else {
+                    throw new Error(data.message || 'Failed to create user');
+                }
+            } catch (error) {
+                formError.style.display = 'block';
+                formErrorMessage.textContent = error.message;
+                showToast(error.message, 'error');
+            } finally {
+                // Reset loading state
+                submitBtn.disabled = false;
+                submitBtnText.textContent = 'Create User';
+                submitBtnSpinner.classList.add('hidden');
+            }
+        }
+        
+        // Expense Table Management Functions
+        
+        // Add a new expense table (Worker)
+        function addExpenseTable() {
+            const container = document.getElementById('expenseTablesContainer');
+            const newIndex = expenseTableCount;
+            
+            const newTableHTML = createExpenseTableHTML(newIndex);
+            container.insertAdjacentHTML('beforeend', newTableHTML);
+            expenseTableCount++;
+            
+            // Update remove buttons (disable if only one table left)
+            updateRemoveButtons();
+        }
+        
+        // Add a new expense table (Admin)
+        function addAdminExpenseTable() {
+            const container = document.getElementById('adminExpenseTablesContainer');
+            const newIndex = adminExpenseTableCount;
+            
+            const newTableHTML = createAdminExpenseTableHTML(newIndex);
+            container.insertAdjacentHTML('beforeend', newTableHTML);
+            adminExpenseTableCount++;
+            
+            // Update remove buttons (disable if only one table left)
+            updateAdminRemoveButtons();
+        }
+        
+        // Remove an expense table (Worker)
+        function removeExpenseTable(button) {
+            const tables = document.querySelectorAll('#expenseTablesContainer .expense-table-section');
+            if (tables.length <= 1) {
+                showToast('You must have at least one expense table', 'warning');
+                return;
+            }
+            
+            const tableSection = button.closest('.expense-table-section');
+            tableSection.remove();
+            
+            // Renumber remaining tables
+            renumberExpenseTables();
+        }
+        
+        // Remove an expense table (Admin)
+        function removeAdminExpenseTable(button) {
+            const tables = document.querySelectorAll('#adminExpenseTablesContainer .expense-table-section');
+            if (tables.length <= 1) {
+                showToast('You must have at least one expense table', 'warning');
+                return;
+            }
+            
+            const tableSection = button.closest('.expense-table-section');
+            tableSection.remove();
+            
+            // Renumber remaining tables
+            renumberAdminExpenseTables();
+        }
+        
+        // Renumber expense tables after removal (Worker)
+        function renumberExpenseTables() {
+            const tables = document.querySelectorAll('#expenseTablesContainer .expense-table-section');
+            expenseTableCount = tables.length;
+            
+            tables.forEach((table, index) => {
+                table.setAttribute('data-table-index', index);
+                
+                // Update title
+                const title = table.querySelector('.expense-table-section-title');
+                if (title) {
+                    title.textContent = `Expense Table #${index + 1}`;
+                }
+                
+                // Update all input names and IDs
+                updateTableElements(table, index);
+            });
+            
+            updateRemoveButtons();
+        }
+        
+        // Renumber expense tables after removal (Admin)
+        function renumberAdminExpenseTables() {
+            const tables = document.querySelectorAll('#adminExpenseTablesContainer .expense-table-section');
+            adminExpenseTableCount = tables.length;
+            
+            tables.forEach((table, index) => {
+                table.setAttribute('data-table-index', index);
+                
+                // Update title
+                const title = table.querySelector('.expense-table-section-title');
+                if (title) {
+                    title.textContent = `Expense Table #${index + 1}`;
+                }
+                
+                // Update all input names and IDs
+                updateAdminTableElements(table, index);
+            });
+            
+            updateAdminRemoveButtons();
+        }
+        
+        // Update table element names and IDs (Worker)
+        function updateTableElements(table, index) {
+            // Update select names
+            const expenseType = table.querySelector('.expense-type');
+            const expenseDesc = table.querySelector('.expense-description');
+            const currency = table.querySelector('.currency');
+            const creditCard = table.querySelector('.credit-card');
+            const cashAmount = table.querySelector('.cash-amount');
+            const bankAmount = table.querySelector('.bank-transfer-amount');
+            const vatAmount = table.querySelector('.vat-amount');
+            const totalAmount = table.querySelector('.total-amount');
+            const reason = table.querySelector('.table-reason');
+            const notes = table.querySelector('.table-notes');
+            const receipt = table.querySelector('.table-receipt');
+            
+            if (expenseType) expenseType.name = `expenseType[${index}]`;
+            if (expenseDesc) expenseDesc.name = `expenseDescription[${index}]`;
+            if (currency) currency.name = `currency[${index}]`;
+            if (creditCard) creditCard.name = `creditCard[${index}]`;
+            if (cashAmount) {
+                cashAmount.name = `cashAmount[${index}]`;
+                cashAmount.oninput = function() { calculateTableTotal(this, index); };
+            }
+            if (bankAmount) {
+                bankAmount.name = `bankTransferAmount[${index}]`;
+                bankAmount.oninput = function() { calculateTableTotal(this, index); };
+            }
+            if (vatAmount) vatAmount.name = `vatAmount[${index}]`;
+            if (totalAmount) totalAmount.name = `totalAmount[${index}]`;
+            if (reason) {
+                reason.name = `reason[${index}]`;
+                reason.id = `reason_${index}`;
+            }
+            if (notes) {
+                notes.name = `tableNotes[${index}]`;
+                notes.id = `tableNotes_${index}`;
+            }
+            if (receipt) {
+                receipt.name = `tableReceipt[${index}]`;
+                receipt.id = `tableReceipt_${index}`;
+            }
+            
+            // Update labels
+            const reasonLabel = table.querySelector('label[for^="reason_"]');
+            if (reasonLabel) reasonLabel.htmlFor = `reason_${index}`;
+            
+            const notesLabel = table.querySelector('label[for^="tableNotes_"]');
+            if (notesLabel) notesLabel.htmlFor = `tableNotes_${index}`;
+            
+            const receiptLabel = table.querySelector('label[for^="tableReceipt_"]');
+            if (receiptLabel) receiptLabel.htmlFor = `tableReceipt_${index}`;
+        }
+        
+        // Update table element names and IDs (Admin)
+        function updateAdminTableElements(table, index) {
+            // Update select names
+            const expenseType = table.querySelector('.admin-expense-type');
+            const expenseDesc = table.querySelector('.admin-expense-description');
+            const currency = table.querySelector('.admin-currency');
+            const creditCard = table.querySelector('.admin-credit-card');
+            const cashAmount = table.querySelector('.admin-cash-amount');
+            const bankAmount = table.querySelector('.admin-bank-transfer-amount');
+            const vatAmount = table.querySelector('.admin-vat-amount');
+            const totalAmount = table.querySelector('.admin-total-amount');
+            const reason = table.querySelector('.admin-table-reason');
+            const notes = table.querySelector('.admin-table-notes');
+            const receipt = table.querySelector('.admin-table-receipt');
+            
+            if (expenseType) expenseType.name = `adminExpenseType[${index}]`;
+            if (expenseDesc) expenseDesc.name = `adminExpenseDescription[${index}]`;
+            if (currency) currency.name = `adminCurrency[${index}]`;
+            if (creditCard) creditCard.name = `adminCreditCard[${index}]`;
+            if (cashAmount) {
+                cashAmount.name = `adminCashAmount[${index}]`;
+                cashAmount.oninput = function() { calculateAdminTableTotal(this, index); };
+            }
+            if (bankAmount) {
+                bankAmount.name = `adminBankTransferAmount[${index}]`;
+                bankAmount.oninput = function() { calculateAdminTableTotal(this, index); };
+            }
+            if (vatAmount) vatAmount.name = `adminVatAmount[${index}]`;
+            if (totalAmount) totalAmount.name = `adminTotalAmount[${index}]`;
+            if (reason) {
+                reason.name = `adminReason[${index}]`;
+                reason.id = `adminReason_${index}`;
+            }
+            if (notes) {
+                notes.name = `adminTableNotes[${index}]`;
+                notes.id = `adminTableNotes_${index}`;
+            }
+            if (receipt) {
+                receipt.name = `adminTableReceipt[${index}]`;
+                receipt.id = `adminTableReceipt_${index}`;
+            }
+            
+            // Update labels
+            const reasonLabel = table.querySelector('label[for^="adminReason_"]');
+            if (reasonLabel) reasonLabel.htmlFor = `adminReason_${index}`;
+            
+            const notesLabel = table.querySelector('label[for^="adminTableNotes_"]');
+            if (notesLabel) notesLabel.htmlFor = `adminTableNotes_${index}`;
+            
+            const receiptLabel = table.querySelector('label[for^="adminTableReceipt_"]');
+            if (receiptLabel) receiptLabel.htmlFor = `adminTableReceipt_${index}`;
+        }
+        
+        // Update remove buttons state (Worker)
+        function updateRemoveButtons() {
+            const tables = document.querySelectorAll('#expenseTablesContainer .expense-table-section');
+            const removeButtons = document.querySelectorAll('#expenseTablesContainer .remove-expense-table-btn');
+            
+            if (tables.length <= 1) {
+                removeButtons.forEach(btn => btn.disabled = true);
+            } else {
+                removeButtons.forEach(btn => btn.disabled = false);
+            }
+        }
+        
+        // Update remove buttons state (Admin)
+        function updateAdminRemoveButtons() {
+            const tables = document.querySelectorAll('#adminExpenseTablesContainer .expense-table-section');
+            const removeButtons = document.querySelectorAll('#adminExpenseTablesContainer .remove-expense-table-btn');
+            
+            if (tables.length <= 1) {
+                removeButtons.forEach(btn => btn.disabled = true);
+            } else {
+                removeButtons.forEach(btn => btn.disabled = false);
+            }
+        }
+        
+        // Create expense table HTML (Worker)
+        function createExpenseTableHTML(index) {
+            return `
+                <div class="expense-table-section" data-table-index="${index}">
+                    <div class="expense-table-section-title">Expense Table #${index + 1}</div>
+                    <div class="expense-table-header">
+                        <div class="expense-table-title">Expense Details</div>
+                        <div class="expense-table-actions">
+                            <button type="button" class="remove-expense-table-btn" onclick="removeExpenseTable(this)">
+                                <i class="fas fa-minus"></i> Remove Table
+                            </button>
+                            <button type="button" class="add-expense-table-btn" onclick="addExpenseTable()">
+                                <i class="fas fa-plus"></i> Add Table
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="expense-table-container">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Expense Type</th>
+                                    <th>Description</th>
+                                    <th>Currency</th>
+                                    <th>C.Card</th>
+                                    <th>Cash</th>
+                                    <th>Bank Transferred</th>
+                                    <th>Vat</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select name="expenseType[${index}]" class="form-control expense-type" required>
+                                            <option value="None">None</option>
+                                            <option value="Expense">Expense</option>
+                                            <option value="Service">Service</option>
+                                            <option value="Material">Material</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="expenseDescription[${index}]" class="form-control expense-description" required>
+                                            <option value="">...Select Option...</option>
+                                            <option value="Travel">Travel</option>
+                                            <option value="Accommodation">Accommodation</option>
+                                            <option value="Meals">Meals</option>
+                                            <option value="Equipment">Equipment</option>
+                                            <option value="Software">Software</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="currency[${index}]" class="form-control currency" required>
+                                            <option value="None">None</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                        </select>
+                                    </td>
+                                    <td class="checkbox-cell">
+                                        <input type="checkbox" name="creditCard[${index}]" class="credit-card" checked>
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="cashAmount[${index}]" class="form-control cash-amount" value="0.00" step="0.01" min="0" oninput="calculateTableTotal(this, ${index})">
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="bankTransferAmount[${index}]" class="form-control bank-transfer-amount" value="0.00" step="0.01" min="0" oninput="calculateTableTotal(this, ${index})">
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="vatAmount[${index}]" class="form-control vat-amount" value="0.00" step="0.01" min="0">
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="totalAmount[${index}]" class="form-control total-amount" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">Sub Total:</td>
+                                    <td class="sub-total-cash">00.00</td>
+                                    <td class="sub-total-bank">00.00</td>
+                                    <td class="sub-total-vat">00.00</td>
+                                    <td class="sub-total-total">00.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <div class="reason-section" style="margin-top: 20px;">
+                        <label for="reason_${index}">Reason for this expense:</label>
+                        <select id="reason_${index}" name="reason[${index}]" class="form-control table-reason" required>
+                            <option value="">...Select Option...</option>
+                            <option value="Overseas Travel">Overseas Travel</option>
+                            <option value="Training">Training</option>
+                            <option value="Other Authorised">Other Authorised</option>
+                            <option value="Event">Event</option>
+                            <option value="Seminar/Conference">Seminar/Conference</option>
+                            <option value="Office Expense">Office Expense</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Telephone Expense">Telephone Expense</option>
+                            <option value="External Invoices">External Invoices</option>
+                            <option value="Telephone Claim">Telephone Claim</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="tableNotes_${index}">Notes for this expense (Optional)</label>
+                        <textarea id="tableNotes_${index}" name="tableNotes[${index}]" class="form-control table-notes" rows="2" placeholder="Notes specific to this expense..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="tableReceipt_${index}">Upload Receipt for this expense</label>
+                                <input type="file" id="tableReceipt_${index}" name="tableReceipt[${index}]" class="form-control table-receipt" accept="image/*,.pdf">
+                                <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt for this specific expense</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Create expense table HTML (Admin)
+        function createAdminExpenseTableHTML(index) {
+            return `
+                <div class="expense-table-section" data-table-index="${index}">
+                    <div class="expense-table-section-title">Expense Table #${index + 1}</div>
+                    <div class="expense-table-header">
+                        <div class="expense-table-title">Expense Details</div>
+                        <div class="expense-table-actions">
+                            <button type="button" class="remove-expense-table-btn" onclick="removeAdminExpenseTable(this)">
+                                <i class="fas fa-minus"></i> Remove Table
+                            </button>
+                            <button type="button" class="add-expense-table-btn" onclick="addAdminExpenseTable()">
+                                <i class="fas fa-plus"></i> Add Table
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="expense-table-container">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Expense Type</th>
+                                    <th>Description</th>
+                                    <th>Currency</th>
+                                    <th>C.Card</th>
+                                    <th>Cash</th>
+                                    <th>Bank Transferred</th>
+                                    <th>Vat</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select name="adminExpenseType[${index}]" class="form-control admin-expense-type" required>
+                                            <option value="None">None</option>
+                                            <option value="Expense">Expense</option>
+                                            <option value="Service">Service</option>
+                                            <option value="Material">Material</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="adminExpenseDescription[${index}]" class="form-control admin-expense-description" required>
+                                            <option value="">...Select Option...</option>
+                                            <option value="Travel">Travel</option>
+                                            <option value="Accommodation">Accommodation</option>
+                                            <option value="Meals">Meals</option>
+                                            <option value="Equipment">Equipment</option>
+                                            <option value="Software">Software</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="adminCurrency[${index}]" class="form-control admin-currency" required>
+                                            <option value="None">None</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                        </select>
+                                    </td>
+                                    <td class="checkbox-cell">
+                                        <input type="checkbox" name="adminCreditCard[${index}]" class="admin-credit-card" checked>
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="adminCashAmount[${index}]" class="form-control admin-cash-amount" value="0.00" step="0.01" min="0" oninput="calculateAdminTableTotal(this, ${index})">
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="adminBankTransferAmount[${index}]" class="form-control admin-bank-transfer-amount" value="0.00" step="0.01" min="0" oninput="calculateAdminTableTotal(this, ${index})">
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="adminVatAmount[${index}]" class="form-control admin-vat-amount" value="0.00" step="0.01" min="0">
+                                    </td>
+                                    <td class="amount-input">
+                                        <input type="number" name="adminTotalAmount[${index}]" class="form-control admin-total-amount" value="0.00" step="0.01" min="0" readonly style="background-color: #f0f0f0;">
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">Sub Total:</td>
+                                    <td class="admin-sub-total-cash">00.00</td>
+                                    <td class="admin-sub-total-bank">00.00</td>
+                                    <td class="admin-sub-total-vat">00.00</td>
+                                    <td class="admin-sub-total-total">00.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <div class="reason-section" style="margin-top: 20px;">
+                        <label for="adminReason_${index}">Reason for this expense:</label>
+                        <select id="adminReason_${index}" name="adminReason[${index}]" class="form-control admin-table-reason" required>
+                            <option value="">...Select Option...</option>
+                            <option value="Overseas Travel">Overseas Travel</option>
+                            <option value="Training">Training</option>
+                            <option value="Other Authorised">Other Authorised</option>
+                            <option value="Event">Event</option>
+                            <option value="Seminar/Conference">Seminar/Conference</option>
+                            <option value="Office Expense">Office Expense</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Telephone Expense">Telephone Expense</option>
+                            <option value="External Invoices">External Invoices</option>
+                            <option value="Telephone Claim">Telephone Claim</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="adminTableNotes_${index}">Notes for this expense (Optional)</label>
+                        <textarea id="adminTableNotes_${index}" name="adminTableNotes[${index}]" class="form-control admin-table-notes" rows="2" placeholder="Notes specific to this expense..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="adminTableReceipt_${index}">Upload Receipt for this expense</label>
+                                <input type="file" id="adminTableReceipt_${index}" name="adminTableReceipt[${index}]" class="form-control admin-table-receipt" accept="image/*,.pdf">
+                                <small style="color: #666; font-size: 12px;">Upload image or PDF of receipt for this specific expense</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Helper Functions
+        
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+        
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        function generateReferenceNo() {
+            const prefix = 'ISL';
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            return `${prefix}-${randomNum}`;
+        }
+        
+        function showLoadingState(loadingElements, emptyElements, tableElements) {
+            loadingElements.forEach(el => {
+                if (el) el.style.display = 'block';
+            });
+            emptyElements.forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+            tableElements.forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+        }
+        
+        function showTableState(loadingElements, emptyElements, tableElements, hasData) {
+            loadingElements.forEach(el => {
+                if (el) el.style.display = 'none';
+            });
+            if (hasData) {
                 emptyElements.forEach(el => {
                     if (el) el.style.display = 'none';
+                });
+                tableElements.forEach(el => {
+                    if (el) el.style.display = 'table';
+                });
+            } else {
+                emptyElements.forEach(el => {
+                    if (el) el.style.display = 'block';
                 });
                 tableElements.forEach(el => {
                     if (el) el.style.display = 'none';
                 });
             }
-            
-            function showTableState(loadingElements, emptyElements, tableElements, hasData) {
-                loadingElements.forEach(el => {
-                    if (el) el.style.display = 'none';
-                });
-                if (hasData) {
-                    emptyElements.forEach(el => {
-                        if (el) el.style.display = 'none';
-                    });
-                    tableElements.forEach(el => {
-                        if (el) el.style.display = 'table';
-                    });
-                } else {
-                    emptyElements.forEach(el => {
-                        if (el) el.style.display = 'block';
-                    });
-                    tableElements.forEach(el => {
-                        if (el) el.style.display = 'none';
-                    });
-                }
-            }
-            
-            function updateWorkerStats(claims) {
-                const total = claims.length;
-                const pending = claims.filter(c => c.status === 'pending' || c.status === 'new' || c.status === 'submitted').length;
-                const verified = claims.filter(c => c.status === 'verified').length;
-                const approved = claims.filter(c => c.status === 'approved').length;
-                const rejected = claims.filter(c => c.status === 'rejected').length;
-                const paid = claims.filter(c => c.status === 'paid').length;
+        }
+        
+        function updateWorkerStats(claims) {
+            const total = claims.length;
+            const pending = claims.filter(c => c.status === 'pending' || c.status === 'new' || c.status === 'submitted').length;
+            const approved = claims.filter(c => c.status === 'approved').length;
+            const rejected = claims.filter(c => c.status === 'rejected').length;
+            const paid = claims.filter(c => c.status === 'paid').length;
 
-                
-                document.getElementById('workerTotalClaims').textContent = total;
-                document.getElementById('workerPendingClaims').textContent = pending;
-                document.getElementById('workerVerifiedClaims').textContent = verified;
-                document.getElementById('workerApprovedClaims').textContent = approved;
-            }
             
-            function resetWorkerStats() {
-                document.getElementById('workerTotalClaims').textContent = '0';
-                document.getElementById('workerPendingClaims').textContent = '0';
-                document.getElementById('workerVerifiedClaims').textContent = '0';
-                document.getElementById('workerApprovedClaims').textContent = '0';
-            }
+            document.getElementById('workerTotalClaims').textContent = total;
+            document.getElementById('workerPendingClaims').textContent = pending;
+            document.getElementById('workerApprovedClaims').textContent = approved;
+            document.getElementById('workerRejectedClaims').textContent = rejected;
+            document.getElementById('workerPaidClaims').textContent = paid;
+        }
+        
+        function resetWorkerStats() {
+            document.getElementById('workerTotalClaims').textContent = '0';
+            document.getElementById('workerPendingClaims').textContent = '0';
+            document.getElementById('workerVerifiedClaims').textContent = '0';
+            document.getElementById('workerApprovedClaims').textContent = '0';
+            document.getElementById('workerPaidClaims').textContent = '0';
+            document.getElementById('workerRejectedClaims').textContent = '0';
+        }
+        
+        function updateAdminStats(claims) {
+            const total = claims.length;
+            const pending = claims.filter(c => c.status === 'pending' || c.status === 'new' || c.status === 'submitted').length;
+            const verified = claims.filter(c => c.status === 'verified').length;
+            const approved = claims.filter(c => c.status === 'approved').length;
+            const rejected = claims.filter(c => c.status === 'rejected').length;
+            const paid = claims.filter(c => c.status === 'paid').length;
             
-            function updateAdminStats(claims) {
-                const total = claims.length;
-                const pending = claims.filter(c => c.status === 'pending' || c.status === 'new' || c.status === 'submitted').length;
-                const verified = claims.filter(c => c.status === 'verified').length;
-                const approved = claims.filter(c => c.status === 'approved').length;
-                const rejected = claims.filter(c => c.status === 'rejected').length;
-                const paid = claims.filter(c => c.status === 'paid').length;
-                
-                document.getElementById('adminTotalClaims').textContent = total;
-                document.getElementById('adminPendingClaims').textContent = pending;
-                document.getElementById('adminVerifiedClaims').textContent = verified;
-                document.getElementById('adminApprovedClaims').textContent = approved;
-                document.getElementById('adminPaidClaims').textContent = paid;
-            }
+            document.getElementById('adminTotalClaims').textContent = total;
+            document.getElementById('adminPendingClaims').textContent = pending;
+            document.getElementById('adminVerifiedClaims').textContent = verified;
+            document.getElementById('adminApprovedClaims').textContent = approved;
+            document.getElementById('adminPaidClaims').textContent = paid;
+            document.getElementById('adminRejectedClaims').textContent = rejected;
+        }
+        
+        function resetAdminStats() {
+            document.getElementById('adminTotalClaims').textContent = '0';
+            document.getElementById('adminPendingClaims').textContent = '0';
+            document.getElementById('adminVerifiedClaims').textContent = '0';
+            document.getElementById('adminApprovedClaims').textContent = '0';
+            document.getElementById('adminPaidClaims').textContent = '0';
+            document.getElementById('adminRejectedClaims').textContent = '0';
+        }
+        
+        function filterUsers(searchTerm) {
+            const searchValue = searchTerm.toLowerCase();
+            const tableBody = document.getElementById('usersTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
             
-            function resetAdminStats() {
-                document.getElementById('adminTotalClaims').textContent = '0';
-                document.getElementById('adminPendingClaims').textContent = '0';
-                document.getElementById('adminVerifiedClaims').textContent = '0';
-                document.getElementById('adminApprovedClaims').textContent = '0';
-                document.getElementById('adminPaidClaims').textContent = '0';
-            }
+            let hasVisibleRows = false;
             
-            function filterUsers(searchTerm) {
-                const searchValue = searchTerm.toLowerCase();
-                const tableBody = document.getElementById('usersTableBody');
-                const rows = tableBody.getElementsByTagName('tr');
+            for (let row of rows) {
+                const cells = row.getElementsByTagName('td');
+                let rowText = '';
                 
-                let hasVisibleRows = false;
-                
-                for (let row of rows) {
-                    const cells = row.getElementsByTagName('td');
-                    let rowText = '';
-                    
-                    // Concatenate text from all cells except the actions cell
-                    for (let i = 0; i < cells.length - 1; i++) {
-                        rowText += cells[i].textContent.toLowerCase() + ' ';
-                    }
-                    
-                    if (rowText.includes(searchValue)) {
-                        row.style.display = '';
-                        hasVisibleRows = true;
-                    } else {
-                        row.style.display = 'none';
-                    }
+                // Concatenate text from all cells except the actions cell
+                for (let i = 0; i < cells.length - 1; i++) {
+                    rowText += cells[i].textContent.toLowerCase() + ' ';
                 }
                 
-                // Show/hide empty state message
-                const emptyState = document.getElementById('usersEmpty');
-                if (searchTerm && !hasVisibleRows) {
-                    emptyState.innerHTML = '<i class="fas fa-search"></i><p>No users match your search</p>';
-                    emptyState.style.display = 'block';
-                } else if (!searchTerm && rows.length === 0) {
-                    emptyState.innerHTML = '<i class="fas fa-users"></i><p>No users found</p>';
-                    emptyState.style.display = 'block';
+                if (rowText.includes(searchValue)) {
+                    row.style.display = '';
+                    hasVisibleRows = true;
                 } else {
-                    emptyState.style.display = 'none';
+                    row.style.display = 'none';
                 }
             }
             
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
+            // Show/hide empty state message
+            const emptyState = document.getElementById('usersEmpty');
+            if (searchTerm && !hasVisibleRows) {
+                emptyState.innerHTML = '<i class="fas fa-search"></i><p>No users match your search</p>';
+                emptyState.style.display = 'block';
+            } else if (!searchTerm && rows.length === 0) {
+                emptyState.innerHTML = '<i class="fas fa-users"></i><p>No users found</p>';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
                     clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
+                    func(...args);
                 };
-            }
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        function showToast(message, type = "success") {
+            // Remove existing toasts
+            const existingToasts = document.querySelectorAll('.toast');
+            existingToasts.forEach(toast => toast.remove());
             
-            function showToast(message, type = "success") {
-                // Remove existing toasts
-                const existingToasts = document.querySelectorAll('.toast');
-                existingToasts.forEach(toast => toast.remove());
-                
-                // Create toast element
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                toast.textContent = message;
-                
-                // Add to document
-                document.body.appendChild(toast);
-                
-                // Remove after 3 seconds
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transition = 'opacity 0.3s';
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
-            }
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
             
-            function logout() {
-                localStorage.removeItem('hfa_auth_token');
-                localStorage.removeItem('hfa_user');
-                currentUser = null;
-                authToken = null;
-                
-                workerDashboard.classList.add('hidden');
-                adminDashboard.classList.add('hidden');
-                loginPage.classList.remove('hidden');
-                loginForm.reset();
-                
-                showToast('You have been logged out.', 'info');
-            }
-        </script>
+            // Add to document
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        function logout() {
+            localStorage.removeItem('hfa_auth_token');
+            localStorage.removeItem('hfa_user');
+            currentUser = null;
+            authToken = null;
+            
+            workerDashboard.classList.add('hidden');
+            adminDashboard.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+            loginForm.reset();
+            
+            showToast('You have been logged out.', 'info');
+        }
+    </script>
 </body>
 </html>
