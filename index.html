@@ -833,6 +833,7 @@
                 <div><a href='#services' class='button'>Services</a></div>
                 <div><a href='#contact' class='button'>Contact</a></div>
                 <a href='#contact' class='button'>Donate</a>
+                <a href="https://isleworth-deen-centre.vercel.app/IFRS.html" class="button">Claims Management</a>
                 <div class='search-button'><i class="fas fa-search"></i></div>
             </div>
 
@@ -846,6 +847,7 @@
                         <a href='#services' class='button'>Services</a>
                         <a href='#contact' class='button'>Contact</a>
                         <a href='#contact' class='button'>Donate</a>
+                        <a href="https://isleworth-deen-centre.vercel.app/IFRS.html" class="button">Claims Management</a>
                     </div>
                 </details>
             </div>
@@ -868,6 +870,10 @@
                 <h3>Latest News</h3>
                 <a href="#" class="view-all">View All</a>
             </div>
+
+            <div id="news-display">
+
+            </div>
             
             <div class="news-item">
                 <div class="news-date">June 15, 2023</div>
@@ -876,7 +882,7 @@
                 <span class="news-category">Announcement</span>
             </div>
             
-            <div class="news-item">
+            <!-- <div class="news-item">
                 <div class="news-date">June 10, 2023</div>
                 <div class="news-title"><a href="#">New Quran Classes for Children</a></div>
                 <div class="news-excerpt">Registration now open for summer Quran memorization program for ages 7-15. Limited spots available.</div>
@@ -902,7 +908,7 @@
                 <div class="news-title"><a href="#">Eid al-Adha 2023 Arrangements</a></div>
                 <div class="news-excerpt">Eid prayer times and celebration details for Eid al-Adha. Multiple prayer sessions to accommodate everyone.</div>
                 <span class="news-category">Events</span>
-            </div>
+            </div> -->
         </aside>
     </div>
 
@@ -1434,6 +1440,45 @@
                 alert(`Searching for: "${searchTerm}"\n\nThis feature would connect to a search backend in a live implementation.`);
             }
         });
+
+        const API_BASE_URL = 'https://isleworth-website-backend.onrender.com/api';
+
+
+        // Display news items
+
+
+        async function fetchNews(){
+            try {
+                const response = await fetch(`${API_BASE_URL}/news?limit=3`);
+
+                const data = await response.json();
+
+                displayNewsItems(data.news);
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
+
+        function displayNewsItems(data){
+            const newsDisplay = document.getElementById('news-display');
+
+            newsDisplay.innerHTML = '';
+
+            data.forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.classList.add('news-item');
+
+                newsItem.innerHTML = `
+                    <div class="news-date">${item.date}</div>
+                    <div class="news-title"><a href="#">${item.title}</a></div>
+                    <div class="news-excerpt">${item.excerpt}</div>
+                    <span class="news-category">${item.category}</span>
+                `;
+
+                newsDisplay.appendChild(newsItem);
+            });
+        }
 
         // Initialize everything
         function initializePage() {
