@@ -1301,7 +1301,6 @@
     <div id="loginPage" class="login-container">
         <div class="login-box">
             <div class="logo">
-                <img style="width: 80px;" src="/image/IDC Logo launchgood.png" alt="">
                 <h1>Isleworth Deen Claims</h1>
                 <p>Management Dashboard</p>
             </div>
@@ -2936,9 +2935,10 @@
             
             // Show loading state
             showLoadingState([loadingElement, myClaimsLoadingElement], [emptyElement, myClaimsEmptyElement], [tableElement, myClaimsTableElement]);
+
             
             try {
-                const response = await fetch(`${API_BASE_URL}/claims`, {
+                const response = await fetch(`${API_BASE_URL}/claims?user_id=${currentUser.id}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
