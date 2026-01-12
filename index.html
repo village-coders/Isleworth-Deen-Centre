@@ -90,8 +90,10 @@
             font-family: "Montserrat", sans-serif;
             box-sizing: border-box;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex-direction: row;
+            justify-content: ;
+            align-items: center;
+            gap: 20px;
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('');
             background-size: cover;
             background-repeat: no-repeat;
@@ -177,6 +179,7 @@
             flex-direction: column;
             justify-content: center;
             height: 100%;
+            max-height: 420px;
         }
 
         .hero h2 {
@@ -817,10 +820,15 @@
             .kingdom-name {
                 text-align: center;
                 align-items: center;
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 20px;
             }
 
             .kingdom-name h2 {
-                font-size: 28px;
+                font-size: 32px !important;
+                text-align: left !important;
+                align-self: last baseline !important;
             }
             
             .news-sidebar {
@@ -886,12 +894,12 @@
             }
 
             .kingdom-name {
-                height: 120px;
+                /* height: 120px; */
                 padding: 20px;
             }
 
             .kingdom-name h2 {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .prayer-header {
@@ -921,7 +929,7 @@
 
         @media screen and (max-width: 576px) {
             .hero {
-                padding: 3rem 1rem;
+                padding: 1rem 1rem;
             }
 
             .prayer-grid {
@@ -935,7 +943,7 @@
             .clock-container {
                 padding: 8px 15px;
                 font-size: 0.9rem;
-                flex-direction: column;
+                flex-direction: row;
                 align-items: flex-end;
                 gap: 5px;
             }
