@@ -2818,7 +2818,7 @@
             adminUserRole.textContent = roleDisplay;
             
             // Set user name
-            adminUserName.textContent = currentUser.name || currentUser.email;
+            adminUserName.textContent = currentUser.name.charAt(0).toUpperCase() + currentUser.name.slice(1) || currentUser.email;
             
             // Show/hide menu items based on role
             switch(userRole.toLowerCase()) {
@@ -2883,7 +2883,7 @@
             loadAdminClaims();
             
             // Only load users for administrators
-            if (currentUser.role === 'Administrator' || currentUser.role === 'admin') {
+            if (currentUser.role === 'admin') {
                 loadUsers();
             }
         }
